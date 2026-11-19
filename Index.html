@@ -27,12 +27,13 @@
   --save-hover: #27ae60;
   --shadow: rgba(0,0,0,0.3);
 
-  --z-menubar: auto;
+  /* Escala de camadas (z-index) organizada — evita sobreposição errada */
+  --z-menubar: auto;      /* NÃO criar stacking context */
   --z-context: 2000;
   --z-popup: 1500;
-  --z-overlay: 9998;
-  --z-dropdown: 9999;
-  --z-modal: 10050;
+  --z-overlay: 9998;      /* overlay escuro do menu mobile */
+  --z-dropdown: 9999;     /* menu dropdown (acima do overlay) */
+  --z-modal: 10050;       /* modal acima de tudo do menu */
   --z-loading: 10080;
   --z-toast: 10100;
 }
@@ -64,10 +65,10 @@ body {
   gap: 4px;
   flex-wrap: wrap;
   position: relative;
-  z-index: var(--z-menubar);
+  z-index: var(--z-menubar); /* auto = não cria stacking context (CORREÇÃO) */
 }
 
-.menu-group { position: relative; }
+.menu-group { position: relative; } /* sem z-index = não cria stacking context */
 
 .menu-btn {
   background: var(--button-bg);
@@ -135,7 +136,7 @@ body {
   margin: 4px 0;
 }
 
-/* ============ OVERLAY MOBILE ============ */
+/* ============ OVERLAY MOBILE (global, não só dentro do @media) ============ */
 .mobile-overlay {
   display: none;
   position: fixed;
@@ -150,6 +151,11 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 /* ============ INDICADOR DE CARREGAMENTO ============ */
@@ -804,6 +810,7 @@ body {
 }
 
 .context-submenu:hover > .context-submenu-items { display: block; }
+/* suporte a toque (classe .open pode ser alternada via JS) */
 .context-submenu.open > .context-submenu-items { display: block; }
 
 /* ============ POPUPS FLUTUANTES ============ */
@@ -909,7 +916,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 8px;
   width: 100%;
-  min-width: 0;
+  min-width: 0;              /* permite encolher no celular */
   max-width: 600px;
   max-height: 85vh;
   overflow-y: auto;
@@ -960,7 +967,7 @@ body {
   color: var(--text-primary);
   border: 1px solid var(--border);
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 16px; /* 16px evita zoom automático do iOS ao focar */
 }
 
 .form-group textarea {
@@ -1045,102 +1052,111 @@ body {
 
 #revisorBadge.active { display: block; }
 
-/* ============ RESPONSIVIDADE MOBILE ============ */
+/* ==================================================== */
+/* ============ RESPONSIVIDADE MOBILE (ÚNICO BLOCO) ==== */
+/* ==================================================== */
 @media (max-width: 768px) {
-  html, body {
-    height: auto;
-    min-height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
   #menuBar {
-    flex-direction: column;
-    padding: 8px;
-    gap: 6px;
-    position: relative;
-    z-index: auto;
+    padding: 4px;
+    gap: 3px;
   }
 
   .menu-btn {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 14px;
-    text-align: left;
-    min-height: 44px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    -webkit-tap-highlight-color: rgba(233, 69, 96, 0.3);
-    touch-action: manipulation;
+    padding: 8px 10px;
+    font-size: 12px;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    min-height: 40px;
   }
 
-  .menu-btn::after {
-    content: '▼';
-    font-size: 10px;
-    opacity: 0.7;
-    transition: transform 0.3s;
-  }
-  .menu-btn.active-menu::after {
-    transform: rotate(180deg);
-  }
-
+  /* Menu vira "gaveta" na base da tela */
   .menu-dropdown {
-    position: static;
+    position: fixed;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     width: 100%;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-    border: none;
-    border-left: 3px solid var(--accent);
-    border-radius: 0 0 4px 4px;
-    box-shadow: none;
-    background: rgba(22, 33, 62, 0.95);
-    z-index: auto;
-  }
-
-  .menu-dropdown.active {
-    display: block;
-    max-height: 500px;
-    opacity: 1;
-    margin-bottom: 8px;
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 12px 12px 0 0;
+    animation: slideUp 0.25s ease-out;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   .menu-item {
     padding: 14px 16px;
     font-size: 15px;
     min-height: 48px;
-    border-bottom: 1px solid rgba(42, 42, 78, 0.5);
-    -webkit-tap-highlight-color: rgba(233, 69, 96, 0.2);
-    touch-action: manipulation;
+    border-bottom: 1px solid var(--border);
   }
+
   .menu-item:last-child { border-bottom: none; }
   .menu-item .shortcut { display: none; }
 
-  .mobile-overlay { 
-    display: none !important; 
+  .mobile-overlay {
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
   }
 
+  /* Painéis empilhados */
   #charactersPanel, #chaptersPanel {
     flex-direction: column;
   }
+
   #charactersList, #chaptersList {
     width: 100%;
-    max-height: 250px;
+    max-height: 200px;
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
-  
-  #mainContent {
-    height: auto;
-    min-height: 60vh;
+
+  #characterImageCarousel {
+    width: 140px;
+    height: 140px;
   }
-  
-  #editor {
-    padding: 16px;
-    font-size: 13pt;
+
+  /* Submenus do menu de contexto abrem inline (hover não existe no toque) */
+  .context-submenu-items {
+    position: static;
+    left: auto;
+    top: auto;
+    min-width: 0;
+    width: 100%;
+    border: none;
+    border-left: 2px solid var(--accent);
+    border-radius: 0;
+    box-shadow: none;
+    background: var(--bg-primary);
   }
+
+  .context-submenu > .context-item::after { content: '▼'; }
+
+  /* Popups cabem na tela */
+  .floating-popup {
+    min-width: 0;
+    max-width: calc(100vw - 20px);
+    left: 10px !important;
+    right: 10px !important;
+  }
+
+  .modal { max-height: 90vh; }
+
+  #editor { padding: 16px; font-size: 13pt; }
+
+  #pageInfo { font-size: 10px; padding: 3px 6px; right: 8px; }
+
+  .bottom-input { width: 110px; }
+
+  #toast {
+    left: 10px;
+    right: 10px;
+    bottom: 70px;
+    max-width: none;
+  }
+
+  #mainContent { height: calc(100vh - 130px); }
 }
 </style>
 </head>
@@ -1508,6 +1524,7 @@ body {
 <div id="toast"></div>
 <div id="revisorBadge">🔍 Revisor Ativo</div>
 <script>
+// ============ ESTADO GLOBAL ============
 const state = {
 currentStory: null,
 currentCharacter: null,
@@ -1547,6 +1564,7 @@ semanticProfiles: {
 }
 };
 
+// ============ INICIALIZAÇÃO ============
 window.addEventListener('load', async () => {
 showBootBar('Inicializando sistema...');
 await sleep(300);
@@ -1586,62 +1604,84 @@ hideBootBar();
 showToast('⚠️ Boot abortado');
 }
 
+// ============ INICIALIZAÇÃO DE MENUS (MOBILE COMPATÍVEL) ============
 function initializeMenus() {
-  document.querySelectorAll('.menu-btn').forEach(btn => {
-    btn.onclick = (e) => {
-      e.stopPropagation();
-      const menuName = btn.dataset.menu;
-      const dropdown = document.getElementById('menu-' + menuName);
-      const isActive = dropdown.classList.contains('active');
-      
-      document.querySelectorAll('.menu-dropdown').forEach(d => {
-        d.classList.remove('active');
-        if (d.previousElementSibling) {
-          d.previousElementSibling.classList.remove('active-menu');
-        }
-      });
-      
-      if (!isActive) {
-        dropdown.classList.add('active');
-        btn.classList.add('active-menu');
-      }
-    };
-  });
-  
-  document.querySelectorAll('.menu-item').forEach(item => {
-    item.onclick = (e) => {
-      e.stopPropagation();
-      const action = item.dataset.action;
-      
-      if (action === 'convertTo') {
-        convertTo(item.dataset.format);
-      } else if (action === 'execCmd') {
-        execCmd(item.dataset.cmd);
-      } else if (action === 'switchTab') {
-        switchTab(item.dataset.tab);
-      } else if (typeof window[action] === 'function') {
-        try { window[action](); } catch (err) { console.error(err); }
-      }
-      
-      document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
-      document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active-menu'));
-    };
-  });
-  
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.menu-group')) {
-      document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
-      document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active-menu'));
-    }
-  });
+const isMobile = window.innerWidth <= 768;
+document.querySelectorAll('.menu-btn').forEach(btn => {
+const handler = (e) => {
+e.stopPropagation();
+e.preventDefault();
+const menuName = btn.dataset.menu;
+const dropdown = document.getElementById('menu-' + menuName);
+const isActive = dropdown.classList.contains('active');
+closeAllMenus();
+if (!isActive) {
+dropdown.classList.add('active');
+if (isMobile) {
+document.getElementById('mobileOverlay').classList.add('active');
+} else {
+const rect = btn.getBoundingClientRect();
+const dropdownRect = dropdown.getBoundingClientRect();
+let left = rect.left;
+let top = rect.bottom + 4;
+if (left + dropdownRect.width > window.innerWidth) {
+left = window.innerWidth - dropdownRect.width - 10;
 }
-
+if (top + dropdownRect.height > window.innerHeight) {
+top = rect.top - dropdownRect.height - 4;
+}
+if (left < 0) left = 10;
+dropdown.style.left = left + 'px';
+dropdown.style.top = top + 'px';
+}
+}
+};
+btn.addEventListener('click', handler);
+btn.addEventListener('touchend', (e) => {
+e.preventDefault();
+handler(e);
+});
+});
+document.querySelectorAll('.menu-item').forEach(item => {
+const handler = (e) => {
+e.stopPropagation();
+e.preventDefault();
+const action = item.dataset.action;
+if (action === 'convertTo') {
+convertTo(item.dataset.format);
+} else if (action === 'execCmd') {
+execCmd(item.dataset.cmd);
+} else if (action === 'switchTab') {
+switchTab(item.dataset.tab);
+} else if (typeof window[action] === 'function') {
+window[action]();
+}
+closeAllMenus();
+};
+item.addEventListener('click', handler);
+item.addEventListener('touchend', (e) => {
+e.preventDefault();
+handler(e);
+});
+});
+document.addEventListener('click', (e) => {
+if (!e.target.closest('.menu-group') && !e.target.closest('#mobileOverlay')) {
+closeAllMenus();
+}
+});
+}
 function closeAllMenus() {
-  document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
-  const overlay = document.getElementById('mobileOverlay');
-  if (overlay) overlay.classList.remove('active');
+document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+const overlay = document.getElementById('mobileOverlay');
+if (overlay) overlay.classList.remove('active');
 }
+window.closeAllMenus = window.closeAllMenus || function() {
+document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+const overlay = document.getElementById('mobileOverlay');
+if (overlay) overlay.classList.remove('active');
+};
 
+// ============ PERSISTÊNCIA ============
 async function loadConfig() {
 try {
 const config = localStorage.getItem('bookEditor_config');
@@ -1687,8 +1727,10 @@ console.error('Erro ao salvar histórias:', e);
 }
 }
 
+// ============ CARREGAMENTO COM PULL AUTOMÁTICO ============
 async function loadLastStory() {
 try {
+// Pull automático se GitHub estiver configurado
 if (state.github.token && state.github.repo) {
 showToast('🔄 Sincronizando com GitHub...');
 await pullFromGithub(true);
@@ -1711,6 +1753,7 @@ console.error('Erro ao carregar última história:', e);
 }
 }
 
+// ============ TABS ============
 function switchTab(tabName) {
 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
 document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -1720,6 +1763,7 @@ if (tabName === 'chapters') updateChaptersList();
 if (tabName === 'timeline') renderTimeline();
 }
 
+// ============ EDITOR ============
 function initializeEditor() {
 const editor = document.getElementById('editor');
 editor.addEventListener('input', () => {
@@ -1823,6 +1867,7 @@ if (enScore >= deScore) return '🇬🇧 Inglês';
 return '🇩🇪 Alemão';
 }
 
+// ============ IMAGENS ============
 function insertImage() {
 const input = document.createElement('input');
 input.type = 'file';
@@ -1867,6 +1912,7 @@ reader.readAsDataURL(file);
 }
 }
 
+// ============ CONTEXT MENU ============
 function showEditorContextMenu(e) {
 const menu = document.getElementById('contextMenu');
 menu.innerHTML = `
@@ -1915,6 +1961,7 @@ document.getElementById('contextMenu').classList.remove('active');
 }
 });
 
+// ============ BUSCA E SUBSTITUIÇÃO ============
 function toggleSearchReplace() {
 document.getElementById('searchInput').focus();
 }
@@ -2018,6 +2065,7 @@ function escapeRegex(str) {
 return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// ============ PERSONAGENS ============
 function loadCharactersList() {
 const list = document.getElementById('charactersListItems');
 list.innerHTML = '';
@@ -2184,6 +2232,7 @@ execCmd('insertHTML', `<em>${temp.innerText.substring(0, 200)}...</em><br>`);
 }
 }
 
+// ============ CAPÍTULOS ============
 function updateChaptersList() {
 const editor = document.getElementById('editor');
 const text = editor.innerText || '';
@@ -2247,6 +2296,7 @@ showToast('📋 Índice copiado!');
 });
 }
 
+// ============ FUTURO ============
 function saveFuturo(type) {
 if (!state.currentCharacter) {
 showToast('⚠️ Selecione um personagem');
@@ -2271,6 +2321,7 @@ saveStory();
 showToast(`💾 Informações pessoais salvas`);
 }
 
+// ============ TIMELINE ============
 function analyzeTimeline() {
 const editor = document.getElementById('editor');
 const text = editor.innerText || '';
@@ -2385,6 +2436,7 @@ saveStory();
 showToast('💾 Timeline salva');
 }
 
+// ============ TEMPORÁRIA ============
 function saveTemporaria() {
 const content = document.getElementById('temporaria-editor').innerHTML;
 if (!state.currentStory) {
@@ -2405,6 +2457,7 @@ saveStories();
 showToast('🗑️ Anotação deletada');
 }
 
+// ============ DICIONÁRIO OTIMIZADO ============
 const quickDictionary = {
 'portugues': {
 'casa': 'Edifício para moradia', 'amor': 'Sentimento de afeto profundo',
@@ -2655,6 +2708,7 @@ function closePopup(id) {
 document.getElementById(id).classList.remove('active');
 }
 
+// ============ REVISOR NARRATIVO ============
 function toggleRevisor() {
 state.revisorEnabled = !state.revisorEnabled;
 const badge = document.getElementById('revisorBadge');
@@ -2765,6 +2819,7 @@ function toggleAlerts() {
 showToast('⚠️ Sistema de alertas (implementação básica)');
 }
 
+// ============ TTS ============
 function toggleNarration() {
 if (state.isNarrating) {
 state.speechSynthesis.cancel();
@@ -2833,6 +2888,7 @@ showToast('✅ Gravação salva');
 }
 }
 
+// ============ TEMAS ============
 const themes = {
 dark: {
 '--bg-primary': '#1a1a2e',
@@ -2920,6 +2976,7 @@ document.documentElement.style.setProperty(key, theme[key]);
 document.getElementById('themeSelect').value = themeName;
 }
 
+// ============ HISTÓRIAS COM SYNC AUTOMÁTICO ============
 function newStory() {
 showModal('Nova História', `
 <div class="form-group">
@@ -3049,6 +3106,7 @@ saveStories();
 }, 5000);
 }
 
+// ============ CONVERSÃO ============
 function convertTo(format) {
 const editor = document.getElementById('editor');
 const content = editor.innerHTML;
@@ -3113,6 +3171,7 @@ URL.revokeObjectURL(url);
 showToast(`✅ Convertido para ${format.toUpperCase()}`);
 }
 
+// ============ GITHUB COM SYNC AUTOMÁTICO ============
 const DEFAULT_GH_REPO = "andreyoldekamp-del/GraphZoBackup";
 const DEFAULT_GH_BRANCH = "main";
 const DEFAULT_GH_FOLDER = "historias";
@@ -3266,7 +3325,7 @@ method: 'PUT',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify(payload)
 });
-if (!silent) showToast(`✅ Sincronizado com sucesso!`);
+if (!silent) showToast(`✅ Sincronizado com sucesso! (Backup local também criado)`);
 } catch (e) {
 if (!silent) showToast('❌ Erro no Push: ' + e.message);
 }
@@ -3295,14 +3354,14 @@ try {
 files = await ghRequest(`contents/${encodeURIComponent(cfg.folder)}?ref=${encodeURIComponent(cfg.branch)}`);
 } catch (e) {
 if (e.message.startsWith('404')) {
-if (!silent) showToast('ℹ️ Pasta remota vazia.');
+if (!silent) showToast('ℹ️ Pasta remota vazia ou nome da pasta incorreto.');
 return;
 }
 throw e;
 }
 const xhtmlFiles = files.filter(f => f.name.endsWith('.xhtml'));
 if (xhtmlFiles.length === 0) {
-if (!silent) showToast('ℹ️ Nenhuma história encontrada.');
+if (!silent) showToast('ℹ️ Nenhuma história (.xhtml) encontrada no GitHub.');
 return;
 }
 for (const file of xhtmlFiles) {
@@ -3328,23 +3387,53 @@ loadCharactersList();
 if (state.currentCharacter) selectCharacter(state.currentCharacter);
 updateStats();
 }
-if (!silent) showToast(`✅ Sincronização completa!`);
+if (!silent) showToast(`✅ Sincronização completa! (${xhtmlFiles.length} histórias encontradas)`);
 } catch (e) {
 if (!silent) showToast('❌ Erro no Pull: ' + e.message);
 }
 }
 async function diagnosticarGitHub() {
 const cfg = getGithubConfig();
+console.log("=== 🕵️ INÍCIO DO DIAGNÓSTICO GITHUB ===");
+console.log("Configuração usada:", cfg);
 showToast("🔍 Diagnosticando conexão com GitHub...");
 try {
+console.log("1. Verificando repositório...");
 const repo = await ghRequest("");
+console.log("✅ Repositório encontrado:", repo.full_name);
+console.log("2. Verificando branch...");
 const branch = await ghRequest(`branches/${cfg.branch}`);
+console.log("✅ Branch encontrado:", branch.name);
+console.log(`3. Listando conteúdo da pasta: '${cfg.folder}'`);
+try {
 const contents = await ghRequest(`contents/${cfg.folder}?ref=${cfg.branch}`);
+console.log("✅ Pasta encontrada! Itens dentro dela:");
+contents.forEach(file => {
+console.log(`  📄 ${file.name} | Tipo: ${file.type} | URL direta: ${file.download_url}`);
+});
 const xhtmlFiles = contents.filter(f => f.name.endsWith('.xhtml'));
-showToast(`✅ Sucesso! ${xhtmlFiles.length} arquivo(s) encontrado(s).`);
-alert(`Diagnóstico concluído! ${xhtmlFiles.length} arquivos .xhtml encontrados.`);
+if (xhtmlFiles.length === 0) {
+showToast("⚠️ A pasta existe, mas NÃO há arquivos .xhtml nela.");
+} else {
+showToast(`✅ Sucesso! ${xhtmlFiles.length} arquivo(s) .xhtml encontrado(s). Veja o Console (F12).`);
+}
+} catch (e) {
+if (e.message.includes('404')) {
+console.warn(`⚠️ A pasta '${cfg.folder}' NÃO FOI ENCONTRADA no branch '${cfg.branch}'.`);
+showToast(`⚠️ Pasta '${cfg.folder}' não encontrada. Verifique maiúsculas/minúsculas!`);
+} else {
+throw e;
+}
+}
+console.log("=== ✅ FIM DO DIAGNÓSTICO ===");
+alert("Diagnóstico concluído! Pressione F12, vá na aba 'Console' e veja a lista exata dos seus arquivos.");
 } catch (error) {
-alert(`Erro: ${error.message}`);
+console.error("❌ FALHA NO DIAGNÓSTICO:", error);
+let msg = `Erro: ${error.message}\n\n`;
+if (error.message.includes('401')) msg += "Seu Token está inválido ou expirado.";
+else if (error.message.includes('403')) msg += "Seu Token não tem permissão de acesso a este repositório.";
+else if (error.message.includes('404')) msg += `O repositório '${cfg.repo}' não foi encontrado. Verifique:\n- O nome está EXATAMENTE correto (maiúsculas/minúsculas importam!).\n- O repositório é público, ou seu token tem permissão de leitura.`;
+alert(msg);
 }
 }
 async function downloadLocalBackup() {
@@ -3396,7 +3485,7 @@ if (state.currentCharacter) selectCharacter(state.currentCharacter);
 updateStats();
 saveStories();
 closeModal();
-showToast(`✅ "${storyName}" carregada!`);
+showToast(`✅ "${storyName}" carregada com todos os dados!`);
 } catch (e) {
 showToast('❌ Erro: ' + e.message);
 }
@@ -3412,6 +3501,7 @@ showModal('Status do GitHub', `
 `, [{ text: 'Fechar', action: 'closeModal()' }, { text: 'Editar', action: 'closeModal(); configureGithub();' }]);
 }
 
+// ============ MODAL ============
 function showModal(title, body, buttons = []) {
 document.getElementById('modalTitle').textContent = title;
 document.getElementById('modalBody').innerHTML = body;
@@ -3430,6 +3520,7 @@ function closeModal() {
 document.getElementById('modalOverlay').classList.remove('active');
 }
 
+// ============ TOAST ============
 function showToast(message) {
 const toast = document.getElementById('toast');
 toast.textContent = message;
@@ -3440,6 +3531,7 @@ toast.classList.remove('show');
 }, 3000);
 }
 
+// ============ ATALHOS ============
 document.addEventListener('keydown', (e) => {
 const ctrl = e.ctrlKey;
 const alt = e.altKey;
@@ -3491,9 +3583,41 @@ function showShortcuts() {
 showModal('⌨️ Atalhos do Teclado', `
 <div style="font-size: 12px; line-height: 1.8;">
 <h3 style="color: var(--accent-hover);">Arquivo</h3>
-<div>Ctrl+S - Salvar</div>
+<div>Ctrl+S - Salvar (com Push automático)</div>
 <div>Ctrl+Alt+S - Salvar Como</div>
 <div>Ctrl+Alt+N - Nova História</div>
+<h3 style="color: var(--accent-hover); margin-top: 12px;">Conversão</h3>
+<div>Ctrl+Shift+W - Word</div>
+<div>Ctrl+Shift+P - PDF</div>
+<div>Ctrl+Shift+K - Kindle</div>
+<div>Ctrl+Shift+T - TXT</div>
+<div>Ctrl+Shift+X - XHTML</div>
+<div>Ctrl+Shift+H - HTML</div>
+<h3 style="color: var(--accent-hover); margin-top: 12px;">Formatação</h3>
+<div>Ctrl+Shift+B - Negrito</div>
+<div>Ctrl+Shift+I - Itálico</div>
+<div>Ctrl+Shift+U - Sublinhado</div>
+<div>Ctrl+Shift+E - Esquerda</div>
+<div>Ctrl+Shift+C - Centro</div>
+<div>Ctrl+Shift+D - Direita</div>
+<h3 style="color: var(--accent-hover); margin-top: 12px;">Janelas</h3>
+<div>Ctrl+Alt+P - Personagens</div>
+<div>Ctrl+Alt+I - Pessoais</div>
+<div>Ctrl+Alt+C - Capítulos</div>
+<div>Ctrl+Alt+1/2/3 - Futuro</div>
+<div>Ctrl+Alt+M - Temporária</div>
+<div>Ctrl+Alt+T - Timeline</div>
+<div>Ctrl+Alt+R - Revisor</div>
+<h3 style="color: var(--accent-hover); margin-top: 12px;">Áudio</h3>
+<div>Ctrl+Shift+V - Narrar</div>
+<div>Ctrl+Shift+G - Gravar</div>
+<h3 style="color: var(--accent-hover); margin-top: 12px;">Dicionário</h3>
+<div>Ctrl+Shift+; - Toggle Dicionário</div>
+<div>Ctrl+Shift+' - Toggle Frases</div>
+<h3 style="color: var(--accent-hover); margin-top: 12px;">Ações Rápidas</h3>
+<div>Ctrl+Alt+Y - Inserir Personagem</div>
+<div>Ctrl+Alt+U - Inserir Característica</div>
+<div>Ctrl+Alt+W - Formato A5</div>
 </div>
 `, [
 { text: 'Fechar', action: 'closeModal()' }
@@ -3503,7 +3627,21 @@ function showAbout() {
 showModal('ℹ️ Sobre', `
 <div style="text-align: center; padding: 20px;">
 <h2 style="color: var(--accent-hover);">📖 Sistema de Editor de Livros</h2>
-<p style="margin-top: 12px;">Versão 2.0</p>
+<p style="margin-top: 12px;">Versão 2.0 - Com GitHub Integrado e Sync Automático</p>
+<p style="margin-top: 8px; color: var(--text-secondary);">
+Sistema completo de escrita de livros/narrativas com:<br>
+✨ Edição de texto rico<br>
+👥 Gestão de personagens<br>
+📅 Timeline automática<br>
+🔍 Revisor narrativo<br>
+📚 Dicionário multilíngue otimizado<br>
+☁️ Sincronização GitHub automática<br>
+📄 Conversão múltipla<br>
+📱 Interface mobile responsiva
+</p>
+<p style="margin-top: 16px; font-size: 11px; color: var(--text-secondary);">
+© 2026 - Desenvolvido com HTML/CSS/JS
+</p>
 </div>
 `, [
 { text: 'Fechar', action: 'closeModal()' }
@@ -3517,6 +3655,15 @@ makeDraggable('dictionaryPopup');
 makeDraggable('phrasePopup');
 makeDraggable('conflictPopup');
 makeDraggable('profilePopup');
+let easterEggBuffer = '';
+document.getElementById('editor').addEventListener('input', (e) => {
+easterEggBuffer += e.data || '';
+if (easterEggBuffer.length > 20) easterEggBuffer = easterEggBuffer.slice(-20);
+if (easterEggBuffer.toLowerCase().includes('easteregg')) {
+showShortcuts();
+easterEggBuffer = '';
+}
+});
 }
 function makeDraggable(popupId) {
 const popup = document.getElementById(popupId);
@@ -3540,6 +3687,8 @@ document.addEventListener('mouseup', () => {
 isDragging = false;
 });
 }
+console.log('📖 Sistema de Editor de Livros v2.0 carregado');
+console.log('💡 Digite "easteregg" no editor para ver os atalhos');
 </script>
 </body>
 </html>
