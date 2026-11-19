@@ -27,13 +27,12 @@
   --save-hover: #27ae60;
   --shadow: rgba(0,0,0,0.3);
 
-  /* Escala de camadas (z-index) organizada — evita sobreposição errada */
-  --z-menubar: auto;      /* NÃO criar stacking context */
+  --z-menubar: auto;
   --z-context: 2000;
   --z-popup: 1500;
-  --z-overlay: 9998;      /* overlay escuro do menu mobile */
-  --z-dropdown: 9999;     /* menu dropdown (acima do overlay) */
-  --z-modal: 10050;       /* modal acima de tudo do menu */
+  --z-overlay: 9998;
+  --z-dropdown: 9999;
+  --z-modal: 10050;
   --z-loading: 10080;
   --z-toast: 10100;
 }
@@ -56,7 +55,6 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 5px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ============ BARRA DE MENUS ============ */
 #menuBar {
   display: flex;
   background: var(--bg-tertiary);
@@ -65,10 +63,10 @@ body {
   gap: 4px;
   flex-wrap: wrap;
   position: relative;
-  z-index: var(--z-menubar); /* auto = não cria stacking context (CORREÇÃO) */
+  z-index: var(--z-menubar);
 }
 
-.menu-group { position: relative; } /* sem z-index = não cria stacking context */
+.menu-group { position: relative; }
 
 .menu-btn {
   background: var(--button-bg);
@@ -136,7 +134,6 @@ body {
   margin: 4px 0;
 }
 
-/* ============ OVERLAY MOBILE (global, não só dentro do @media) ============ */
 .mobile-overlay {
   display: none;
   position: fixed;
@@ -158,24 +155,6 @@ body {
   to { transform: translateY(0); }
 }
 
-/* ============ INDICADOR DE CARREGAMENTO ============ */
-.loading-indicator {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--bg-tertiary);
-  padding: 20px 30px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 12px var(--shadow);
-  z-index: var(--z-loading);
-  display: none;
-}
-
-.loading-indicator.active { display: block; }
-
-/* ============ ABAS ============ */
 #tabsBar {
   display: flex;
   background: var(--bg-secondary);
@@ -221,7 +200,6 @@ body {
 
 .tab-content.active { display: flex; }
 
-/* ============ EDITOR ============ */
 #editorContainer {
   display: flex;
   flex-direction: column;
@@ -321,7 +299,6 @@ body {
   pointer-events: none;
 }
 
-/* ============ BARRA INFERIOR ============ */
 #bottomBar {
   display: flex;
   gap: 6px;
@@ -378,14 +355,13 @@ body {
   cursor: pointer;
 }
 
-/* ============ PERSONAGENS ============ */
-#charactersPanel {
+#charactersPanel, #chaptersPanel {
   display: flex;
   width: 100%;
   height: 100%;
 }
 
-#charactersList {
+#charactersList, #chaptersList {
   width: 250px;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border);
@@ -393,22 +369,19 @@ body {
   padding: 8px;
 }
 
-.character-item {
+.character-item, .chapter-item {
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 4px;
   margin-bottom: 4px;
-  transition: all 0.15s;
   font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  transition: all 0.15s;
   touch-action: manipulation;
 }
 
-.character-item:hover { background: var(--button-hover); }
+.character-item:hover, .chapter-item:hover { background: var(--button-hover); }
 
-.character-item.active {
+.character-item.active, .chapter-item.active {
   background: var(--bg-tertiary);
   border-left: 3px solid var(--accent);
 }
@@ -471,7 +444,7 @@ body {
   font-size: 12px;
 }
 
-#characterEditArea {
+#characterEditArea, .futuro-editor {
   flex: 1;
   padding: 16px;
   background: var(--bg-primary);
@@ -487,41 +460,42 @@ body {
   -webkit-user-select: text;
 }
 
-/* ============ CAPÍTULOS ============ */
-#chaptersPanel {
+.futuro-container, .temporaria-container, #timelinePanel, #dictionaryPanel {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
+  padding: 12px;
+  gap: 8px;
 }
 
-#chaptersList {
-  width: 300px;
-  background: var(--bg-secondary);
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  padding: 8px;
-}
-
-.chapter-item {
+.futuro-label {
+  background: var(--bg-tertiary);
   padding: 8px 12px;
-  cursor: pointer;
   border-radius: 4px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  border-left: 3px solid var(--accent);
+}
+
+.futuro-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.save-btn {
+  background: var(--save-bg);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 13px;
   transition: all 0.15s;
-  border-left: 3px solid transparent;
   touch-action: manipulation;
 }
 
-.chapter-item:hover { background: var(--button-hover); }
-.chapter-item.index-only { border-left-color: #888; }
-.chapter-item.both { border-left-color: white; }
-.chapter-item.mismatch { border-left-color: #e74c3c; }
-
-.chapter-item.active {
-  background: var(--bg-tertiary);
-  color: cyan;
-}
+.save-btn:hover { background: var(--save-hover); }
 
 #chaptersStats {
   flex: 1;
@@ -550,92 +524,9 @@ body {
   padding: 4px 0;
   font-size: 13px;
   border-bottom: 1px solid var(--border);
-  word-break: break-word;
 }
 
-.stat-row:last-child { border-bottom: none; }
 .stat-value { color: var(--gold); font-weight: bold; }
-
-/* ============ FUTURO / PESSOAL / TEMPORÁRIA ============ */
-.futuro-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 12px;
-  gap: 8px;
-}
-
-.futuro-label {
-  background: var(--bg-tertiary);
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  border-left: 3px solid var(--accent);
-}
-
-.futuro-editor {
-  flex: 1;
-  padding: 16px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow-y: auto;
-  outline: none;
-  font-family: 'Times New Roman', serif;
-  font-size: 13pt;
-  line-height: 1.5;
-  color: var(--text-primary);
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-.futuro-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.save-btn {
-  background: var(--save-bg);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.15s;
-  -webkit-tap-highlight-color: rgba(46, 204, 113, 0.3);
-  touch-action: manipulation;
-}
-
-.save-btn:hover { background: var(--save-hover); }
-
-.temporaria-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 12px;
-  gap: 8px;
-}
-
-/* ============ TIMELINE ============ */
-#timelinePanel {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 12px;
-  gap: 8px;
-}
-
-#timelineControls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
 
 #timelineGrid {
   flex: 1;
@@ -656,66 +547,7 @@ body {
   border: 1px solid var(--border);
   min-width: 120px;
   max-width: 200px;
-  transition: transform 0.15s;
   box-shadow: 0 2px 4px var(--shadow);
-}
-
-.timeline-event:hover {
-  transform: scale(1.05);
-  z-index: 10;
-}
-
-.timeline-event .event-title {
-  font-weight: bold;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.timeline-event .event-meta {
-  font-size: 10px;
-  opacity: 0.8;
-}
-
-#timelineInconsistencies {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 12px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.inconsistency-item {
-  padding: 6px 8px;
-  margin-bottom: 4px;
-  border-radius: 3px;
-  background: var(--bg-primary);
-  font-size: 12px;
-  cursor: pointer;
-  border-left: 3px solid;
-}
-
-.inconsistency-item.high { border-left-color: #e74c3c; }
-.inconsistency-item.medium { border-left-color: #f39c12; }
-.inconsistency-item.low { border-left-color: #f1c40f; }
-
-/* ============ DICIONÁRIO ============ */
-#dictionaryPanel {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 12px;
-  gap: 8px;
-}
-
-#dictionaryControls {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 #dictionaryTable {
@@ -726,45 +558,21 @@ body {
   border-radius: 4px;
 }
 
-#dictionaryTable table {
-  width: 100%;
-  border-collapse: collapse;
-}
+#dictionaryTable table { width: 100%; border-collapse: collapse; }
+#dictionaryTable th { background: var(--bg-tertiary); padding: 8px; text-align: left; position: sticky; top: 0; font-size: 13px; }
+#dictionaryTable td { padding: 6px 8px; border-bottom: 1px solid var(--border); font-size: 13px; }
 
-#dictionaryTable th {
-  background: var(--bg-tertiary);
-  padding: 8px;
-  text-align: left;
-  position: sticky;
-  top: 0;
-  font-size: 13px;
-}
-
-#dictionaryTable td {
-  padding: 6px 8px;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-}
-
-#dictionaryTable tr:hover { background: var(--button-hover); }
-
-/* ============ MENU DE CONTEXTO ============ */
-#contextMenu {
+#contextMenu, .floating-popup {
   display: none;
   position: fixed;
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 4px;
-  min-width: 200px;
-  max-width: calc(100vw - 20px);
-  z-index: var(--z-context);
+  z-index: var(--z-popup);
   box-shadow: 0 4px 12px var(--shadow);
-  max-height: 70vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
-#contextMenu.active { display: block; }
+#contextMenu.active, .floating-popup.active { display: block; }
 
 .context-item {
   padding: 10px 16px;
@@ -773,135 +581,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.15s;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(233, 69, 96, 0.2);
 }
 
-.context-item:hover, .context-item:active {
-  background: var(--button-hover);
-  color: var(--accent-hover);
-}
+.context-item:hover { background: var(--button-hover); color: var(--accent-hover); }
 
-.context-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 4px 0;
-}
-
-.context-submenu { position: relative; }
-
-.context-submenu > .context-item::after {
-  content: '▶';
-  font-size: 10px;
-  margin-left: 10px;
-}
-
-.context-submenu-items {
-  display: none;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  min-width: 180px;
-  box-shadow: 0 4px 12px var(--shadow);
-}
-
-.context-submenu:hover > .context-submenu-items { display: block; }
-/* suporte a toque (classe .open pode ser alternada via JS) */
-.context-submenu.open > .context-submenu-items { display: block; }
-
-/* ============ POPUPS FLUTUANTES ============ */
-.floating-popup {
-  position: fixed;
-  background: var(--bg-secondary);
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  min-width: 250px;
-  max-width: 400px;
-  z-index: var(--z-popup);
-  box-shadow: 0 4px 16px var(--shadow);
-  display: none;
-}
-
-.floating-popup.active { display: block; }
-
-.popup-header {
-  background: var(--bg-tertiary);
-  padding: 8px 12px;
-  border-radius: 6px 6px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: move;
-  font-size: 13px;
-  font-weight: bold;
-  touch-action: none;
-}
-
-.popup-close {
-  background: transparent;
-  color: var(--text-primary);
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  padding: 0 6px;
-}
-
-.popup-close:hover { color: var(--accent); }
-
-.popup-body {
-  padding: 12px;
-  max-height: 300px;
-  overflow-y: auto;
-  font-size: 13px;
-}
-
-.popup-suggestion {
-  padding: 6px 10px;
-  cursor: pointer;
-  border-radius: 3px;
-  margin-bottom: 4px;
-  transition: background 0.15s;
-}
-
-.popup-suggestion:hover { background: var(--button-hover); }
-
-.popup-suggestion .word {
-  font-weight: bold;
-  color: var(--accent-hover);
-}
-
-.popup-suggestion .definition {
-  color: var(--text-secondary);
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-.conflict-item {
-  padding: 8px;
-  margin-bottom: 6px;
-  border-radius: 4px;
-  background: var(--bg-primary);
-  border-left: 3px solid;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.conflict-item.high { border-left-color: #e74c3c; }
-.conflict-item.medium { border-left-color: #f39c12; }
-.conflict-item.low { border-left-color: #f1c40f; }
-
-/* ============ MODAL ============ */
 .modal-overlay {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   background: rgba(0,0,0,0.7);
   z-index: var(--z-modal);
   justify-content: center;
@@ -916,2779 +603,313 @@ body {
   border: 1px solid var(--border);
   border-radius: 8px;
   width: 100%;
-  min-width: 0;              /* permite encolher no celular */
   max-width: 600px;
   max-height: 85vh;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   box-shadow: 0 8px 24px var(--shadow);
 }
 
 .modal-header {
   background: var(--bg-tertiary);
   padding: 12px 16px;
-  border-radius: 8px 8px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
-  position: sticky;
-  top: 0;
 }
 
-.modal-body {
-  padding: 16px;
-  user-select: text;
-  -webkit-user-select: text;
-}
-
-.modal-footer {
-  padding: 12px 16px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-wrap: wrap;
-  border-top: 1px solid var(--border);
-}
+.modal-body { padding: 16px; }
+.modal-footer { padding: 12px 16px; display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--border); }
 
 .form-group { margin-bottom: 12px; }
-
-.form-group label {
-  display: block;
-  margin-bottom: 4px;
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
+.form-group label { display: block; margin-bottom: 4px; font-size: 13px; color: var(--text-secondary); }
 .form-group input, .form-group select, .form-group textarea {
-  width: 100%;
-  padding: 10px 8px;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  font-size: 16px; /* 16px evita zoom automático do iOS ao focar */
+  width: 100%; padding: 10px; background: var(--bg-primary); color: var(--text-primary);
+  border: 1px solid var(--border); border-radius: 4px; font-size: 16px;
 }
 
-.form-group textarea {
-  min-height: 80px;
-  resize: vertical;
-}
-
-/* ============ TOAST ============ */
 #toast {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  padding: 12px 20px;
-  border-radius: 6px;
-  border-left: 4px solid var(--accent);
-  box-shadow: 0 4px 12px var(--shadow);
-  z-index: var(--z-toast);
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.3s;
-  pointer-events: none;
-  max-width: 300px;
+  position: fixed; bottom: 80px; right: 20px; background: var(--bg-tertiary); color: var(--text-primary);
+  padding: 12px 20px; border-radius: 6px; border-left: 4px solid var(--accent); z-index: var(--z-toast);
+  opacity: 0; transform: translateY(20px); transition: all 0.3s; pointer-events: none;
 }
+#toast.show { opacity: 1; transform: translateY(0); }
 
-#toast.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============ BOOT ============ */
 #bootBar {
-  display: none;
-  background: var(--bg-tertiary);
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--border);
-  align-items: center;
-  gap: 12px;
+  display: none; background: var(--bg-tertiary); padding: 8px 16px; border-bottom: 1px solid var(--border); align-items: center; gap: 12px;
 }
-
 #bootBar.active { display: flex; }
 
-#bootProgress {
-  flex: 1;
-  height: 6px;
-  background: var(--bg-primary);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-#bootProgressBar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--gold));
-  width: 0%;
-  transition: width 0.3s;
-}
-
-/* ============ BUSCA ============ */
-.search-highlight {
-  background: yellow;
-  color: black;
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
-.search-highlight.current { background: orange; }
-
-/* ============ REVISOR ============ */
-#revisorBadge {
-  position: fixed;
-  bottom: 60px;
-  left: 20px;
-  background: var(--bg-tertiary);
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  border: 1px solid var(--border);
-  display: none;
-  z-index: 500;
-}
-
-#revisorBadge.active { display: block; }
-
-/* ==================================================== */
-/* ============ RESPONSIVIDADE MOBILE (ÚNICO BLOCO) ==== */
-/* ==================================================== */
 @media (max-width: 768px) {
-  #menuBar {
-    padding: 4px;
-    gap: 3px;
-  }
-
-  .menu-btn {
-    padding: 8px 10px;
-    font-size: 12px;
-    flex: 1 1 auto;
-    min-width: 0;
-    white-space: nowrap;
-    min-height: 40px;
-  }
-
-  /* Menu vira "gaveta" na base da tela */
-  .menu-dropdown {
-    position: fixed;
-    top: auto !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100%;
-    max-width: 100%;
-    max-height: 80vh;
-    border-radius: 12px 12px 0 0;
-    animation: slideUp 0.25s ease-out;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  .menu-item {
-    padding: 14px 16px;
-    font-size: 15px;
-    min-height: 48px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .menu-item:last-child { border-bottom: none; }
-  .menu-item .shortcut { display: none; }
-
-  .mobile-overlay {
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-  }
-
-  /* Painéis empilhados */
-  #charactersPanel, #chaptersPanel {
-    flex-direction: column;
-  }
-
-  #charactersList, #chaptersList {
-    width: 100%;
-    max-height: 200px;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-
-  #characterImageCarousel {
-    width: 140px;
-    height: 140px;
-  }
-
-  /* Submenus do menu de contexto abrem inline (hover não existe no toque) */
-  .context-submenu-items {
-    position: static;
-    left: auto;
-    top: auto;
-    min-width: 0;
-    width: 100%;
-    border: none;
-    border-left: 2px solid var(--accent);
-    border-radius: 0;
-    box-shadow: none;
-    background: var(--bg-primary);
-  }
-
-  .context-submenu > .context-item::after { content: '▼'; }
-
-  /* Popups cabem na tela */
-  .floating-popup {
-    min-width: 0;
-    max-width: calc(100vw - 20px);
-    left: 10px !important;
-    right: 10px !important;
-  }
-
-  .modal { max-height: 90vh; }
-
-  #editor { padding: 16px; font-size: 13pt; }
-
-  #pageInfo { font-size: 10px; padding: 3px 6px; right: 8px; }
-
-  .bottom-input { width: 110px; }
-
-  #toast {
-    left: 10px;
-    right: 10px;
-    bottom: 70px;
-    max-width: none;
-  }
-
-  #mainContent { height: calc(100vh - 130px); }
+  #menuBar { flex-direction: column; padding: 8px; gap: 6px; }
+  .menu-btn { width: 100%; text-align: left; min-height: 44px; display: flex; justify-content: space-between; align-items: center; }
+  .menu-dropdown { position: static; width: 100%; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.3s ease-out; }
+  .menu-dropdown.active { max-height: 500px; opacity: 1; }
+  #charactersPanel, #chaptersPanel { flex-direction: column; }
+  #charactersList, #chaptersList { width: 100%; max-height: 250px; }
+  #mainContent { height: auto; min-height: 60vh; }
 }
 </style>
 </head>
 <body>
 <div class="mobile-overlay" id="mobileOverlay" onclick="closeAllMenus()"></div>
-<div id="bootBar">
-<span id="bootMessage">Inicializando...</span>
-<div id="bootProgress"><div id="bootProgressBar"></div></div>
-<button class="tool-btn" onclick="abortBoot()">🛑 Abortar</button>
-</div>
+<div id="bootBar"><span id="bootMessage">Inicializando...</span></div>
 <div id="menuBar">
 <div class="menu-group">
 <button class="menu-btn" data-menu="arquivo">📁 Arquivo</button>
 <div class="menu-dropdown" id="menu-arquivo">
-<div class="menu-item" data-action="newStory">📄 Nova História <span class="shortcut">Ctrl+Alt+N</span></div>
+<div class="menu-item" data-action="newStory">📄 Nova História</div>
 <div class="menu-item" data-action="openStory">📂 Abrir História</div>
-<div class="menu-item" data-action="saveStory">💾 Salvar <span class="shortcut">Ctrl+S</span></div>
-<div class="menu-item" data-action="saveStoryAs">💾 Salvar Como <span class="shortcut">Ctrl+Alt+S</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="convertTo" data-format="docx">📝 Word (.docx) <span class="shortcut">Ctrl+Shift+W</span></div>
-<div class="menu-item" data-action="convertTo" data-format="pdf">📕 PDF <span class="shortcut">Ctrl+Shift+P</span></div>
-<div class="menu-item" data-action="convertTo" data-format="kindle">📱 Kindle <span class="shortcut">Ctrl+Shift+K</span></div>
-<div class="menu-item" data-action="convertTo" data-format="txt">📃 TXT <span class="shortcut">Ctrl+Shift+T</span></div>
-<div class="menu-item" data-action="convertTo" data-format="xhtml">🌐 XHTML <span class="shortcut">Ctrl+Shift+X</span></div>
-<div class="menu-item" data-action="convertTo" data-format="html">🌐 HTML <span class="shortcut">Ctrl+Shift+H</span></div>
-</div>
-</div>
-<div class="menu-group">
-<button class="menu-btn" data-menu="editar">✏️ Editar</button>
-<div class="menu-dropdown" id="menu-editar">
-<div class="menu-item" data-action="execCmd" data-cmd="undo">↶ Desfazer <span class="shortcut">Ctrl+Z</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="redo">↷ Refazer <span class="shortcut">Ctrl+Y</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="execCmd" data-cmd="selectAll">Selecionar Tudo <span class="shortcut">Ctrl+A</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="copy">Copiar <span class="shortcut">Ctrl+C</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="cut">Recortar <span class="shortcut">Ctrl+X</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="paste">Colar <span class="shortcut">Ctrl+V</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="toggleSearchReplace">🔍 Buscar e Substituir <span class="shortcut">Ctrl+F</span></div>
-</div>
-</div>
-<div class="menu-group">
-<button class="menu-btn" data-menu="formatar">🎨 Formatar</button>
-<div class="menu-dropdown" id="menu-formatar">
-<div class="menu-item" data-action="execCmd" data-cmd="bold">🅱️ Negrito <span class="shortcut">Ctrl+Shift+B</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="italic">ℹ️ Itálico <span class="shortcut">Ctrl+Shift+I</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="underline">U̲ Sublinhado <span class="shortcut">Ctrl+Shift+U</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="strikeThrough"><s>Tachado</s></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="execCmd" data-cmd="justifyLeft">⬅️ Esquerda <span class="shortcut">Ctrl+Shift+E</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="justifyCenter">⬆️ Centro <span class="shortcut">Ctrl+Shift+C</span></div>
-<div class="menu-item" data-action="execCmd" data-cmd="justifyRight">➡️ Direita <span class="shortcut">Ctrl+Shift+D</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="applyA5Format">📖 Formatação A5 <span class="shortcut">Ctrl+Alt+W</span></div>
-</div>
-</div>
-<div class="menu-group">
-<button class="menu-btn" data-menu="personagem">👥 Personagem</button>
-<div class="menu-dropdown" id="menu-personagem">
-<div class="menu-item" data-action="insertCharacter">👤 Inserir Personagem <span class="shortcut">Ctrl+Alt+Y</span></div>
-<div class="menu-item" data-action="insertCharacteristic">📋 Inserir Característica <span class="shortcut">Ctrl+Alt+U</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="switchTab" data-tab="characters">👥 Gerenciar Personagens <span class="shortcut">Ctrl+Alt+P</span></div>
-<div class="menu-item" data-action="switchTab" data-tab="personal">📝 Informações Pessoais <span class="shortcut">Ctrl+Alt+I</span></div>
-</div>
-</div>
-<div class="menu-group">
-<button class="menu-btn" data-menu="janelas">🪟 Janelas</button>
-<div class="menu-dropdown" id="menu-janelas">
-<div class="menu-item" data-action="switchTab" data-tab="editor">📖 Editor Principal</div>
-<div class="menu-item" data-action="switchTab" data-tab="characters">👥 Personagens <span class="shortcut">Ctrl+Alt+P</span></div>
-<div class="menu-item" data-action="switchTab" data-tab="chapters">📑 Capítulos <span class="shortcut">Ctrl+Alt+C</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="switchTab" data-tab="futuro-prox">🔮 Futuro Próximo <span class="shortcut">Ctrl+Alt+1</span></div>
-<div class="menu-item" data-action="switchTab" data-tab="futuro-med">🔭 Futuro Médio <span class="shortcut">Ctrl+Alt+2</span></div>
-<div class="menu-item" data-action="switchTab" data-tab="futuro-final">🌌 Futuro Final <span class="shortcut">Ctrl+Alt+3</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="switchTab" data-tab="timeline">📅 Timeline <span class="shortcut">Ctrl+Alt+T</span></div>
-<div class="menu-item" data-action="switchTab" data-tab="temporaria">📝 Anotações <span class="shortcut">Ctrl+Alt+M</span></div>
-<div class="menu-item" data-action="switchTab" data-tab="dictionary">📚 Dicionário</div>
-</div>
-</div>
-<div class="menu-group">
-<button class="menu-btn" data-menu="visualizar">👁 Exibir</button>
-<div class="menu-dropdown" id="menu-visualizar">
-<div class="menu-item" data-action="toggleRevisor">🔍 Revisor Narrativo <span class="shortcut">Ctrl+Alt+R</span></div>
-<div class="menu-item" data-action="toggleAlerts">⚠️ Alertas <span class="shortcut">Ctrl+Alt+A</span></div>
-<div class="menu-divider"></div>
-<div class="menu-item" data-action="toggleDictionaryPopup">📖 Dicionário Popup <span class="shortcut">Ctrl+Shift+;</span></div>
-<div class="menu-item" data-action="togglePhraseSuggestion">💡 Sugestão de Frases <span class="shortcut">Ctrl+Shift+'</span></div>
+<div class="menu-item" data-action="saveStory">💾 Salvar</div>
 </div>
 </div>
 <div class="menu-group">
 <button class="menu-btn" data-menu="github">☁️ GitHub</button>
 <div class="menu-dropdown" id="menu-github">
 <div class="menu-item" onclick="configureGithub()">⚙️ Configurar</div>
-<div class="menu-item" onclick="listGithubCommits()">📜 Listar Versões (Commits)</div>
 <div class="menu-item" onclick="listGithubFiles()">📂 Listar Arquivos</div>
 <div class="menu-item" onclick="pushToGithub()">📤 Push</div>
 <div class="menu-item" onclick="pullFromGithub()">📥 Pull</div>
-<div class="menu-item" onclick="showGithubStatus()">📊 Status</div>
-<div class="menu-item" onclick="diagnosticarGitHub()">🔍 Diagnóstico</div>
-</div>
-</div>
-<div class="menu-group">
-<button class="menu-btn" data-menu="ajuda">❓ Ajuda</button>
-<div class="menu-dropdown" id="menu-ajuda">
-<div class="menu-item" data-action="showShortcuts">⌨️ Atalhos <span class="shortcut">Ctrl+Shift+?</span></div>
-<div class="menu-item" data-action="showAbout">ℹ️ Sobre</div>
 </div>
 </div>
 </div>
+
 <div id="tabsBar">
 <div class="tab active" data-tab="editor" onclick="switchTab('editor')">📖 Editor</div>
 <div class="tab" data-tab="characters" onclick="switchTab('characters')">👥 Personagens</div>
 <div class="tab" data-tab="chapters" onclick="switchTab('chapters')">📑 Capítulos</div>
-<div class="tab" data-tab="futuro-prox" onclick="switchTab('futuro-prox')">🔮 Fut. Próximo</div>
-<div class="tab" data-tab="futuro-med" onclick="switchTab('futuro-med')">🔭 Fut. Médio</div>
-<div class="tab" data-tab="futuro-final" onclick="switchTab('futuro-final')">🌌 Fut. Final</div>
-<div class="tab" data-tab="personal" onclick="switchTab('personal')">📝 Pessoais</div>
-<div class="tab" data-tab="timeline" onclick="switchTab('timeline')">📅 Timeline</div>
-<div class="tab" data-tab="temporaria" onclick="switchTab('temporaria')">📋 Temporária</div>
-<div class="tab" data-tab="dictionary" onclick="switchTab('dictionary')">📚 Dicionário</div>
 </div>
+
 <div id="mainContent">
 <div class="tab-content active" id="tab-editor">
 <div id="editorContainer">
 <div id="editorToolbar">
-<button class="tool-btn" onclick="execCmd('bold')" title="Negrito"><b>B</b></button>
-<button class="tool-btn" onclick="execCmd('italic')" title="Itálico"><i>I</i></button>
-<button class="tool-btn" onclick="execCmd('underline')" title="Sublinhado"><u>U</u></button>
-<button class="tool-btn" onclick="execCmd('strikeThrough')" title="Tachado"><s>S</s></button>
-<select class="tool-select" id="fontFamily" onchange="changeFontFamily()">
-<option value="Times New Roman">Times New Roman</option>
-<option value="Arial">Arial</option>
-<option value="Georgia">Georgia</option>
-<option value="Courier New">Courier New</option>
-<option value="Verdana">Verdana</option>
-<option value="Garamond">Garamond</option>
-</select>
-<select class="tool-select" id="fontSize" onchange="changeFontSize()">
-<option value="1">6pt</option>
-<option value="2">8pt</option>
-<option value="3" selected>12pt</option>
-<option value="4">14pt</option>
-<option value="5">18pt</option>
-<option value="6">24pt</option>
-<option value="7">36pt</option>
-</select>
-<input type="color" class="tool-color" id="textColor" value="#eaeaea" onchange="changeTextColor()" title="Cor do texto">
-<button class="tool-btn" onclick="execCmd('justifyLeft')" title="Esquerda">⬅️</button>
-<button class="tool-btn" onclick="execCmd('justifyCenter')" title="Centro">⬆️</button>
-<button class="tool-btn" onclick="execCmd('justifyRight')" title="Direita">➡️</button>
-<button class="tool-btn" onclick="insertImage()" title="Inserir Imagem">🖼️</button>
-<button class="tool-btn" onclick="applyA5Format()" title="Formato A5">📖 A5</button>
+<button class="tool-btn" onclick="execCmd('bold')"><b>B</b></button>
+<button class="tool-btn" onclick="execCmd('italic')"><i>I</i></button>
 </div>
-<div id="pageInfo">📄 1/1 • 📝 L1</div>
-<div id="editor" contenteditable="true" data-placeholder="Comece a escrever sua história aqui... Logar como andreyodekamp"></div>
+<div id="pageInfo">📄 1/1</div>
+<div id="editor" contenteditable="true" data-placeholder="Escreva sua história aqui..."></div>
 </div>
 </div>
-<div class="tab-content" id="tab-characters">
-<div id="charactersPanel">
-<div id="charactersList">
-<button class="tool-btn" style="width: 100%; margin-bottom: 8px;" onclick="createCharacter()">➕ Novo Personagem</button>
-<div id="charactersListItems"></div>
+<div class="tab-content" id="tab-characters"><div id="charactersPanel"><div id="charactersList"><button class="tool-btn" onclick="createCharacter()">➕ Novo</button><div id="charactersListItems"></div></div><div id="characterEditor"><div id="characterEditArea" contenteditable="true"></div></div></div></div>
+<div class="tab-content" id="tab-chapters"><div id="chaptersPanel"><div id="chaptersList"><div id="chaptersListItems"></div></div><div id="chaptersStats"></div></div></div>
 </div>
-<div id="characterEditor">
-<div id="characterEditorToolbar">
-<button class="tool-btn" onclick="insertCharacterImage()">🖼️ Inserir Imagem</button>
-<button class="tool-btn" onclick="enlargeCharacterImage()">🔍 Ampliar</button>
-<button class="save-btn" onclick="saveCharacter()">💾 Salvar</button>
-</div>
-<div id="characterImageCarousel">
-<div class="empty">Sem imagens</div>
-</div>
-<div id="characterEditArea" contenteditable="true" data-placeholder="Descreva o personagem aqui..."></div>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-chapters">
-<div id="chaptersPanel">
-<div id="chaptersList">
-<h3 style="padding: 8px; color: var(--accent-hover);">Índice de Capítulos</h3>
-<div id="chaptersListItems"></div>
-<button class="tool-btn" style="width: 100%; margin-top: 8px;" onclick="copyChaptersIndex()">📋 Copiar Índice</button>
-</div>
-<div id="chaptersStats">
-<div class="stat-card">
-<h3>📊 Estatísticas</h3>
-<div class="stat-row"><span>Total de Capítulos:</span><span class="stat-value" id="stat-chapters">0</span></div>
-<div class="stat-row"><span>Número de Linhas:</span><span class="stat-value" id="stat-lines">0</span></div>
-<div class="stat-row"><span>Número de Palavras:</span><span class="stat-value" id="stat-words">0</span></div>
-<div class="stat-row"><span>Idioma Detectado:</span><span class="stat-value" id="stat-language">-</span></div>
-<div class="stat-row"><span>Páginas Estimadas:</span><span class="stat-value" id="stat-pages">0</span></div>
-</div>
-<div class="stat-card">
-<h3>📖 Capítulos ao Longo da História</h3>
-<div id="chaptersOccurrences"></div>
-</div>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-futuro-prox">
-<div class="futuro-container">
-<div class="futuro-label" id="futuro-prox-label">🔮 Futuro Próximo - Selecione um personagem</div>
-<div class="futuro-editor" contenteditable="true" id="futuro-prox-editor" data-placeholder="O que acontecerá em breve com este personagem?"></div>
-<div class="futuro-actions">
-<button class="save-btn" onclick="saveFuturo('prox')">💾 Salvar</button>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-futuro-med">
-<div class="futuro-container">
-<div class="futuro-label" id="futuro-med-label">🔭 Futuro Médio - Selecione um personagem</div>
-<div class="futuro-editor" contenteditable="true" id="futuro-med-editor" data-placeholder="Quais serão as consequências das ações atuais?"></div>
-<div class="futuro-actions">
-<button class="save-btn" onclick="saveFuturo('med')">💾 Salvar</button>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-futuro-final">
-<div class="futuro-container">
-<div class="futuro-label" id="futuro-final-label">🌌 Futuro Final - Selecione um personagem</div>
-<div class="futuro-editor" contenteditable="true" id="futuro-final-editor" data-placeholder="Quais serão os desenvolvimentos finais?"></div>
-<div class="futuro-actions">
-<button class="save-btn" onclick="saveFuturo('final')">💾 Salvar</button>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-personal">
-<div class="futuro-container">
-<div class="futuro-label" id="personal-label">📝 Informações Pessoais - Selecione um personagem</div>
-<div class="futuro-editor" contenteditable="true" id="personal-editor" data-placeholder="Nome completo, idade, origem, família, personalidade, hábitos, gostos..."></div>
-<div class="futuro-actions">
-<button class="save-btn" onclick="savePersonal()">💾 Salvar Informações</button>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-timeline">
-<div id="timelinePanel">
-<div id="timelineControls">
-<button class="tool-btn" onclick="analyzeTimeline()">🔍 Analisar Timeline</button>
-<button class="tool-btn" onclick="clearTimeline()">🗑️ Limpar</button>
-<button class="tool-btn" onclick="saveTimeline()">💾 Salvar</button>
-<span style="font-size: 12px; color: var(--text-secondary);">Zoom: Ctrl+Roda | Scroll: Shift+Roda</span>
-</div>
-<div id="timelineGrid"></div>
-<div id="timelineInconsistencies">
-<h3 style="color: var(--accent-hover); margin-bottom: 8px;">⚠️ Inconsistências</h3>
-<div id="inconsistenciesList"></div>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-temporaria">
-<div class="temporaria-container">
-<div class="futuro-label">📋 Anotações Temporárias</div>
-<div class="futuro-editor" contenteditable="true" id="temporaria-editor" data-placeholder="Anotações rápidas, lembretes, rascunhos..."></div>
-<div class="futuro-actions">
-<button class="save-btn" onclick="saveTemporaria()">💾 Salvar</button>
-<button class="tool-btn" onclick="deleteTemporaria()">🗑️ Deletar</button>
-</div>
-</div>
-</div>
-<div class="tab-content" id="tab-dictionary">
-<div id="dictionaryPanel">
-<div id="dictionaryControls">
-<select class="tool-select" id="dictionaryLanguage" onchange="loadDictionary()">
-<option value="portugues">🇧🇷 Português</option>
-<option value="ingles">🇬🇧 Inglês</option>
-<option value="alemao">🇩🇪 Alemão</option>
-</select>
-<input type="text" class="bottom-input" id="dictSearch" placeholder="Buscar verbete..." oninput="filterDictionary()">
-<button class="tool-btn" onclick="addDictionaryEntry()">➕ Adicionar</button>
-<button class="tool-btn" onclick="saveDictionary()">💾 Salvar</button>
-<button class="tool-btn" onclick="generateMultiDictionary()">📚 Multi-dicionário</button>
-</div>
-<div id="dictionaryTable">
-<table>
-<thead>
-<tr>
-<th>Verbete</th>
-<th>Significado</th>
-<th>Ações</th>
-</tr>
-</thead>
-<tbody id="dictionaryBody"></tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div id="bottomBar">
-<button class="bottom-btn" id="btnNarrate" onclick="toggleNarration()" title="Narrar (Ctrl+Shift+V)">🗣️</button>
-<button class="bottom-btn" id="btnRecord" onclick="toggleRecording()" title="Gravar (Ctrl+Shift+G)">🟥</button>
-<select class="tool-select" id="bottomFont" onchange="changeBottomFont()">
-<option value="Times New Roman">Times New Roman</option>
-<option value="Arial">Arial</option>
-<option value="Georgia">Georgia</option>
-</select>
-<select class="tool-select" id="bottomSize" onchange="changeBottomSize()">
-<option value="12">12pt</option>
-<option value="14">14pt</option>
-<option value="16">16pt</option>
-<option value="18">18pt</option>
-</select>
-<input type="text" class="bottom-input" id="searchInput" placeholder="Buscar...">
-<input type="text" class="bottom-input" id="replaceInput" placeholder="Substituir...">
-<button class="bottom-btn" onclick="searchPrev()">⏪</button>
-<button class="bottom-btn" onclick="searchNext()">⏩</button>
-<span id="searchCounter" style="font-size: 12px;">0/0</span>
-<button class="bottom-btn" onclick="replaceAll()">🔄 Todos</button>
-<label class="bottom-checkbox">
-<input type="checkbox" id="chkDictionary" onchange="toggleDictionaryPopup()"> Dicionário
-</label>
-<label class="bottom-checkbox">
-<input type="checkbox" id="chkPhraseSuggestion" onchange="togglePhraseSuggestion()"> Frases
-</label>
-<select class="tool-select" id="themeSelect" onchange="changeTheme()">
-<option value="dark">🌙 Escuro</option>
-<option value="light">☀️ Claro</option>
-<option value="sepia">📜 Sépia</option>
-<option value="ocean">🌊 Oceano</option>
-<option value="forest">🌲 Floresta</option>
-</select>
-</div>
-<div id="contextMenu"></div>
-<div class="floating-popup" id="dictionaryPopup">
-<div class="popup-header">
-<span>📖 Dicionário</span>
-<button class="popup-close" onclick="closePopup('dictionaryPopup')">✕</button>
-</div>
-<div class="popup-body" id="dictionaryPopupBody"></div>
-</div>
-<div class="floating-popup" id="phrasePopup">
-<div class="popup-header">
-<span>💡 Sugestões de Frases</span>
-<button class="popup-close" onclick="closePopup('phrasePopup')">✕</button>
-</div>
-<div class="popup-body" id="phrasePopupBody"></div>
-</div>
-<div class="floating-popup" id="conflictPopup">
-<div class="popup-header">
-<span>⚠️ Conflitos Narrativos</span>
-<button class="popup-close" onclick="closePopup('conflictPopup')">✕</button>
-</div>
-<div class="popup-body" id="conflictPopupBody"></div>
-</div>
-<div class="floating-popup" id="profilePopup">
-<div class="popup-header">
-<span>🗺️ Perfil de Localização</span>
-<button class="popup-close" onclick="closePopup('profilePopup')">✕</button>
-</div>
-<div class="popup-body" id="profilePopupBody"></div>
-</div>
+
 <div class="modal-overlay" id="modalOverlay">
 <div class="modal">
-<div class="modal-header">
-<span id="modalTitle">Título</span>
-<button class="popup-close" onclick="closeModal()">✕</button>
-</div>
+<div class="modal-header"><span id="modalTitle">Título</span><button onclick="closeModal()">✕</button></div>
 <div class="modal-body" id="modalBody"></div>
 <div class="modal-footer" id="modalFooter"></div>
 </div>
 </div>
 <div id="toast"></div>
-<div id="revisorBadge">🔍 Revisor Ativo</div>
+
 <script>
-// ============ ESTADO GLOBAL ============
 const state = {
-currentStory: null,
-currentCharacter: null,
-stories: {},
-characters: {},
-dictionary: { portugues: {}, ingles: {}, alemao: {} },
-activeDictionary: 'portugues',
-theme: 'dark',
-github: {
-token: '',
-repo: 'andreyoldekamp-del/GraphZoBackup',
-branch: 'main',
-folder: 'historias',
-sha: ''
-},
-revisorEnabled: false,
-revisorTimer: null,
-searchMatches: [],
-searchIndex: -1,
-isNarrating: false,
-isRecording: false,
-speechSynthesis: window.speechSynthesis,
-mediaRecorder: null,
-audioChunks: [],
-timeline: { events: [], inconsistencies: [] },
-semanticProfiles: {
-'🚀 Espacial': ['nave', 'espaço', 'estrela', 'planeta', 'galáxia', 'orbita', 'astronauta'],
-'🚢 Marítimo': ['navio', 'mar', 'oceano', 'onda', 'porto', 'capitão', 'marinheiro'],
-'🏙️ Urbano': ['cidade', 'rua', 'prédio', 'carro', 'trânsito', 'multidão', 'avenida'],
-'🔬 Laboratório': ['laboratório', 'experimento', 'ciência', 'química', 'física', 'microscópio'],
-'🏜️ Deserto': ['deserto', 'areia', 'sol', 'oásis', 'duna', 'seca', 'cacto'],
-'🌲 Floresta': ['floresta', 'árvore', 'mata', 'animal', 'rio', 'folha', 'natureza'],
-'🏰 Medieval': ['castelo', 'rei', 'rainha', 'cavaleiro', 'espada', 'reino', 'torre'],
-'🌾 Rural': ['campo', 'fazenda', 'plantação', 'gado', 'colheita', 'rural', 'agricultura'],
-'⚔️ Guerra': ['guerra', 'batalha', 'soldado', 'arma', 'tiro', 'exército', 'conflito'],
-'☢️ Apocalíptico': ['apocalipse', 'destruição', 'radiação', 'sobrevivente', 'ruína', 'catástrofe']
-}
+  currentStory: null,
+  currentCharacter: null,
+  stories: {},
+  characters: {},
+  github: { token: '', repo: 'andreyoldekamp-del/GraphZoBackup', branch: 'main', folder: 'historias' }
 };
 
-// ============ INICIALIZAÇÃO ============
 window.addEventListener('load', async () => {
-showBootBar('Inicializando sistema...');
-await sleep(300);
-updateBootProgress(20, 'Carregando configurações...');
-await loadConfig();
-await sleep(300);
-updateBootProgress(50, 'Carregando histórias...');
-await loadStories();
-await sleep(300);
-updateBootProgress(80, 'Preparando editor...');
-await loadLastStory();
-await sleep(300);
-updateBootProgress(100, 'Concluído!');
-await sleep(500);
-hideBootBar();
-initializeEditor();
-initializeEvents();
-initializeMenus();
-loadDictionary();
-showToast('✅ Sistema carregado com sucesso!');
+  loadConfig();
+  loadStories();
+  await loadLastStory();
+  initializeMenus();
+  showToast('✅ Pronto!');
 });
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-function showBootBar(msg) {
-document.getElementById('bootBar').classList.add('active');
-document.getElementById('bootMessage').textContent = msg;
-}
-function updateBootProgress(percent, msg) {
-document.getElementById('bootProgressBar').style.width = percent + '%';
-if (msg) document.getElementById('bootMessage').textContent = msg;
-}
-function hideBootBar() {
-document.getElementById('bootBar').classList.remove('active');
-}
-function abortBoot() {
-hideBootBar();
-showToast('⚠️ Boot abortado');
-}
-
-// ============ INICIALIZAÇÃO DE MENUS (MOBILE COMPATÍVEL) ============
 function initializeMenus() {
-const isMobile = window.innerWidth <= 768;
-document.querySelectorAll('.menu-btn').forEach(btn => {
-const handler = (e) => {
-e.stopPropagation();
-e.preventDefault();
-const menuName = btn.dataset.menu;
-const dropdown = document.getElementById('menu-' + menuName);
-const isActive = dropdown.classList.contains('active');
-closeAllMenus();
-if (!isActive) {
-dropdown.classList.add('active');
-if (isMobile) {
-document.getElementById('mobileOverlay').classList.add('active');
-} else {
-const rect = btn.getBoundingClientRect();
-const dropdownRect = dropdown.getBoundingClientRect();
-let left = rect.left;
-let top = rect.bottom + 4;
-if (left + dropdownRect.width > window.innerWidth) {
-left = window.innerWidth - dropdownRect.width - 10;
-}
-if (top + dropdownRect.height > window.innerHeight) {
-top = rect.top - dropdownRect.height - 4;
-}
-if (left < 0) left = 10;
-dropdown.style.left = left + 'px';
-dropdown.style.top = top + 'px';
-}
-}
-};
-btn.addEventListener('click', handler);
-btn.addEventListener('touchend', (e) => {
-e.preventDefault();
-handler(e);
-});
-});
-document.querySelectorAll('.menu-item').forEach(item => {
-const handler = (e) => {
-e.stopPropagation();
-e.preventDefault();
-const action = item.dataset.action;
-if (action === 'convertTo') {
-convertTo(item.dataset.format);
-} else if (action === 'execCmd') {
-execCmd(item.dataset.cmd);
-} else if (action === 'switchTab') {
-switchTab(item.dataset.tab);
-} else if (typeof window[action] === 'function') {
-window[action]();
-}
-closeAllMenus();
-};
-item.addEventListener('click', handler);
-item.addEventListener('touchend', (e) => {
-e.preventDefault();
-handler(e);
-});
-});
-document.addEventListener('click', (e) => {
-if (!e.target.closest('.menu-group') && !e.target.closest('#mobileOverlay')) {
-closeAllMenus();
-}
-});
-}
-function closeAllMenus() {
-document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
-const overlay = document.getElementById('mobileOverlay');
-if (overlay) overlay.classList.remove('active');
-}
-window.closeAllMenus = window.closeAllMenus || function() {
-document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
-const overlay = document.getElementById('mobileOverlay');
-if (overlay) overlay.classList.remove('active');
-};
-
-// ============ PERSISTÊNCIA ============
-async function loadConfig() {
-try {
-const config = localStorage.getItem('bookEditor_config');
-if (config) {
-const parsed = JSON.parse(config);
-state.theme = parsed.theme || 'dark';
-state.activeDictionary = parsed.activeDictionary || 'portugues';
-if (parsed.github) {
-state.github = { ...state.github, ...parsed.github };
-}
-applyTheme(state.theme);
-}
-} catch (e) {
-console.error('Erro ao carregar config:', e);
-}
-}
-async function saveConfig() {
-try {
-const config = {
-theme: state.theme,
-activeDictionary: state.activeDictionary,
-github: state.github,
-lastStory: state.currentStory
-};
-localStorage.setItem('bookEditor_config', JSON.stringify(config));
-} catch (e) {
-console.error('Erro ao salvar config:', e);
-}
-}
-async function loadStories() {
-try {
-const stories = localStorage.getItem('bookEditor_stories');
-if (stories) state.stories = JSON.parse(stories);
-} catch (e) {
-console.error('Erro ao carregar histórias:', e);
-}
-}
-async function saveStories() {
-try {
-localStorage.setItem('bookEditor_stories', JSON.stringify(state.stories));
-} catch (e) {
-console.error('Erro ao salvar histórias:', e);
-}
+  document.querySelectorAll('.menu-btn').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const menuName = btn.dataset.menu;
+      const dropdown = document.getElementById('menu-' + menuName);
+      const isActive = dropdown.classList.contains('active');
+      document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+      if (!isActive) dropdown.classList.add('active');
+    };
+  });
+  document.querySelectorAll('.menu-item').forEach(item => {
+    item.onclick = (e) => {
+      e.stopPropagation();
+      const action = item.dataset.action;
+      if (action === 'newStory') newStory();
+      else if (action === 'openStory') openStory();
+      else if (action === 'saveStory') saveStory();
+      document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+    };
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.menu-dropdown').forEach(d => d.classList.remove('active'));
+  });
 }
 
-// ============ CARREGAMENTO COM PULL AUTOMÁTICO ============
-async function loadLastStory() {
-try {
-// Pull automático se GitHub estiver configurado
-if (state.github.token && state.github.repo) {
-showToast('🔄 Sincronizando com GitHub...');
-await pullFromGithub(true);
-}
-const config = JSON.parse(localStorage.getItem('bookEditor_config') || '{}');
-if (config.lastStory && state.stories[config.lastStory]) {
-state.currentStory = config.lastStory;
-const story = state.stories[config.lastStory];
-document.getElementById('editor').innerHTML = story.content || '';
-state.characters = story.characters || {};
-state.timeline = story.timeline || { events: [], inconsistencies: [] };
-loadCharactersList();
-updateStats();
-if (story.lastCharacter) {
-selectCharacter(story.lastCharacter);
-}
-}
-} catch (e) {
-console.error('Erro ao carregar última história:', e);
-}
-}
-
-// ============ TABS ============
 function switchTab(tabName) {
-document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
-document.getElementById('tab-' + tabName).classList.add('active');
-if (tabName === 'chapters') updateChaptersList();
-if (tabName === 'timeline') renderTimeline();
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+  document.getElementById('tab-' + tabName).classList.add('active');
 }
 
-// ============ EDITOR ============
-function initializeEditor() {
-const editor = document.getElementById('editor');
-editor.addEventListener('input', () => {
-updatePageInfo();
-updateStats();
-scheduleRevisorCheck();
-autoSave();
-});
-editor.addEventListener('keyup', updatePageInfo);
-editor.addEventListener('click', updatePageInfo);
-editor.addEventListener('mouseup', () => {
-const sel = window.getSelection();
-if (sel.toString().trim()) {
-showDictionaryForSelection(sel);
-}
-});
-editor.addEventListener('contextmenu', (e) => {
-e.preventDefault();
-showEditorContextMenu(e);
-});
-editor.addEventListener('paste', handlePaste);
-editor.addEventListener('drop', handleDrop);
-updatePageInfo();
-}
-function execCmd(command, value = null) {
-document.execCommand(command, false, value);
-document.getElementById('editor').focus();
-}
-function changeFontFamily() {
-const font = document.getElementById('fontFamily').value;
-execCmd('fontName', font);
-}
-function changeFontSize() {
-const size = document.getElementById('fontSize').value;
-execCmd('fontSize', size);
-}
-function changeTextColor() {
-const color = document.getElementById('textColor').value;
-execCmd('foreColor', color);
-}
-function changeBottomFont() {
-const font = document.getElementById('bottomFont').value;
-document.getElementById('editor').style.fontFamily = font;
-}
-function changeBottomSize() {
-const size = document.getElementById('bottomSize').value;
-document.getElementById('editor').style.fontSize = size + 'pt';
-}
-function applyA5Format() {
-const editor = document.getElementById('editor');
-editor.style.fontFamily = 'Times New Roman';
-editor.style.fontSize = '12pt';
-editor.style.lineHeight = '1.5';
-editor.style.padding = '30px 40px 30px 50px';
-document.getElementById('fontFamily').value = 'Times New Roman';
-showToast('📖 Formatação A5 aplicada');
-}
-function updatePageInfo() {
-const editor = document.getElementById('editor');
-const text = editor.innerText || '';
-const lines = text.split('\n').length;
-const linesPerPage = 25;
-const currentPage = Math.ceil(lines / linesPerPage) || 1;
-const totalPages = Math.max(1, currentPage);
-const currentLine = getCurrentLine();
-document.getElementById('pageInfo').textContent = `📄 ${currentPage}/${totalPages} • 📝 L${currentLine}`;
-}
-function getCurrentLine() {
-const sel = window.getSelection();
-if (!sel.rangeCount) return 1;
-const range = sel.getRangeAt(0);
-const preRange = document.createRange();
-preRange.selectNodeContents(document.getElementById('editor'));
-preRange.setEnd(range.startContainer, range.startOffset);
-const text = preRange.toString();
-return text.split('\n').length;
-}
-function updateStats() {
-const editor = document.getElementById('editor');
-const text = editor.innerText || '';
-const words = text.trim().split(/\s+/).filter(w => w).length;
-const lines = text.split('\n').length;
-const pages = Math.ceil(words / 250);
-const language = detectLanguage(text);
-document.getElementById('stat-words').textContent = words;
-document.getElementById('stat-lines').textContent = lines;
-document.getElementById('stat-pages').textContent = pages;
-document.getElementById('stat-language').textContent = language;
-}
-function detectLanguage(text) {
-const pt = ['ção', 'ões', 'mente', 'dade', 'ente', 'inho', 'ão'];
-const en = ['tion', 'ing', 'ment', 'ness', 'able', 'ful', 'less'];
-const de = ['ung', 'heit', 'keit', 'lich', 'schaft', 'chen', 'lein'];
-let ptScore = 0, enScore = 0, deScore = 0;
-const lower = text.toLowerCase();
-pt.forEach(w => { if (lower.includes(w)) ptScore++; });
-en.forEach(w => { if (lower.includes(w)) enScore++; });
-de.forEach(w => { if (lower.includes(w)) deScore++; });
-if (ptScore >= enScore && ptScore >= deScore) return '🇧🇷 Português';
-if (enScore >= deScore) return '🇬🇧 Inglês';
-return '🇩🇪 Alemão';
+function execCmd(cmd) { document.execCommand(cmd, false, null); }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ============ IMAGENS ============
-function insertImage() {
-const input = document.createElement('input');
-input.type = 'file';
-input.accept = 'image/*';
-input.onchange = (e) => {
-const file = e.target.files[0];
-if (!file) return;
-const reader = new FileReader();
-reader.onload = (ev) => {
-execCmd('insertImage', ev.target.result);
-};
-reader.readAsDataURL(file);
-};
-input.click();
+function loadConfig() {
+  const cfg = localStorage.getItem('bookEditor_config');
+  if (cfg) { const p = JSON.parse(cfg); if (p.github) state.github = { ...state.github, ...p.github }; }
 }
-function handlePaste(e) {
-const items = (e.clipboardData || e.originalEvent.clipboardData).items;
-for (let item of items) {
-if (item.type.indexOf('image') === 0) {
-e.preventDefault();
-const blob = item.getAsFile();
-const reader = new FileReader();
-reader.onload = (ev) => {
-execCmd('insertImage', ev.target.result);
-};
-reader.readAsDataURL(blob);
-return;
+function loadStories() {
+  const s = localStorage.getItem('bookEditor_stories');
+  if (s) state.stories = JSON.parse(s);
 }
-}
-}
-function handleDrop(e) {
-e.preventDefault();
-const files = e.dataTransfer.files;
-for (let file of files) {
-if (file.type.indexOf('image') === 0) {
-const reader = new FileReader();
-reader.onload = (ev) => {
-execCmd('insertImage', ev.target.result);
-};
-reader.readAsDataURL(file);
-}
-}
+async function loadLastStory() {
+  if (state.github.token && state.github.repo) await pullFromGithub(true);
+  const cfg = JSON.parse(localStorage.getItem('bookEditor_config') || '{}');
+  if (cfg.lastStory && state.stories[cfg.lastStory]) {
+    state.currentStory = cfg.lastStory;
+    document.getElementById('editor').innerHTML = state.stories[cfg.lastStory].content || '';
+  }
 }
 
-// ============ CONTEXT MENU ============
-function showEditorContextMenu(e) {
-const menu = document.getElementById('contextMenu');
-menu.innerHTML = `
-<div class="context-item" onclick="toggleNarration()">🗣️ Narrar (TTS)</div>
-<div class="context-item" onclick="saveStory()">💾 Salvar</div>
-<div class="context-item" onclick="saveStoryAs()">💾 Salvar Como</div>
-<div class="context-divider"></div>
-<div class="context-item" onclick="insertImage()">🖼️ Inserir Imagem</div>
-<div class="context-item" onclick="pasteImage()">📋 Colar Imagem</div>
-<div class="context-divider"></div>
-<div class="context-submenu">
-<div class="context-item">☁️ GitHub</div>
-<div class="context-submenu-items">
-<div class="context-item" onclick="listGithubFiles()">📂 Listar</div>
-<div class="context-item" onclick="configureGithub()">⚙️ Configurar</div>
-<div class="context-item" onclick="showGithubStatus()">📊 Status</div>
-</div>
-</div>
-<div class="context-submenu">
-<div class="context-item">📄 Converter para</div>
-<div class="context-submenu-items">
-<div class="context-item" onclick="convertTo('docx')">📝 Word</div>
-<div class="context-item" onclick="convertTo('pdf')">📕 PDF</div>
-<div class="context-item" onclick="convertTo('kindle')">📱 Kindle</div>
-<div class="context-item" onclick="convertTo('txt')">📃 TXT</div>
-<div class="context-item" onclick="convertTo('xhtml')">🌐 XHTML</div>
-<div class="context-item" onclick="convertTo('html')">🌐 HTML</div>
-</div>
-</div>
-<div class="context-divider"></div>
-<div class="context-item" onclick="execCmd('bold')">🅱️ Negrito</div>
-<div class="context-item" onclick="execCmd('italic')">ℹ️ Itálico</div>
-<div class="context-item" onclick="execCmd('underline')">U̲ Sublinhado</div>
-<div class="context-divider"></div>
-<div class="context-item" onclick="execCmd('selectAll')">☑️ Selecionar Tudo</div>
-<div class="context-item" onclick="execCmd('copy')">📋 Copiar</div>
-<div class="context-item" onclick="execCmd('paste')">📄 Colar</div>
-`;
-menu.style.left = e.pageX + 'px';
-menu.style.top = e.pageY + 'px';
-menu.classList.add('active');
-}
-document.addEventListener('click', (e) => {
-if (!e.target.closest('#contextMenu')) {
-document.getElementById('contextMenu').classList.remove('active');
-}
-});
-
-// ============ BUSCA E SUBSTITUIÇÃO ============
-function toggleSearchReplace() {
-document.getElementById('searchInput').focus();
-}
-document.getElementById('searchInput').addEventListener('input', performSearch);
-function performSearch() {
-const query = document.getElementById('searchInput').value;
-clearSearchHighlights();
-if (!query) {
-document.getElementById('searchCounter').textContent = '0/0';
-state.searchMatches = [];
-state.searchIndex = -1;
-return;
-}
-const editor = document.getElementById('editor');
-const text = editor.innerText;
-const regex = new RegExp(escapeRegex(query), 'gi');
-const matches = [];
-let match;
-while ((match = regex.exec(text)) !== null) {
-matches.push({ index: match.index, length: match[0].length });
-}
-state.searchMatches = matches;
-state.searchIndex = matches.length > 0 ? 0 : -1;
-highlightSearch(query);
-updateSearchCounter();
-if (matches.length > 0) scrollToMatch(0);
-}
-function highlightSearch(query) {
-const editor = document.getElementById('editor');
-const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, null, false);
-const textNodes = [];
-while (walker.nextNode()) textNodes.push(walker.currentNode);
-const regex = new RegExp(escapeRegex(query), 'gi');
-textNodes.forEach(node => {
-const text = node.nodeValue;
-if (!regex.test(text)) return;
-regex.lastIndex = 0;
-const frag = document.createDocumentFragment();
-let lastIndex = 0;
-let match;
-while ((match = regex.exec(text)) !== null) {
-if (match.index > lastIndex) {
-frag.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
-}
-const span = document.createElement('span');
-span.className = 'search-highlight';
-span.textContent = match[0];
-frag.appendChild(span);
-lastIndex = regex.lastIndex;
-}
-if (lastIndex < text.length) {
-frag.appendChild(document.createTextNode(text.slice(lastIndex)));
-}
-node.parentNode.replaceChild(frag, node);
-});
-}
-function clearSearchHighlights() {
-document.querySelectorAll('.search-highlight').forEach(el => {
-const parent = el.parentNode;
-parent.replaceChild(document.createTextNode(el.textContent), el);
-parent.normalize();
-});
-}
-function updateSearchCounter() {
-const total = state.searchMatches.length;
-const current = state.searchIndex >= 0 ? state.searchIndex + 1 : 0;
-document.getElementById('searchCounter').textContent = `${current}/${total}`;
-}
-function searchNext() {
-if (state.searchMatches.length === 0) return;
-state.searchIndex = (state.searchIndex + 1) % state.searchMatches.length;
-scrollToMatch(state.searchIndex);
-updateSearchCounter();
-}
-function searchPrev() {
-if (state.searchMatches.length === 0) return;
-state.searchIndex = (state.searchIndex - 1 + state.searchMatches.length) % state.searchMatches.length;
-scrollToMatch(state.searchIndex);
-updateSearchCounter();
-}
-function scrollToMatch(index) {
-const highlights = document.querySelectorAll('.search-highlight');
-highlights.forEach(h => h.classList.remove('current'));
-if (highlights[index]) {
-highlights[index].classList.add('current');
-highlights[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-}
-function replaceAll() {
-const query = document.getElementById('searchInput').value;
-const replacement = document.getElementById('replaceInput').value;
-if (!query) return;
-const editor = document.getElementById('editor');
-const regex = new RegExp(escapeRegex(query), 'gi');
-editor.innerHTML = editor.innerHTML.replace(regex, replacement);
-clearSearchHighlights();
-performSearch();
-showToast(`🔄 Substituídas todas as ocorrências`);
-}
-function escapeRegex(str) {
-return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-// ============ PERSONAGENS ============
-function loadCharactersList() {
-const list = document.getElementById('charactersListItems');
-list.innerHTML = '';
-Object.keys(state.characters).forEach(name => {
-const item = document.createElement('div');
-item.className = 'character-item' + (state.currentCharacter === name ? ' active' : '');
-item.innerHTML = `
-<span>👤 ${name}</span>
-<button class="character-delete" onclick="event.stopPropagation(); deleteCharacter('${name}')">🗑️</button>
-`;
-item.onclick = () => selectCharacter(name);
-list.appendChild(item);
-});
-}
-function createCharacter() {
-showModal('Novo Personagem', `
-<div class="form-group">
-<label>Nome do Personagem:</label>
-<input type="text" id="newCharName" placeholder="Ex: João Silva">
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Criar', action: 'confirmCreateCharacter()', primary: true }
-]);
-setTimeout(() => document.getElementById('newCharName').focus(), 100);
-}
-function confirmCreateCharacter() {
-const name = document.getElementById('newCharName').value.trim();
-if (!name) {
-showToast('⚠️ Nome obrigatório');
-return;
-}
-if (state.characters[name]) {
-showToast('⚠️ Personagem já existe');
-return;
-}
-state.characters[name] = {
-description: '',
-images: [],
-personal: '',
-futuroProx: '',
-futuroMed: '',
-futuroFinal: ''
-};
-loadCharactersList();
-selectCharacter(name);
-closeModal();
-saveStory();
-showToast(`✅ Personagem "${name}" criado`);
-}
-function selectCharacter(name) {
-state.currentCharacter = name;
-loadCharactersList();
-const char = state.characters[name];
-if (!char) return;
-document.getElementById('characterEditArea').innerHTML = char.description || '';
-updateCharacterImageCarousel();
-document.getElementById('futuro-prox-label').textContent = `🔮 Futuro Próximo - ${name}`;
-document.getElementById('futuro-med-label').textContent = `🔭 Futuro Médio - ${name}`;
-document.getElementById('futuro-final-label').textContent = `🌌 Futuro Final - ${name}`;
-document.getElementById('personal-label').textContent = `📝 Informações Pessoais - ${name}`;
-document.getElementById('futuro-prox-editor').innerHTML = char.futuroProx || '';
-document.getElementById('futuro-med-editor').innerHTML = char.futuroMed || '';
-document.getElementById('futuro-final-editor').innerHTML = char.futuroFinal || '';
-document.getElementById('personal-editor').innerHTML = char.personal || '';
-if (state.currentStory && state.stories[state.currentStory]) {
-state.stories[state.currentStory].lastCharacter = name;
-saveStories();
-}
-}
-function saveCharacter() {
-if (!state.currentCharacter) {
-showToast('⚠️ Selecione um personagem');
-return;
-}
-const char = state.characters[state.currentCharacter];
-char.description = document.getElementById('characterEditArea').innerHTML;
-saveStory();
-showToast(`💾 Personagem "${state.currentCharacter}" salvo`);
-}
-function deleteCharacter(name) {
-if (!confirm(`Deletar personagem "${name}"?\n\nEsta ação removerá:\n- Descrição\n- Imagens\n- Futuro (Próximo, Médio, Final)\n- Informações pessoais`)) {
-return;
-}
-delete state.characters[name];
-if (state.currentCharacter === name) {
-state.currentCharacter = null;
-document.getElementById('characterEditArea').innerHTML = '';
-updateCharacterImageCarousel();
-}
-loadCharactersList();
-saveStory();
-showToast(`🗑️ Personagem "${name}" deletado`);
-}
-function insertCharacterImage() {
-if (!state.currentCharacter) {
-showToast('⚠️ Selecione um personagem');
-return;
-}
-const input = document.createElement('input');
-input.type = 'file';
-input.accept = 'image/*';
-input.multiple = true;
-input.onchange = (e) => {
-Array.from(e.target.files).forEach(file => {
-const reader = new FileReader();
-reader.onload = (ev) => {
-state.characters[state.currentCharacter].images.push({
-name: file.name,
-data: ev.target.result
-});
-updateCharacterImageCarousel();
-saveStory();
-};
-reader.readAsDataURL(file);
-});
-};
-input.click();
-}
-function updateCharacterImageCarousel() {
-const carousel = document.getElementById('characterImageCarousel');
-const char = state.currentCharacter ? state.characters[state.currentCharacter] : null;
-if (!char || char.images.length === 0) {
-carousel.innerHTML = '<div class="empty">Sem imagens</div>';
-return;
-}
-let idx = 0;
-const showImage = () => {
-carousel.innerHTML = `<img src="${char.images[idx].data}" alt="${char.images[idx].name}">`;
-idx = (idx + 1) % char.images.length;
-};
-showImage();
-if (char.images.length > 1) {
-if (window.carouselInterval) clearInterval(window.carouselInterval);
-window.carouselInterval = setInterval(showImage, 3000);
-}
-}
-function enlargeCharacterImage() {
-if (!state.currentCharacter) return;
-const char = state.characters[state.currentCharacter];
-if (!char || char.images.length === 0) return;
-const img = char.images[0];
-showModal(img.name, `<img src="${img.data}" style="max-width: 700px; max-height: 700px; display: block; margin: 0 auto;">`, [
-{ text: 'Fechar', action: 'closeModal()' }
-]);
-}
-function insertCharacter() {
-if (!state.currentCharacter) {
-showToast('⚠️ Selecione um personagem primeiro');
-return;
-}
-execCmd('insertHTML', `<strong>[${state.currentCharacter}]</strong> `);
-}
-function insertCharacteristic() {
-if (!state.currentCharacter) {
-showToast('⚠️ Selecione um personagem primeiro');
-return;
-}
-const char = state.characters[state.currentCharacter];
-if (char && char.personal) {
-const temp = document.createElement('div');
-temp.innerHTML = char.personal;
-execCmd('insertHTML', `<em>${temp.innerText.substring(0, 200)}...</em><br>`);
-}
-}
-
-// ============ CAPÍTULOS ============
-function updateChaptersList() {
-const editor = document.getElementById('editor');
-const text = editor.innerText || '';
-const pattern = /\b(?:Capítulo|Chapter|Kapitel)\s*\d+[:\-\s]?[^\n]*/gi;
-const matches = text.match(pattern) || [];
-const unique = [...new Set(matches.map(m => m.trim()))];
-document.getElementById('stat-chapters').textContent = unique.length;
-const list = document.getElementById('chaptersListItems');
-list.innerHTML = '';
-unique.forEach(ch => {
-const count = matches.filter(m => m.trim() === ch).length;
-const item = document.createElement('div');
-item.className = 'chapter-item ' + (count === 1 ? 'index-only' : count === 2 ? 'both' : 'mismatch');
-item.textContent = ch;
-item.onclick = () => navigateToChapter(ch);
-list.appendChild(item);
-});
-const occ = document.getElementById('chaptersOccurrences');
-occ.innerHTML = '';
-matches.forEach((m, i) => {
-const item = document.createElement('div');
-item.className = 'chapter-item';
-item.textContent = `${i + 1}. ${m.trim()}`;
-item.onclick = () => navigateToChapter(m.trim());
-occ.appendChild(item);
-});
-}
-function navigateToChapter(chapterTitle) {
-switchTab('editor');
-const editor = document.getElementById('editor');
-const text = editor.innerText;
-const idx = text.indexOf(chapterTitle);
-if (idx === -1) return;
-const range = document.createRange();
-const sel = window.getSelection();
-const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, null, false);
-let charCount = 0;
-while (walker.nextNode()) {
-const node = walker.currentNode;
-const nodeLen = node.nodeValue.length;
-if (charCount + nodeLen > idx) {
-const startOffset = idx - charCount;
-const endOffset = Math.min(startOffset + chapterTitle.length, nodeLen);
-range.setStart(node, startOffset);
-range.setEnd(node, endOffset);
-break;
-}
-charCount += nodeLen;
-}
-sel.removeAllRanges();
-sel.addRange(range);
-const rect = range.getBoundingClientRect();
-editor.scrollTop += rect.top - editor.clientHeight / 2;
-showToast(`📖 Navegando para: ${chapterTitle}`);
-}
-function copyChaptersIndex() {
-const items = document.querySelectorAll('#chaptersListItems .chapter-item');
-const index = Array.from(items).map(i => i.textContent).join('\n');
-navigator.clipboard.writeText(index).then(() => {
-showToast('📋 Índice copiado!');
-});
-}
-
-// ============ FUTURO ============
-function saveFuturo(type) {
-if (!state.currentCharacter) {
-showToast('⚠️ Selecione um personagem');
-return;
-}
-const editor = document.getElementById(`futuro-${type}-editor`);
-const char = state.characters[state.currentCharacter];
-if (type === 'prox') char.futuroProx = editor.innerHTML;
-else if (type === 'med') char.futuroMed = editor.innerHTML;
-else if (type === 'final') char.futuroFinal = editor.innerHTML;
-saveStory();
-showToast(`💾 Futuro ${type} salvo para ${state.currentCharacter}`);
-}
-function savePersonal() {
-if (!state.currentCharacter) {
-showToast('⚠️ Selecione um personagem');
-return;
-}
-const editor = document.getElementById('personal-editor');
-state.characters[state.currentCharacter].personal = editor.innerHTML;
-saveStory();
-showToast(`💾 Informações pessoais salvas`);
-}
-
-// ============ TIMELINE ============
-function analyzeTimeline() {
-const editor = document.getElementById('editor');
-const text = editor.innerText || '';
-const patterns = [
-{ regex: /(?:tinha|haviam?)\s+\w+ado/g, type: 'past', label: '📜 Passado' },
-{ regex: /(?:seria|iriam|faríamos?|poderíamos?)/g, type: 'conditional', label: '🔮 Condicional' },
-{ regex: /(?:irá|irão|faremos?|podemos?|será|serão)/g, type: 'future', label: '🔭 Futuro' },
-{ regex: /(?:talvez|quem\s+sabe|um\s+dia|algum\s+dia)/g, type: 'vague_future', label: '⏩ Futuro Vago' },
-{ regex: /(?:ontem|anteontem|semana\s+passada|mês\s+passado)/g, type: 'past_relative', label: '📜 Passado Recente' },
-{ regex: /(?:amanhã|depois\s+de\s+amanhã|próxima\s+semana)/g, type: 'future_relative', label: '🔭 Futuro Próximo' }
-];
-const events = [];
-const lines = text.split('\n');
-lines.forEach((line, lineIdx) => {
-patterns.forEach(p => {
-const matches = line.match(p.regex);
-if (matches) {
-matches.forEach(match => {
-events.push({
-id: Date.now() + Math.random(),
-title: line.substring(0, 60) + (line.length > 60 ? '...' : ''),
-line: lineIdx + 1,
-marker: match,
-type: p.type,
-label: p.label,
-confidence: 0.8
-});
-});
-}
-});
-});
-state.timeline.events = events.slice(0, 150);
-detectInconsistencies();
-renderTimeline();
-saveStory();
-showToast(`📅 ${events.length} eventos detectados`);
-}
-function renderTimeline() {
-const grid = document.getElementById('timelineGrid');
-grid.innerHTML = '';
-const colors = {
-'past': '#7DD3FC',
-'past_relative': '#7DD3FC',
-'conditional': '#C8B6FF',
-'future': '#FFB3C6',
-'future_relative': '#FFB3C6',
-'vague_future': '#FFD78A'
-};
-state.timeline.events.forEach((ev, i) => {
-const col = i % 6;
-const row = Math.floor(i / 6);
-const event = document.createElement('div');
-event.className = 'timeline-event';
-event.style.left = (20 + col * 220) + 'px';
-event.style.top = (20 + row * 100) + 'px';
-event.style.background = colors[ev.type] || '#A8E6CF';
-event.style.color = '#000';
-event.innerHTML = `
-<div class="event-title">${ev.label}</div>
-<div class="event-meta">L${ev.line}: "${ev.marker}"</div>
-<div class="event-meta" style="margin-top:4px;">${ev.title}</div>
-`;
-event.ondblclick = () => {
-switchTab('editor');
-showToast(`📍 Linha ${ev.line}`);
-};
-grid.appendChild(event);
-});
-renderInconsistencies();
-}
-function detectInconsistencies() {
-const events = state.timeline.events;
-const inconsistencies = [];
-const pastEvents = events.filter(e => e.type.startsWith('past'));
-const futureEvents = events.filter(e => e.type.startsWith('future'));
-if (pastEvents.length > 0 && futureEvents.length > 0) {
-if (pastEvents.length > 10 && futureEvents.length > 10) {
-inconsistencies.push({
-severity: 'medium',
-message: 'Muitos eventos passados e futuros próximos - verificar cronologia',
-events: [pastEvents[0].id, futureEvents[0].id]
-});
-}
-}
-state.timeline.inconsistencies = inconsistencies;
-}
-function renderInconsistencies() {
-const list = document.getElementById('inconsistenciesList');
-list.innerHTML = '';
-if (state.timeline.inconsistencies.length === 0) {
-list.innerHTML = '<p style="color: var(--text-secondary); font-size: 12px;">Nenhuma inconsistência detectada ✅</p>';
-return;
-}
-state.timeline.inconsistencies.forEach(inc => {
-const item = document.createElement('div');
-item.className = `inconsistency-item ${inc.severity}`;
-item.innerHTML = `
-<strong>${inc.severity === 'high' ? '🔴' : inc.severity === 'medium' ? '🟠' : '🟡'} ${inc.message}</strong>
-`;
-item.ondblclick = () => showToast('📍 Navegando para evento...');
-list.appendChild(item);
-});
-}
-function clearTimeline() {
-state.timeline = { events: [], inconsistencies: [] };
-renderTimeline();
-saveStory();
-showToast('🗑️ Timeline limpa');
-}
-function saveTimeline() {
-saveStory();
-showToast('💾 Timeline salva');
-}
-
-// ============ TEMPORÁRIA ============
-function saveTemporaria() {
-const content = document.getElementById('temporaria-editor').innerHTML;
-if (!state.currentStory) {
-showToast('⚠️ Abra uma história primeiro');
-return;
-}
-state.stories[state.currentStory].temporaria = content;
-saveStory();
-showToast('💾 Anotação temporária salva');
-}
-function deleteTemporaria() {
-if (!confirm('Deletar anotação temporária?')) return;
-document.getElementById('temporaria-editor').innerHTML = '';
-if (state.currentStory) {
-state.stories[state.currentStory].temporaria = '';
-saveStories();
-}
-showToast('🗑️ Anotação deletada');
-}
-
-// ============ DICIONÁRIO OTIMIZADO ============
-const quickDictionary = {
-'portugues': {
-'casa': 'Edifício para moradia', 'amor': 'Sentimento de afeto profundo',
-'vida': 'Existência dos seres', 'tempo': 'Duração das coisas',
-'mundo': 'Conjunto da humanidade', 'dia': 'Período de 24 horas',
-'noite': 'Período de escuridão', 'fazer': 'Realizar, executar',
-'dizer': 'Expressar por palavras', 'poder': 'Ter capacidade ou autoridade'
-},
-'ingles': { 'house': 'Building for living', 'love': 'Deep affection' },
-'alemao': { 'Haus': 'Gebäude zum Wohnen', 'Liebe': 'Tiefe Zuneigung' }
-};
-
-async function showDictionaryForSelection(sel) {
-if (!document.getElementById('chkDictionary').checked) return;
-const word = sel.toString().trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-if (!word || word.length < 3) return;
-const popup = document.getElementById('dictionaryPopup');
-const body = document.getElementById('dictionaryPopupBody');
-body.innerHTML = '<div style="padding:10px; text-align:center;">🔍 Buscando...</div>';
-const range = sel.getRangeAt(0);
-const rect = range.getBoundingClientRect();
-popup.style.left = (rect.right + 10) + 'px';
-popup.style.top = rect.top + 'px';
-popup.classList.add('active');
-let dict = state.dictionary[state.activeDictionary] || quickDictionary[state.activeDictionary];
-let match = dict[word];
-if (!match && state.activeDictionary === 'portugues') {
-try {
-const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 1000);
-const response = await fetch(`https://api.dicio.com.br/${word}`, { signal: controller.signal });
-clearTimeout(timeoutId);
-if (response.ok) {
-const data = await response.json();
-match = data.meanings ? data.meanings[0].meanings[0].definition : "Significado não encontrado.";
-}
-} catch (e) {
-match = "Palavra não encontrada no dicionário rápido. (Offline ou sem resposta da API)";
-}
-}
-body.innerHTML = '';
-if (match) {
-const div = document.createElement('div');
-div.className = 'popup-suggestion';
-div.innerHTML = `<div class="word">${word}</div><div class="definition">${match}</div>`;
-div.onclick = () => { insertWordAtCursor(word); closePopup('dictionaryPopup'); };
-body.appendChild(div);
-} else {
-body.innerHTML = `<div style="padding:10px; color: var(--text-secondary);">Nenhum significado encontrado para "<strong>${word}</strong>".<br><br><button class="tool-btn" onclick="addDictionaryEntryFor('${word}')">➕ Adicionar manualmente</button></div>`;
-}
-}
-function sanitizeFilename(name) {
-return name.replace(/[^a-zA-Z0-9à-úÀ-Ú\s_-]/g, '').trim() + '.xhtml';
-}
-function addDictionaryEntryFor(word) {
-closePopup('dictionaryPopup');
-showModal('Adicionar Verbete', `
-<div class="form-group"><label>Verbete:</label><input type="text" id="dictWord" value="${word}" readonly></div>
-<div class="form-group"><label>Significado:</label><textarea id="dictMeaning" placeholder="Definição"></textarea></div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Adicionar', action: 'confirmAddDictEntry()', primary: true }
-]);
-}
-function loadDictionary() {
-const lang = document.getElementById('dictionaryLanguage').value;
-state.activeDictionary = lang;
-try {
-const stored = localStorage.getItem(`bookEditor_dict_${lang}`);
-if (stored) {
-state.dictionary[lang] = JSON.parse(stored);
-} else {
-state.dictionary[lang] = getDefaultDictionary(lang);
-}
-} catch (e) {
-state.dictionary[lang] = getDefaultDictionary(lang);
-}
-renderDictionary();
-}
-function getDefaultDictionary(lang) {
-if (lang === 'portugues') {
-return {
-'casa': 'Edifício para moradia',
-'amor': 'Sentimento de afeto profundo',
-'vida': 'Existência dos seres',
-'tempo': 'Duração das coisas',
-'mundo': 'Conjunto da humanidade',
-'homem': 'Ser humano do sexo masculino',
-'mulher': 'Ser humano do sexo feminino',
-'dia': 'Período de 24 horas',
-'noite': 'Período de escuridão',
-'sol': 'Estrela central do sistema solar'
-};
-} else if (lang === 'ingles') {
-return {
-'house': 'Building for living',
-'love': 'Deep affection',
-'life': 'Existence of beings',
-'time': 'Duration of things',
-'world': 'Humanity as a whole'
-};
-} else {
-return {
-'Haus': 'Gebäude zum Wohnen',
-'Liebe': 'Tiefe Zuneigung',
-'Leben': 'Existenz der Wesen',
-'Zeit': 'Dauer der Dinge',
-'Welt': 'Menschheit als Ganzes'
-};
-}
-}
-function renderDictionary() {
-const body = document.getElementById('dictionaryBody');
-body.innerHTML = '';
-const dict = state.dictionary[state.activeDictionary];
-const search = document.getElementById('dictSearch').value.toLowerCase();
-Object.keys(dict).forEach(word => {
-if (search && !word.toLowerCase().includes(search) && !dict[word].toLowerCase().includes(search)) {
-return;
-}
-const row = document.createElement('tr');
-row.innerHTML = `
-<td><strong>${word}</strong></td>
-<td>${dict[word]}</td>
-<td>
-<button class="tool-btn" onclick="editDictEntry('${word}')" style="padding: 2px 6px; font-size: 11px;">✏️</button>
-<button class="tool-btn" onclick="deleteDictEntry('${word}')" style="padding: 2px 6px; font-size: 11px;">🗑️</button>
-</td>
-`;
-body.appendChild(row);
-});
-}
-function filterDictionary() {
-renderDictionary();
-}
-function addDictionaryEntry() {
-showModal('Adicionar Verbete', `
-<div class="form-group">
-<label>Verbete:</label>
-<input type="text" id="dictWord" placeholder="Palavra">
-</div>
-<div class="form-group">
-<label>Significado:</label>
-<textarea id="dictMeaning" placeholder="Definição"></textarea>
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Adicionar', action: 'confirmAddDictEntry()', primary: true }
-]);
-}
-function confirmAddDictEntry() {
-const word = document.getElementById('dictWord').value.trim();
-const meaning = document.getElementById('dictMeaning').value.trim();
-if (!word || !meaning) {
-showToast('⚠️ Preencha todos os campos');
-return;
-}
-state.dictionary[state.activeDictionary][word] = meaning;
-renderDictionary();
-saveDictionary();
-closeModal();
-showToast(`✅ Verbete "${word}" adicionado`);
-}
-function editDictEntry(word) {
-const current = state.dictionary[state.activeDictionary][word];
-showModal(`Editar: ${word}`, `
-<div class="form-group">
-<label>Significado:</label>
-<textarea id="editDictMeaning">${current}</textarea>
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Salvar', action: `confirmEditDictEntry('${word}')`, primary: true }
-]);
-}
-function confirmEditDictEntry(word) {
-const meaning = document.getElementById('editDictMeaning').value.trim();
-state.dictionary[state.activeDictionary][word] = meaning;
-renderDictionary();
-saveDictionary();
-closeModal();
-showToast(`✅ Verbete atualizado`);
-}
-function deleteDictEntry(word) {
-if (!confirm(`Deletar verbete "${word}"?`)) return;
-delete state.dictionary[state.activeDictionary][word];
-renderDictionary();
-saveDictionary();
-showToast(`🗑️ Verbete deletado`);
-}
-function saveDictionary() {
-try {
-localStorage.setItem(`bookEditor_dict_${state.activeDictionary}`, JSON.stringify(state.dictionary[state.activeDictionary]));
-showToast('💾 Dicionário salvo');
-} catch (e) {
-showToast('❌ Erro ao salvar dicionário');
-}
-}
-function generateMultiDictionary() {
-showModal('Gerar Multi-dicionário', `
-<div class="form-group">
-<label>Opções:</label>
-<label><input type="checkbox" id="optMaiusc" checked> Incluir maiúsculas</label><br>
-<label><input type="checkbox" id="optClasse"> Classe gramatical</label><br>
-<label><input type="checkbox" id="optGenero"> Gênero</label><br>
-<label><input type="checkbox" id="optEtim"> Etimologia</label><br>
-<label><input type="checkbox" id="optComb" checked> Combinar idiomas</label><br>
-<label><input type="checkbox" id="optDedup" checked> Deduplicar</label>
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Gerar', action: 'confirmGenerateMultiDict()', primary: true }
-]);
-}
-function confirmGenerateMultiDict() {
-closeModal();
-showToast('📚 Gerando multi-dicionário... (simulação)');
-setTimeout(() => showToast('✅ Multi-dicionário gerado'), 2000);
-}
-function insertWordAtCursor(word) {
-execCmd('insertText', word);
-closePopup('dictionaryPopup');
-}
-function toggleDictionaryPopup() {
-const popup = document.getElementById('dictionaryPopup');
-popup.classList.toggle('active');
-}
-function togglePhraseSuggestion() {
-const popup = document.getElementById('phrasePopup');
-const checked = document.getElementById('chkPhraseSuggestion').checked;
-if (checked) {
-const body = document.getElementById('phrasePopupBody');
-body.innerHTML = `
-<div class="popup-suggestion">"Era uma vez..."</div>
-<div class="popup-suggestion">"No início de tudo..."</div>
-<div class="popup-suggestion">"Enquanto isso..."</div>
-<div class="popup-suggestion">"De repente..."</div>
-<div class="popup-suggestion">"Sem que ninguém percebesse..."</div>
-`;
-popup.style.left = '20px';
-popup.style.bottom = '100px';
-popup.classList.add('active');
-} else {
-popup.classList.remove('active');
-}
-}
-function closePopup(id) {
-document.getElementById(id).classList.remove('active');
-}
-
-// ============ REVISOR NARRATIVO ============
-function toggleRevisor() {
-state.revisorEnabled = !state.revisorEnabled;
-const badge = document.getElementById('revisorBadge');
-if (state.revisorEnabled) {
-badge.classList.add('active');
-showToast('🔍 Revisor narrativo ativado');
-scheduleRevisorCheck();
-} else {
-badge.classList.remove('active');
-closePopup('conflictPopup');
-closePopup('profilePopup');
-showToast('🔍 Revisor narrativo desativado');
-}
-}
-function scheduleRevisorCheck() {
-if (!state.revisorEnabled) return;
-if (state.revisorTimer) clearTimeout(state.revisorTimer);
-state.revisorTimer = setTimeout(checkNarrativeConflicts, 2000);
-}
-function checkNarrativeConflicts() {
-const editor = document.getElementById('editor');
-const text = editor.innerText || '';
-const profile = detectProfile(text);
-const currentParagraph = getCurrentParagraph();
-const paragraphProfile = detectProfile(currentParagraph);
-const conflicts = [];
-if (profile !== paragraphProfile && currentParagraph.length > 50) {
-conflicts.push({
-severity: 'medium',
-message: `Possível quebra de cenário: perfil "${paragraphProfile}" diferente do perfil geral "${profile}"`,
-suggestion: 'Verifique se a mudança de cenário é intencional'
-});
-}
-Object.keys(state.characters).forEach(name => {
-const char = state.characters[name];
-if (char.personal && /morto|falecido|morreu/i.test(char.personal)) {
-if (text.includes(name)) {
-conflicts.push({
-severity: 'high',
-message: `Personagem "${name}" está marcado como morto mas foi mencionado`,
-suggestion: 'Verifique se é um flashback ou erro'
-});
-}
-}
-});
-if (conflicts.length > 0) {
-showConflictPopup(conflicts);
-} else {
-closePopup('conflictPopup');
-}
-showProfilePopup(profile, paragraphProfile);
-}
-function detectProfile(text) {
-const lower = text.toLowerCase();
-const scores = {};
-Object.keys(state.semanticProfiles).forEach(profile => {
-const keywords = state.semanticProfiles[profile];
-let score = 0;
-keywords.forEach(kw => {
-if (lower.includes(kw)) score++;
-});
-scores[profile] = score;
-});
-const maxScore = Math.max(...Object.values(scores));
-if (maxScore === 0) return 'Neutro';
-return Object.keys(scores).find(k => scores[k] === maxScore);
-}
-function getCurrentParagraph() {
-const sel = window.getSelection();
-if (!sel.rangeCount) return '';
-let node = sel.anchorNode;
-while (node && node.nodeType !== 1) node = node.parentNode;
-while (node && node.tagName !== 'P' && node.tagName !== 'DIV') node = node.parentNode;
-return node ? node.innerText : '';
-}
-function showConflictPopup(conflicts) {
-const popup = document.getElementById('conflictPopup');
-const body = document.getElementById('conflictPopupBody');
-body.innerHTML = '';
-conflicts.forEach(c => {
-const div = document.createElement('div');
-div.className = `conflict-item ${c.severity}`;
-div.innerHTML = `
-<strong>${c.severity === 'high' ? '🔴' : c.severity === 'medium' ? '🟠' : '🟡'} ${c.message}</strong>
-<div style="margin-top: 4px; font-size: 11px; color: var(--text-secondary);">💡 ${c.suggestion}</div>
-`;
-body.appendChild(div);
-});
-popup.style.right = '20px';
-popup.style.top = '100px';
-popup.style.left = 'auto';
-popup.classList.add('active');
-}
-function showProfilePopup(mainProfile, paragraphProfile) {
-const popup = document.getElementById('profilePopup');
-const body = document.getElementById('profilePopupBody');
-body.innerHTML = `
-<div style="margin-bottom: 8px;"><strong>🗺️ Perfil Geral:</strong> ${mainProfile}</div>
-<div><strong>📍 Perfil Atual:</strong> ${paragraphProfile}</div>
-`;
-popup.style.right = '20px';
-popup.style.bottom = '100px';
-popup.style.left = 'auto';
-popup.style.top = 'auto';
-popup.classList.add('active');
-}
-function toggleAlerts() {
-showToast('⚠️ Sistema de alertas (implementação básica)');
-}
-
-// ============ TTS ============
-function toggleNarration() {
-if (state.isNarrating) {
-state.speechSynthesis.cancel();
-state.isNarrating = false;
-document.getElementById('btnNarrate').classList.remove('recording');
-showToast('🔇 Narração parada');
-return;
-}
-const editor = document.getElementById('editor');
-const text = editor.innerText;
-if (!text.trim()) {
-showToast('⚠️ Editor vazio');
-return;
-}
-const utterance = new SpeechSynthesisUtterance(text);
-utterance.lang = 'pt-BR';
-utterance.rate = 1;
-utterance.onend = () => {
-state.isNarrating = false;
-document.getElementById('btnNarrate').classList.remove('recording');
-};
-state.speechSynthesis.speak(utterance);
-state.isNarrating = true;
-document.getElementById('btnNarrate').classList.add('recording');
-showToast('🗣️ Narrando...');
-}
-function toggleRecording() {
-if (state.isRecording) {
-stopRecording();
-return;
-}
-if (!navigator.mediaDevices) {
-showToast('⚠️ Gravação não suportada');
-return;
-}
-navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-state.mediaRecorder = new MediaRecorder(stream);
-state.audioChunks = [];
-state.mediaRecorder.ondataavailable = e => {
-state.audioChunks.push(e.data);
-};
-state.mediaRecorder.onstop = () => {
-const blob = new Blob(state.audioChunks, { type: 'audio/webm' });
-const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = 'gravacao_' + Date.now() + '.webm';
-a.click();
-URL.revokeObjectURL(url);
-stream.getTracks().forEach(t => t.stop());
-};
-state.mediaRecorder.start();
-state.isRecording = true;
-document.getElementById('btnRecord').classList.add('recording');
-showToast('🟥 Gravando...');
-}).catch(err => {
-showToast('❌ Erro ao acessar microfone');
-});
-}
-function stopRecording() {
-if (state.mediaRecorder) {
-state.mediaRecorder.stop();
-state.isRecording = false;
-document.getElementById('btnRecord').classList.remove('recording');
-showToast('✅ Gravação salva');
-}
-}
-
-// ============ TEMAS ============
-const themes = {
-dark: {
-'--bg-primary': '#1a1a2e',
-'--bg-secondary': '#16213e',
-'--bg-tertiary': '#0f3460',
-'--text-primary': '#eaeaea',
-'--text-secondary': '#a0a0a0',
-'--accent': '#e94560',
-'--accent-hover': '#ff6b81',
-'--border': '#2a2a4e',
-'--button-bg': '#2a2a4e',
-'--button-hover': '#3a3a5e',
-'--scroll-thumb': '#4a4a6e',
-'--scroll-track': '#1a1a2e'
-},
-light: {
-'--bg-primary': '#ffffff',
-'--bg-secondary': '#f5f5f5',
-'--bg-tertiary': '#e0e0e0',
-'--text-primary': '#333333',
-'--text-secondary': '#666666',
-'--accent': '#2196F3',
-'--accent-hover': '#1976D2',
-'--border': '#cccccc',
-'--button-bg': '#e0e0e0',
-'--button-hover': '#d0d0d0',
-'--scroll-thumb': '#999999',
-'--scroll-track': '#f5f5f5'
-},
-sepia: {
-'--bg-primary': '#f4ecd8',
-'--bg-secondary': '#e8dcc4',
-'--bg-tertiary': '#d4c4a8',
-'--text-primary': '#5b4636',
-'--text-secondary': '#7a6652',
-'--accent': '#8b4513',
-'--accent-hover': '#a0522d',
-'--border': '#c4b49a',
-'--button-bg': '#d4c4a8',
-'--button-hover': '#c4b49a',
-'--scroll-thumb': '#a89880',
-'--scroll-track': '#e8dcc4'
-},
-ocean: {
-'--bg-primary': '#0a1929',
-'--bg-secondary': '#132f4c',
-'--bg-tertiary': '#173a5e',
-'--text-primary': '#e3f2fd',
-'--text-secondary': '#90caf9',
-'--accent': '#00bcd4',
-'--accent-hover': '#26c6da',
-'--border': '#1e4976',
-'--button-bg': '#173a5e',
-'--button-hover': '#1e4976',
-'--scroll-thumb': '#1e4976',
-'--scroll-track': '#0a1929'
-},
-forest: {
-'--bg-primary': '#1a2e1a',
-'--bg-secondary': '#2d4a2d',
-'--bg-tertiary': '#3d5a3d',
-'--text-primary': '#e8f5e9',
-'--text-secondary': '#a5d6a7',
-'--accent': '#4caf50',
-'--accent-hover': '#66bb6a',
-'--border': '#2e5a2e',
-'--button-bg': '#3d5a3d',
-'--button-hover': '#4a6a4a',
-'--scroll-thumb': '#4a6a4a',
-'--scroll-track': '#1a2e1a'
-}
-};
-function changeTheme() {
-const theme = document.getElementById('themeSelect').value;
-applyTheme(theme);
-state.theme = theme;
-saveConfig();
-}
-function applyTheme(themeName) {
-const theme = themes[themeName];
-if (!theme) return;
-Object.keys(theme).forEach(key => {
-document.documentElement.style.setProperty(key, theme[key]);
-});
-document.getElementById('themeSelect').value = themeName;
-}
-
-// ============ HISTÓRIAS COM SYNC AUTOMÁTICO ============
 function newStory() {
-showModal('Nova História', `
-<div class="form-group">
-<label>Nome da História:</label>
-<input type="text" id="newStoryName" placeholder="Ex: Minha Grande Aventura">
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Criar', action: 'confirmNewStory()', primary: true }
-]);
-setTimeout(() => document.getElementById('newStoryName').focus(), 100);
+  showModal('Nova História', '<div class="form-group"><label>Nome:</label><input type="text" id="newStoryName"></div>', [
+    { text: 'Criar', action: 'confirmNewStory()', primary: true }
+  ]);
 }
 function confirmNewStory() {
-const name = document.getElementById('newStoryName').value.trim();
-if (!name) {
-showToast('⚠️ Nome obrigatório');
-return;
+  const name = document.getElementById('newStoryName').value.trim();
+  if (!name) return showToast('⚠️ Nome obrigatório');
+  state.stories[name] = { content: '', characters: {} };
+  state.currentStory = name;
+  document.getElementById('editor').innerHTML = '';
+  localStorage.setItem('bookEditor_stories', JSON.stringify(state.stories));
+  closeModal();
+  showToast('📖 História criada');
 }
-state.stories[name] = {
-content: '',
-characters: {},
-timeline: { events: [], inconsistencies: [] },
-temporaria: '',
-created: new Date().toISOString()
-};
-state.currentStory = name;
-state.characters = {};
-state.timeline = { events: [], inconsistencies: [] };
-document.getElementById('editor').innerHTML = '';
-loadCharactersList();
-saveStories();
-saveConfig();
-closeModal();
-showToast(`📖 História "${name}" criada`);
+function openStory() {
+  const names = Object.keys(state.stories);
+  if (names.length === 0) return showToast('⚠️ Nenhuma história salva');
+  let html = '<div class="form-group"><select id="storySelect">';
+  names.forEach(n => html += `<option value="${n}">${n}</option>`);
+  html += '</select></div>';
+  showModal('Abrir História', html, [{ text: 'Abrir', action: 'confirmOpenStory()', primary: true }]);
 }
-async function openStory() {
-const storyNames = Object.keys(state.stories);
-if (state.github.token && state.github.repo) {
-showToast('🔄 Atualizando lista de histórias...');
-await pullFromGithub(true);
+function confirmOpenStory() {
+  const name = document.getElementById('storySelect').value;
+  state.currentStory = name;
+  document.getElementById('editor').innerHTML = state.stories[name].content || '';
+  localStorage.setItem('bookEditor_config', JSON.stringify({ lastStory: name, github: state.github }));
+  closeModal();
+  showToast(`📖 ${name} aberta`);
 }
-const updatedStoryNames = Object.keys(state.stories);
-if (updatedStoryNames.length === 0) {
-showToast('⚠️ Nenhuma história disponível');
-return;
-}
-let html = '<div class="form-group"><label>Selecione uma história:</label><select id="storySelect">';
-updatedStoryNames.forEach(name => {
-html += `<option value="${name}">${name}</option>`;
-});
-html += '</select></div>';
-showModal('Abrir História', html, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Abrir', action: 'confirmOpenStory()', primary: true }
-]);
-}
-async function confirmOpenStory() {
-const name = document.getElementById('storySelect').value;
-const story = state.stories[name];
-state.currentStory = name;
-state.characters = story.characters || {};
-state.timeline = story.timeline || { events: [], inconsistencies: [] };
-document.getElementById('editor').innerHTML = story.content || '';
-document.getElementById('temporaria-editor').innerHTML = story.temporaria || '';
-loadCharactersList();
-updateStats();
-saveConfig();
-closeModal();
-if (story.lastCharacter && state.characters[story.lastCharacter]) {
-selectCharacter(story.lastCharacter);
-}
-showToast(`📖 História "${name}" aberta com todos os dados`);
-}
-async function saveStory() {
-if (!state.currentStory) {
-newStory();
-return;
-}
-const story = state.stories[state.currentStory];
-story.content = document.getElementById('editor').innerHTML;
-story.characters = state.characters;
-story.timeline = state.timeline;
-saveStories();
-showToast('💾 Salvo localmente');
-if (state.github.token && state.github.repo) {
-await pushToGithub(true);
-}
-}
-function saveStoryAs() {
-showModal('Salvar Como', `
-<div class="form-group">
-<label>Novo Nome:</label>
-<input type="text" id="saveAsName" value="${state.currentStory || ''}">
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: 'Salvar', action: 'confirmSaveAs()', primary: true }
-]);
-}
-function confirmSaveAs() {
-const newName = document.getElementById('saveAsName').value.trim();
-if (!newName) {
-showToast('⚠️ Nome obrigatório');
-return;
-}
-const story = state.stories[state.currentStory];
-story.content = document.getElementById('editor').innerHTML;
-story.characters = state.characters;
-story.timeline = state.timeline;
-state.stories[newName] = JSON.parse(JSON.stringify(story));
-state.currentStory = newName;
-saveStories();
-saveConfig();
-closeModal();
-showToast(`💾 Salvo como "${newName}"`);
-}
-let autoSaveTimer = null;
-function autoSave() {
-if (autoSaveTimer) clearTimeout(autoSaveTimer);
-autoSaveTimer = setTimeout(() => {
-if (state.currentStory) {
-state.stories[state.currentStory].content = document.getElementById('editor').innerHTML;
-state.stories[state.currentStory].characters = state.characters;
-state.stories[state.currentStory].timeline = state.timeline;
-saveStories();
-}
-}, 5000);
+function saveStory() {
+  if (!state.currentStory) return newStory();
+  state.stories[state.currentStory].content = document.getElementById('editor').innerHTML;
+  localStorage.setItem('bookEditor_stories', JSON.stringify(state.stories));
+  showToast('💾 Salvo localmente');
+  if (state.github.token) pushToGithub(true);
 }
 
-// ============ CONVERSÃO ============
-function convertTo(format) {
-const editor = document.getElementById('editor');
-const content = editor.innerHTML;
-const title = state.currentStory || 'historias';
-let blob, filename, mimeType;
-switch (format) {
-case 'txt':
-const temp = document.createElement('div');
-temp.innerHTML = content;
-blob = new Blob([temp.innerText], { type: 'text/plain' });
-filename = title + '.txt';
-mimeType = 'text/plain';
-break;
-case 'html':
-const htmlContent = `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>${title}</title>
-<style>body{font-family:Times New Roman,serif;max-width:800px;margin:40px auto;padding:20px;line-height:1.6;}</style>
-</head><body>${content}</body></html>`;
-blob = new Blob([htmlContent], { type: 'text/html' });
-filename = title + '.html';
-mimeType = 'text/html';
-break;
-case 'xhtml':
-const xhtmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>${title}</title></head>
-<body>${content}</body></html>`;
-blob = new Blob([xhtmlContent], { type: 'application/xhtml+xml' });
-filename = title + '.xhtml';
-mimeType = 'application/xhtml+xml';
-break;
-case 'pdf':
-showToast('📕 Gerando PDF... (usando impressão do navegador)');
-setTimeout(() => window.print(), 500);
-return;
-case 'docx':
-const docxContent = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/1999/REC-html40'>
-<head><meta charset="UTF-8"><title>${title}</title></head><body>${content}</body></html>`;
-blob = new Blob([docxContent], { type: 'application/msword' });
-filename = title + '.doc';
-mimeType = 'application/msword';
-break;
-case 'kindle':
-const kindleContent = `<?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>${title}</title></head>
-<body>${content}</body></html>`;
-blob = new Blob([kindleContent], { type: 'application/xhtml+xml' });
-filename = title + '.html';
-mimeType = 'application/xhtml+xml';
-break;
-default:
-showToast('⚠️ Formato não suportado');
-return;
-}
-const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-a.href = url;
-a.download = filename;
-a.click();
-URL.revokeObjectURL(url);
-showToast(`✅ Convertido para ${format.toUpperCase()}`);
-}
-
-// ============ GITHUB COM SYNC AUTOMÁTICO ============
-const DEFAULT_GH_REPO = "andreyoldekamp-del/GraphZoBackup";
-const DEFAULT_GH_BRANCH = "main";
-const DEFAULT_GH_FOLDER = "historias";
 function getGithubConfig() {
-return {
-token: document.getElementById('ghToken')?.value.trim() || localStorage.getItem('bookEditor_gh_token') || '',
-repo: document.getElementById('ghRepo')?.value.trim() || localStorage.getItem('bookEditor_gh_repo') || DEFAULT_GH_REPO,
-branch: document.getElementById('ghBranch')?.value.trim() || localStorage.getItem('bookEditor_gh_branch') || DEFAULT_GH_BRANCH,
-folder: document.getElementById('ghFolder')?.value.trim() || localStorage.getItem('bookEditor_gh_folder') || DEFAULT_GH_FOLDER
-};
-}
-function saveGithubConfig() {
-const cfg = getGithubConfig();
-localStorage.setItem('bookEditor_gh_token', cfg.token);
-localStorage.setItem('bookEditor_gh_repo', cfg.repo);
-localStorage.setItem('bookEditor_gh_branch', cfg.branch);
-localStorage.setItem('bookEditor_gh_folder', cfg.folder);
-}
-async function ghRequest(path, options = {}) {
-const cfg = getGithubConfig();
-if (!cfg.token) throw new Error('Token não configurado.');
-if (!cfg.repo || !cfg.repo.includes('/')) throw new Error('Repositório inválido.');
-const url = path.startsWith('http') ? path : `https://api.github.com/repos/${cfg.repo}/${path}`;
-const res = await fetch(url, {
-...options,
-headers: {
-'Authorization': `Bearer ${cfg.token}`,
-'Accept': 'application/vnd.github+json',
-'X-GitHub-Api-Version': '2022-11-28',
-...(options.headers || {})
-}
-});
-if (!res.ok) {
-let msg = `HTTP ${res.status}`;
-try { const err = await res.json(); msg = err.message || msg; } catch (_) {}
-if (res.status === 401) throw new Error('401: Token inválido ou expirado.');
-if (res.status === 403) throw new Error('403: Permissão negada. Token precisa da permissão "repo".');
-if (res.status === 404) throw new Error(`404: Não encontrado. Verifique se o repo é "${cfg.repo}" e a pasta é "${cfg.folder}".`);
-throw new Error(msg);
-}
-if (res.status === 204) return null;
-return res.json();
+  return {
+    token: document.getElementById('ghToken')?.value.trim() || state.github.token,
+    repo: document.getElementById('ghRepo')?.value.trim() || state.github.repo,
+    branch: document.getElementById('ghBranch')?.value.trim() || state.github.branch,
+    folder: document.getElementById('ghFolder')?.value.trim() || state.github.folder
+  };
 }
 function configureGithub() {
-const cfg = getGithubConfig();
-showModal('Configurar GitHub', `
-<div class="form-group">
-<label>Token:</label>
-<input type="password" id="ghToken" value="${cfg.token}" placeholder="ghp_...">
-</div>
-<div class="form-group">
-<label>Repositório:</label>
-<input type="text" id="ghRepo" value="${cfg.repo}" placeholder="andreyoldekamp-del/GraphZoBackup">
-</div>
-<div class="form-group">
-<label>Branch:</label>
-<input type="text" id="ghBranch" value="${cfg.branch}" placeholder="main">
-</div>
-<div class="form-group">
-<label>Pasta:</label>
-<input type="text" id="ghFolder" value="${cfg.folder}" placeholder="historias">
-</div>
-`, [
-{ text: 'Cancelar', action: 'closeModal()' },
-{ text: '💾 Salvar', action: 'confirmConfigureGithub()', primary: true }
-]);
+  const cfg = state.github;
+  showModal('Configurar GitHub', `
+    <div class="form-group"><label>Token (ghp_):</label><input type="password" id="ghToken" value="${cfg.token}"></div>
+    <div class="form-group"><label>Repositório:</label><input type="text" id="ghRepo" value="${cfg.repo}"></div>
+    <div class="form-group"><label>Branch:</label><input type="text" id="ghBranch" value="${cfg.branch}"></div>
+    <div class="form-group"><label>Pasta:</label><input type="text" id="ghFolder" value="${cfg.folder}"></div>
+  `, [{ text: 'Salvar', action: 'confirmConfigureGithub()', primary: true }]);
 }
 function confirmConfigureGithub() {
-saveGithubConfig();
-closeModal();
-showToast('✅ Configuração salva com os dados corretos!');
+  state.github = getGithubConfig();
+  localStorage.setItem('bookEditor_config', JSON.stringify({ lastStory: state.currentStory, github: state.github }));
+  closeModal();
+  showToast('✅ GitHub configurado');
 }
-async function listGithubCommits() {
-const cfg = getGithubConfig();
-if (!cfg.token) { showToast('⚠️ Configure o GitHub primeiro'); configureGithub(); return; }
-showToast('📜 Listando versões...');
-try {
-const commits = await ghRequest(`commits?sha=${encodeURIComponent(cfg.branch)}&per_page=30`);
-let html = '<div style="max-height:400px;overflow-y:auto;">';
-commits.forEach(c => {
-const sha = c.sha.substring(0, 7);
-const date = new Date(c.commit.author.date).toLocaleString('pt-BR');
-const msg = c.commit.message.split('\n')[0];
-html += `<div style="background:var(--bg-primary);border:1px solid var(--border);border-radius:4px;padding:10px;margin-bottom:8px;cursor:pointer;" onclick="showCommitFiles('${sha}')">
-<div style="display:flex;justify-content:space-between;"><strong style="color:var(--accent-hover);">📝 ${sha}</strong><span style="font-size:11px;color:var(--text-secondary);">${date}</span></div>
-<div style="font-size:12px;margin-top:4px;">${msg}</div>
-</div>`;
-});
-html += '</div>';
-showModal('Versões Disponíveis', html, [{ text: 'Fechar', action: 'closeModal()' }]);
-} catch (e) { showToast('❌ ' + e.message); }
+
+async function ghRequest(path, options = {}) {
+  const cfg = state.github;
+  const url = `https://api.github.com/repos/${cfg.repo}/${path}`;
+  const res = await fetch(url, {
+    ...options,
+    headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json', ...(options.headers || {}) }
+  });
+  if (!res.ok) throw new Error(`Erro GitHub: ${res.status}`);
+  return res.status === 204 ? null : res.json();
 }
-async function showCommitFiles(sha) {
-const cfg = getGithubConfig();
-showToast('📂 Carregando arquivos...');
-try {
-const files = await ghRequest(`contents/${encodeURIComponent(cfg.folder)}?ref=${sha}`);
-const xhtmlFiles = files.filter(f => f.name.endsWith('.xhtml'));
-let html = '<div style="max-height:400px;overflow-y:auto;">';
-xhtmlFiles.forEach(f => {
-const name = decodeURIComponent(f.name.replace('.xhtml', ''));
-html += `<div style="background:var(--bg-primary);border:1px solid var(--border);border-radius:4px;padding:10px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-<strong>📖 ${name}</strong>
-<button class="tool-btn" onclick="loadStoryFromCommit('${sha}', '${f.name}')" style="font-size:11px;">📥 Carregar</button>
-</div>`;
-});
-html += '</div>';
-showModal('Histórias no Commit ' + sha, html, [{ text: 'Fechar', action: 'closeModal()' }]);
-} catch (e) { showToast('❌ ' + e.message); }
-}
+
 async function pushToGithub(silent = false) {
-const cfg = getGithubConfig();
-if (!cfg.token || !cfg.repo) { if (!silent) showToast('⚠️ Configure o GitHub'); return; }
-if (!state.currentStory) { if (!silent) showToast('⚠️ Nenhuma história aberta'); return; }
-if (!silent) showToast('🛡️ Criando backup local de segurança...');
-await downloadLocalBackup();
-if (!silent) showToast('📤 Sincronizando com GitHub...');
-try {
-const story = state.stories[state.currentStory];
-const safeFilename = sanitizeFilename(state.currentStory);
-const path = `${cfg.folder}/${safeFilename}`;
-const metadata = {
-characters: story.characters || {},
-timeline: story.timeline || { events: [], inconsistencies: [] },
-temporaria: story.temporaria || '',
-savedAt: new Date().toISOString(),
-version: "HTML_JS_V2"
-};
-const metadataComment = `\n\n<!-- GRAPHZO_METADATA_START -->\n${JSON.stringify(metadata)}\n<!-- GRAPHZO_METADATA_END -->`;
-const contentToSave = story.content + metadataComment;
-const encoder = new TextEncoder();
-const data = encoder.encode(contentToSave);
-let binary = '';
-for (let i = 0; i < data.length; i++) binary += String.fromCharCode(data[i]);
-const base64Content = btoa(binary);
-let fileSha = null;
-try {
-const existing = await ghRequest(`contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(cfg.branch)}`);
-fileSha = existing.sha;
-} catch (e) {
-if (!e.message.startsWith('404')) throw e;
+  if (!state.github.token || !state.currentStory) return;
+  try {
+    const cfg = state.github;
+    const content = state.stories[state.currentStory].content || '';
+    const path = `${cfg.folder}/${state.currentStory}.xhtml`;
+    let sha = null;
+    try { const ex = await ghRequest(`contents/${encodeURIComponent(path)}?ref=${cfg.branch}`); sha = ex.sha; } catch(e){}
+    const payload = { message: `Sync ${state.currentStory}`, content: btoa(unescape(encodeURIComponent(content))), branch: cfg.branch };
+    if (sha) payload.sha = sha;
+    await ghRequest(`contents/${encodeURIComponent(path)}`, { method: 'PUT', body: JSON.stringify(payload) });
+    if (!silent) showToast('📤 Enviado ao GitHub!');
+  } catch(e) { if (!silent) showToast('❌ Erro no Push: ' + e.message); }
 }
-const payload = {
-message: `Sync: ${state.currentStory} (com personagens) — ${new Date().toLocaleString('pt-BR')}`,
-content: base64Content,
-branch: cfg.branch
-};
-if (fileSha) payload.sha = fileSha;
-await ghRequest(`contents/${encodeURIComponent(path)}`, {
-method: 'PUT',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(payload)
-});
-if (!silent) showToast(`✅ Sincronizado com sucesso! (Backup local também criado)`);
-} catch (e) {
-if (!silent) showToast('❌ Erro no Push: ' + e.message);
-}
-}
-function extractMetadata(htmlContent) {
-const metaMatch = htmlContent.match(/<!-- GRAPHZO_METADATA_START -->([\s\S]*?)<!-- GRAPHZO_METADATA_END -->/);
-let cleanContent = htmlContent;
-let metadata = { characters: {}, timeline: { events: [], inconsistencies: [] }, temporaria: '' };
-if (metaMatch) {
-try {
-metadata = JSON.parse(metaMatch[1]);
-cleanContent = htmlContent.replace(/<!-- GRAPHZO_METADATA_START -->[\s\S]*?<!-- GRAPHZO_METADATA_END -->/, '').trim();
-} catch (e) {
-console.error('Erro ao ler metadados:', e);
-}
-}
-return { cleanContent, metadata };
-}
+
 async function pullFromGithub(silent = false) {
-const cfg = getGithubConfig();
-if (!cfg.token || !cfg.repo) { if (!silent) showToast('⚠️ Configure o GitHub'); return; }
-if (!silent) showToast('📥 Baixando última versão completa...');
-try {
-let files;
-try {
-files = await ghRequest(`contents/${encodeURIComponent(cfg.folder)}?ref=${encodeURIComponent(cfg.branch)}`);
-} catch (e) {
-if (e.message.startsWith('404')) {
-if (!silent) showToast('ℹ️ Pasta remota vazia ou nome da pasta incorreto.');
-return;
-}
-throw e;
-}
-const xhtmlFiles = files.filter(f => f.name.endsWith('.xhtml'));
-if (xhtmlFiles.length === 0) {
-if (!silent) showToast('ℹ️ Nenhuma história (.xhtml) encontrada no GitHub.');
-return;
-}
-for (const file of xhtmlFiles) {
-const res = await fetch(file.download_url);
-const rawContent = await res.text();
-const storyName = decodeURIComponent(file.name.replace('.xhtml', ''));
-const { cleanContent, metadata } = extractMetadata(rawContent);
-state.stories[storyName] = {
-content: cleanContent,
-characters: metadata.characters || {},
-timeline: metadata.timeline || { events: [], inconsistencies: [] },
-temporaria: metadata.temporaria || '',
-created: state.stories[storyName]?.created || new Date().toISOString()
-};
-}
-saveStories();
-if (state.currentStory && state.stories[state.currentStory]) {
-const current = state.stories[state.currentStory];
-document.getElementById('editor').innerHTML = current.content || '';
-state.characters = current.characters || {};
-state.timeline = current.timeline || { events: [], inconsistencies: [] };
-loadCharactersList();
-if (state.currentCharacter) selectCharacter(state.currentCharacter);
-updateStats();
-}
-if (!silent) showToast(`✅ Sincronização completa! (${xhtmlFiles.length} histórias encontradas)`);
-} catch (e) {
-if (!silent) showToast('❌ Erro no Pull: ' + e.message);
-}
-}
-async function diagnosticarGitHub() {
-const cfg = getGithubConfig();
-console.log("=== 🕵️ INÍCIO DO DIAGNÓSTICO GITHUB ===");
-console.log("Configuração usada:", cfg);
-showToast("🔍 Diagnosticando conexão com GitHub...");
-try {
-console.log("1. Verificando repositório...");
-const repo = await ghRequest("");
-console.log("✅ Repositório encontrado:", repo.full_name);
-console.log("2. Verificando branch...");
-const branch = await ghRequest(`branches/${cfg.branch}`);
-console.log("✅ Branch encontrado:", branch.name);
-console.log(`3. Listando conteúdo da pasta: '${cfg.folder}'`);
-try {
-const contents = await ghRequest(`contents/${cfg.folder}?ref=${cfg.branch}`);
-console.log("✅ Pasta encontrada! Itens dentro dela:");
-contents.forEach(file => {
-console.log(`  📄 ${file.name} | Tipo: ${file.type} | URL direta: ${file.download_url}`);
-});
-const xhtmlFiles = contents.filter(f => f.name.endsWith('.xhtml'));
-if (xhtmlFiles.length === 0) {
-showToast("⚠️ A pasta existe, mas NÃO há arquivos .xhtml nela.");
-} else {
-showToast(`✅ Sucesso! ${xhtmlFiles.length} arquivo(s) .xhtml encontrado(s). Veja o Console (F12).`);
-}
-} catch (e) {
-if (e.message.includes('404')) {
-console.warn(`⚠️ A pasta '${cfg.folder}' NÃO FOI ENCONTRADA no branch '${cfg.branch}'.`);
-showToast(`⚠️ Pasta '${cfg.folder}' não encontrada. Verifique maiúsculas/minúsculas!`);
-} else {
-throw e;
-}
-}
-console.log("=== ✅ FIM DO DIAGNÓSTICO ===");
-alert("Diagnóstico concluído! Pressione F12, vá na aba 'Console' e veja a lista exata dos seus arquivos.");
-} catch (error) {
-console.error("❌ FALHA NO DIAGNÓSTICO:", error);
-let msg = `Erro: ${error.message}\n\n`;
-if (error.message.includes('401')) msg += "Seu Token está inválido ou expirado.";
-else if (error.message.includes('403')) msg += "Seu Token não tem permissão de acesso a este repositório.";
-else if (error.message.includes('404')) msg += `O repositório '${cfg.repo}' não foi encontrado. Verifique:\n- O nome está EXATAMENTE correto (maiúsculas/minúsculas importam!).\n- O repositório é público, ou seu token tem permissão de leitura.`;
-alert(msg);
-}
-}
-async function downloadLocalBackup() {
-if (!state.currentStory) return;
-const story = state.stories[state.currentStory];
-const metadata = {
-characters: story.characters || {},
-timeline: story.timeline || { events: [], inconsistencies: [] },
-temporaria: story.temporaria || '',
-savedAt: new Date().toISOString()
-};
-const metadataComment = `\n\n<!-- GRAPHZO_METADATA_START -->\n${JSON.stringify(metadata)}\n<!-- GRAPHZO_METADATA_END -->`;
-const contentToSave = story.content + metadataComment;
-const blob = new Blob([contentToSave], { type: 'application/xhtml+xml' });
-const url = URL.createObjectURL(blob);
-const a = document.createElement('a');
-const dateStr = new Date().toISOString().slice(0,10).replace(/-/g, '');
-const timeStr = new Date().toTimeString().slice(0,5).replace(/:/g, '');
-const safeName = sanitizeFilename(state.currentStory).replace('.xhtml', '');
-a.href = url;
-a.download = `BACKUP_${safeName}_${dateStr}_${timeStr}.xhtml`;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-URL.revokeObjectURL(url);
-}
-async function loadStoryFromCommit(sha, filename) {
-const cfg = getGithubConfig();
-showToast('📥 Baixando versão...');
-try {
-const file = await ghRequest(`contents/${encodeURIComponent(cfg.folder)}/${encodeURIComponent(filename)}?ref=${sha}`);
-const res = await fetch(file.download_url);
-const rawContent = await res.text();
-const storyName = decodeURIComponent(filename.replace('.xhtml', ''));
-const { cleanContent, metadata } = extractMetadata(rawContent);
-state.stories[storyName] = {
-content: cleanContent,
-characters: metadata.characters || {},
-timeline: metadata.timeline || { events: [], inconsistencies: [] },
-temporaria: metadata.temporaria || '',
-created: state.stories[storyName]?.created || new Date().toISOString()
-};
-state.currentStory = storyName;
-document.getElementById('editor').innerHTML = cleanContent;
-state.characters = state.stories[storyName].characters || {};
-state.timeline = state.stories[storyName].timeline || { events: [], inconsistencies: [] };
-loadCharactersList();
-if (state.currentCharacter) selectCharacter(state.currentCharacter);
-updateStats();
-saveStories();
-closeModal();
-showToast(`✅ "${storyName}" carregada com todos os dados!`);
-} catch (e) {
-showToast('❌ Erro: ' + e.message);
-}
-}
-function showGithubStatus() {
-const cfg = getGithubConfig();
-if (!cfg.token) { showToast('⚠️ GitHub não configurado'); return; }
-showModal('Status do GitHub', `
-<div class="stat-row"><span>Repositório:</span><span class="stat-value">${cfg.repo}</span></div>
-<div class="stat-row"><span>Branch:</span><span class="stat-value">${cfg.branch}</span></div>
-<div class="stat-row"><span>Pasta:</span><span class="stat-value">${cfg.folder}</span></div>
-<div class="stat-row"><span>Token:</span><span class="stat-value">${cfg.token ? '✅ Configurado' : '❌'}</span></div>
-`, [{ text: 'Fechar', action: 'closeModal()' }, { text: 'Editar', action: 'closeModal(); configureGithub();' }]);
+  if (!state.github.token) return;
+  try {
+    const cfg = state.github;
+    const files = await ghRequest(`contents/${encodeURIComponent(cfg.folder)}?ref=${cfg.branch}`);
+    for (const f of files.filter(x => x.name.endsWith('.xhtml'))) {
+      const res = await fetch(f.download_url);
+      const text = await res.text();
+      const name = decodeURIComponent(f.name.replace('.xhtml', ''));
+      state.stories[name] = { content: text };
+    }
+    localStorage.setItem('bookEditor_stories', JSON.stringify(state.stories));
+    if (!silent) showToast('📥 Sincronizado!');
+  } catch(e) { if (!silent) showToast('❌ Erro no Pull'); }
 }
 
-// ============ MODAL ============
-function showModal(title, body, buttons = []) {
-document.getElementById('modalTitle').textContent = title;
-document.getElementById('modalBody').innerHTML = body;
-const footer = document.getElementById('modalFooter');
-footer.innerHTML = '';
-buttons.forEach(btn => {
-const button = document.createElement('button');
-button.className = btn.primary ? 'save-btn' : 'tool-btn';
-button.textContent = btn.text;
-button.onclick = () => eval(btn.action);
-footer.appendChild(button);
-});
-document.getElementById('modalOverlay').classList.add('active');
-}
-function closeModal() {
-document.getElementById('modalOverlay').classList.remove('active');
+async function listGithubFiles() {
+  if (!state.github.token) return configureGithub();
+  try {
+    const cfg = state.github;
+    const files = await ghRequest(`contents/${encodeURIComponent(cfg.folder)}?ref=${cfg.branch}`);
+    let html = '<ul>';
+    files.forEach(f => html += `<li>📖 ${f.name}</li>`);
+    html += '</ul>';
+    showModal('Arquivos no GitHub', html, [{ text: 'Fechar', action: 'closeModal()' }]);
+  } catch(e) { showToast('❌ Erro ao listar'); }
 }
 
-// ============ TOAST ============
-function showToast(message) {
-const toast = document.getElementById('toast');
-toast.textContent = message;
-toast.classList.add('show');
-if (window.toastTimer) clearTimeout(window.toastTimer);
-window.toastTimer = setTimeout(() => {
-toast.classList.remove('show');
-}, 3000);
+function showModal(title, body, buttons) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  const f = document.getElementById('modalFooter');
+  f.innerHTML = '';
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = b.primary ? 'save-btn' : 'tool-btn';
+    btn.textContent = b.text;
+    btn.onclick = () => eval(b.action);
+    f.appendChild(btn);
+  });
+  document.getElementById('modalOverlay').classList.add('active');
 }
-
-// ============ ATALHOS ============
-document.addEventListener('keydown', (e) => {
-const ctrl = e.ctrlKey;
-const alt = e.altKey;
-const shift = e.shiftKey;
-if (ctrl && !alt && !shift && e.key === 's') { e.preventDefault(); saveStory(); }
-if (ctrl && alt && !shift && e.key === 's') { e.preventDefault(); saveStoryAs(); }
-if (ctrl && alt && !shift && e.key === 'n') { e.preventDefault(); newStory(); }
-if (ctrl && shift && e.key === 'W') { e.preventDefault(); convertTo('docx'); }
-if (ctrl && shift && e.key === 'P') { e.preventDefault(); convertTo('pdf'); }
-if (ctrl && shift && e.key === 'K') { e.preventDefault(); convertTo('kindle'); }
-if (ctrl && shift && e.key === 'T') { e.preventDefault(); convertTo('txt'); }
-if (ctrl && shift && e.key === 'X') { e.preventDefault(); convertTo('xhtml'); }
-if (ctrl && shift && e.key === 'H') { e.preventDefault(); convertTo('html'); }
-if (ctrl && shift && e.key === 'B') { e.preventDefault(); execCmd('bold'); }
-if (ctrl && shift && e.key === 'I') { e.preventDefault(); execCmd('italic'); }
-if (ctrl && shift && e.key === 'U') { e.preventDefault(); execCmd('underline'); }
-if (ctrl && shift && e.key === 'E') { e.preventDefault(); execCmd('justifyLeft'); }
-if (ctrl && shift && e.key === 'D') { e.preventDefault(); execCmd('justifyRight'); }
-if (ctrl && shift && e.key === 'C') { e.preventDefault(); execCmd('justifyCenter'); }
-if (ctrl && alt && e.key === 'p') { e.preventDefault(); switchTab('characters'); }
-if (ctrl && alt && e.key === 'i') { e.preventDefault(); switchTab('personal'); }
-if (ctrl && alt && e.key === 'c') { e.preventDefault(); switchTab('chapters'); }
-if (ctrl && alt && e.key === '1') { e.preventDefault(); switchTab('futuro-prox'); }
-if (ctrl && alt && e.key === '2') { e.preventDefault(); switchTab('futuro-med'); }
-if (ctrl && alt && e.key === '3') { e.preventDefault(); switchTab('futuro-final'); }
-if (ctrl && alt && e.key === 'm') { e.preventDefault(); switchTab('temporaria'); }
-if (ctrl && alt && e.key === 't') { e.preventDefault(); switchTab('timeline'); }
-if (ctrl && alt && e.key === 'a') { e.preventDefault(); toggleAlerts(); }
-if (ctrl && alt && e.key === 'r') { e.preventDefault(); toggleRevisor(); }
-if (ctrl && shift && e.key === 'V') { e.preventDefault(); toggleNarration(); }
-if (ctrl && shift && e.key === 'G') { e.preventDefault(); toggleRecording(); }
-if (ctrl && shift && e.key === ';') {
-e.preventDefault();
-document.getElementById('chkDictionary').checked = !document.getElementById('chkDictionary').checked;
-toggleDictionaryPopup();
-}
-if (ctrl && shift && e.key === "'") {
-e.preventDefault();
-document.getElementById('chkPhraseSuggestion').checked = !document.getElementById('chkPhraseSuggestion').checked;
-togglePhraseSuggestion();
-}
-if (ctrl && alt && e.key === 'y') { e.preventDefault(); insertCharacter(); }
-if (ctrl && alt && e.key === 'u') { e.preventDefault(); insertCharacteristic(); }
-if (ctrl && alt && e.key === 'w') { e.preventDefault(); applyA5Format(); }
-if (ctrl && !alt && !shift && e.key === 'f') { e.preventDefault(); toggleSearchReplace(); }
-if (ctrl && shift && e.key === '?') { e.preventDefault(); showShortcuts(); }
-});
-function showShortcuts() {
-showModal('⌨️ Atalhos do Teclado', `
-<div style="font-size: 12px; line-height: 1.8;">
-<h3 style="color: var(--accent-hover);">Arquivo</h3>
-<div>Ctrl+S - Salvar (com Push automático)</div>
-<div>Ctrl+Alt+S - Salvar Como</div>
-<div>Ctrl+Alt+N - Nova História</div>
-<h3 style="color: var(--accent-hover); margin-top: 12px;">Conversão</h3>
-<div>Ctrl+Shift+W - Word</div>
-<div>Ctrl+Shift+P - PDF</div>
-<div>Ctrl+Shift+K - Kindle</div>
-<div>Ctrl+Shift+T - TXT</div>
-<div>Ctrl+Shift+X - XHTML</div>
-<div>Ctrl+Shift+H - HTML</div>
-<h3 style="color: var(--accent-hover); margin-top: 12px;">Formatação</h3>
-<div>Ctrl+Shift+B - Negrito</div>
-<div>Ctrl+Shift+I - Itálico</div>
-<div>Ctrl+Shift+U - Sublinhado</div>
-<div>Ctrl+Shift+E - Esquerda</div>
-<div>Ctrl+Shift+C - Centro</div>
-<div>Ctrl+Shift+D - Direita</div>
-<h3 style="color: var(--accent-hover); margin-top: 12px;">Janelas</h3>
-<div>Ctrl+Alt+P - Personagens</div>
-<div>Ctrl+Alt+I - Pessoais</div>
-<div>Ctrl+Alt+C - Capítulos</div>
-<div>Ctrl+Alt+1/2/3 - Futuro</div>
-<div>Ctrl+Alt+M - Temporária</div>
-<div>Ctrl+Alt+T - Timeline</div>
-<div>Ctrl+Alt+R - Revisor</div>
-<h3 style="color: var(--accent-hover); margin-top: 12px;">Áudio</h3>
-<div>Ctrl+Shift+V - Narrar</div>
-<div>Ctrl+Shift+G - Gravar</div>
-<h3 style="color: var(--accent-hover); margin-top: 12px;">Dicionário</h3>
-<div>Ctrl+Shift+; - Toggle Dicionário</div>
-<div>Ctrl+Shift+' - Toggle Frases</div>
-<h3 style="color: var(--accent-hover); margin-top: 12px;">Ações Rápidas</h3>
-<div>Ctrl+Alt+Y - Inserir Personagem</div>
-<div>Ctrl+Alt+U - Inserir Característica</div>
-<div>Ctrl+Alt+W - Formato A5</div>
-</div>
-`, [
-{ text: 'Fechar', action: 'closeModal()' }
-]);
-}
-function showAbout() {
-showModal('ℹ️ Sobre', `
-<div style="text-align: center; padding: 20px;">
-<h2 style="color: var(--accent-hover);">📖 Sistema de Editor de Livros</h2>
-<p style="margin-top: 12px;">Versão 2.0 - Com GitHub Integrado e Sync Automático</p>
-<p style="margin-top: 8px; color: var(--text-secondary);">
-Sistema completo de escrita de livros/narrativas com:<br>
-✨ Edição de texto rico<br>
-👥 Gestão de personagens<br>
-📅 Timeline automática<br>
-🔍 Revisor narrativo<br>
-📚 Dicionário multilíngue otimizado<br>
-☁️ Sincronização GitHub automática<br>
-📄 Conversão múltipla<br>
-📱 Interface mobile responsiva
-</p>
-<p style="margin-top: 16px; font-size: 11px; color: var(--text-secondary);">
-© 2026 - Desenvolvido com HTML/CSS/JS
-</p>
-</div>
-`, [
-{ text: 'Fechar', action: 'closeModal()' }
-]);
-}
-function initializeEvents() {
-document.getElementById('modalOverlay').addEventListener('click', (e) => {
-if (e.target.id === 'modalOverlay') closeModal();
-});
-makeDraggable('dictionaryPopup');
-makeDraggable('phrasePopup');
-makeDraggable('conflictPopup');
-makeDraggable('profilePopup');
-let easterEggBuffer = '';
-document.getElementById('editor').addEventListener('input', (e) => {
-easterEggBuffer += e.data || '';
-if (easterEggBuffer.length > 20) easterEggBuffer = easterEggBuffer.slice(-20);
-if (easterEggBuffer.toLowerCase().includes('easteregg')) {
-showShortcuts();
-easterEggBuffer = '';
-}
-});
-}
-function makeDraggable(popupId) {
-const popup = document.getElementById(popupId);
-const header = popup.querySelector('.popup-header');
-let isDragging = false;
-let offsetX, offsetY;
-header.addEventListener('mousedown', (e) => {
-isDragging = true;
-offsetX = e.clientX - popup.offsetLeft;
-offsetY = e.clientY - popup.offsetTop;
-e.preventDefault();
-});
-document.addEventListener('mousemove', (e) => {
-if (!isDragging) return;
-popup.style.left = (e.clientX - offsetX) + 'px';
-popup.style.top = (e.clientY - offsetY) + 'px';
-popup.style.right = 'auto';
-popup.style.bottom = 'auto';
-});
-document.addEventListener('mouseup', () => {
-isDragging = false;
-});
-}
-console.log('📖 Sistema de Editor de Livros v2.0 carregado');
-console.log('💡 Digite "easteregg" no editor para ver os atalhos');
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
 </script>
 </body>
 </html>
