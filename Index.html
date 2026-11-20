@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GraphZo Editor v3.3 --- GITHUB --- CYBERPUNK FORMAT-SYNC</title>
+<title>GraphZo Editor v3.3 // CYBERPUNK FORMAT-SYNC</title>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;600&family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -370,7 +370,9 @@
     box-shadow: 0 0 15px var(--neon-magenta);
   }
 
-  /* BARRA DE FORMATAÇÃO */
+  /* ============================================================
+     BARRA DE FORMATAÇÃO
+     ============================================================ */
   .format-toolbar {
     display: flex;
     gap: 8px;
@@ -441,8 +443,14 @@
     font-weight: bold;
     letter-spacing: 1px;
     height: 36px;
+    animation: glow-green 2s infinite;
   }
   .btn-apply-fmt:hover { background: var(--neon-green) !important; color: var(--bg-dark) !important; }
+
+  @keyframes glow-green {
+    0%, 100% { box-shadow: 0 0 6px rgba(0, 255, 102, 0.4); }
+    50% { box-shadow: 0 0 16px rgba(0, 255, 102, 0.8); }
+  }
 
   .btn-clear-fmt {
     border-color: var(--neon-magenta) !important;
@@ -451,8 +459,14 @@
     font-weight: bold;
     letter-spacing: 1px;
     height: 36px;
+    animation: glow-magenta 2s infinite;
   }
   .btn-clear-fmt:hover { background: var(--neon-magenta) !important; color: #fff !important; }
+
+  @keyframes glow-magenta {
+    0%, 100% { box-shadow: 0 0 6px rgba(255, 0, 85, 0.4); }
+    50% { box-shadow: 0 0 16px rgba(255, 0, 85, 0.8); }
+  }
 
   .btn-nav-top,
   .btn-nav-bottom {
@@ -460,12 +474,26 @@
     min-width: 44px;
     font-size: 0.9rem;
     height: 36px;
+  }
+
+  .btn-nav-top {
     border-color: var(--neon-cyan) !important;
     color: var(--neon-cyan) !important;
   }
-  .btn-nav-top:hover, .btn-nav-bottom:hover {
+  .btn-nav-top:hover {
     background: var(--neon-cyan) !important;
     color: var(--bg-dark) !important;
+    box-shadow: var(--border-glow);
+  }
+
+  .btn-nav-bottom {
+    border-color: var(--neon-green) !important;
+    color: var(--neon-green) !important;
+  }
+  .btn-nav-bottom:hover {
+    background: var(--neon-green) !important;
+    color: var(--bg-dark) !important;
+    box-shadow: 0 0 10px var(--neon-green);
   }
 
   .format-hint {
@@ -509,13 +537,48 @@
     display: none;
   }
 
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--neon-magenta); }
+
   @media (max-width: 850px) {
-    html, body { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
-    .main-container { flex-direction: column; overflow: visible; flex: none; }
-    .sidebar { width: 100%; max-height: none; overflow: visible; border-right: none; border-bottom: 1px solid rgba(0, 243, 255, 0.2); padding: 12px; gap: 12px; flex-shrink: 0; }
-    .editor-wrapper { padding: 12px; overflow: visible; flex: none; }
-    .editor-container { height: 70vh; min-height: 420px; flex: none; }
-    #editor { height: 100%; padding: 16px; font-size: 15px; }
+    html, body {
+      height: auto;
+      min-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .main-container {
+      flex-direction: column;
+      overflow: visible;
+      flex: none;
+    }
+    .sidebar {
+      width: 100%;
+      max-height: none;
+      overflow: visible;
+      border-right: none;
+      border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+      padding: 12px;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .editor-wrapper {
+      padding: 12px;
+      overflow: visible;
+      flex: none;
+    }
+    .editor-container {
+      height: 70vh;
+      min-height: 420px;
+      flex: none;
+    }
+    #editor {
+      height: 100%;
+      padding: 16px;
+      font-size: 15px;
+    }
     header { padding: 10px 14px; }
     header h1 { font-size: 1rem; letter-spacing: 1px; }
     .status-indicator { font-size: 0.68rem; padding: 4px 10px; }
@@ -523,11 +586,14 @@
     .search-widget label { font-size: 0.7rem; }
     .search-widget input { font-size: 0.85rem; min-width: 100%; order: 2; }
     .search-counter { order: 3; }
-    .search-nav-btn, .search-highlight-toggle, .search-widget .btn-magenta { order: 4; }
+    .search-nav-btn,
+    .search-highlight-toggle,
+    .search-widget .btn-magenta { order: 4; }
     .search-info { order: 5; text-align: left; min-width: 0; width: 100%; }
     .format-toolbar { gap: 6px; padding: 8px; }
     .format-toolbar > div { flex: 1 1 calc(50% - 6px); min-width: 100px; }
-    .format-toolbar select, .format-toolbar input[type="color"] { width: 100%; min-width: 0; }
+    .format-toolbar select,
+    .format-toolbar input[type="color"] { width: 100%; min-width: 0; }
     .format-hint { display: none; }
   }
 </style>
@@ -535,7 +601,7 @@
 <body>
 
 <header>
-  <h1><i class="fa-solid fa-terminal"></i> GRAPHZO EDITOR - GITHUB - <span style="color: var(--neon-magenta);">v3.3</span></h1>
+  <h1><i class="fa-solid fa-terminal"></i> GRAPHZO EDITOR <span style="color: var(--neon-magenta);">v3.3</span></h1>
   <div class="status-indicator">
     <div class="pulse" id="statusPulse"></div>
     <span id="statusText">NEURAL LINK ACTIVE</span>
@@ -543,47 +609,74 @@
 </header>
 
 <div class="main-container">
+
   <aside class="sidebar">
+
     <div class="panel">
       <div class="panel-title"><i class="fa-brands fa-github"></i> // CONEXÃO GITHUB</div>
+
       <label><i class="fa-solid fa-key"></i> Token Number</label>
       <input type="password" id="ghToken" placeholder="Cole o token do GitHub..." onchange="persistConfig()">
+
       <label><i class="fa-solid fa-box-archive"></i> Repositório</label>
       <input type="text" id="ghRepo" placeholder="usuario/repositorio" value="andreyoldekamp-del/GraphZoBackup" onchange="persistConfig()">
+
       <label><i class="fa-solid fa-folder"></i> Pasta</label>
       <input type="text" id="ghFolder" placeholder="historias" value="historias" onchange="persistConfig()">
+
       <label><i class="fa-solid fa-list-check"></i> Selecionar da Pasta</label>
       <select id="ghFileSelect" onchange="onSelectFileChange()">
         <option value="">-- Clique em Listar --</option>
       </select>
+
       <div class="btn-group">
         <button onclick="listFiles()"><i class="fa-solid fa-rotate"></i> Listar</button>
         <button onclick="loadFile()" class="btn-magenta"><i class="fa-solid fa-cloud-arrow-down"></i> Carregar</button>
         <button onclick="saveFile()" class="btn-yellow" id="btnSaveGh"><i class="fa-solid fa-cloud-arrow-up"></i> Salvar no GitHub</button>
-        <button onclick="deleteFile()" class="btn-magenta"><i class="fa-solid fa-trash-can"></i> Deletar</button>
+        <button onclick="deleteFile()" class="btn-magenta" title="Deletar arquivo do GitHub permanentemente"><i class="fa-solid fa-trash-can"></i> Deletar</button>
       </div>
+
       <div id="toastGh" class="toast-bar"></div>
     </div>
 
     <div class="panel">
       <div class="panel-title"><i class="fa-solid fa-microchip"></i> // CONTROLES LOCAIS</div>
       <input type="file" id="localFileInput" style="display:none;" accept=".html,.xhtml,.txt,.md" onchange="handleLocalFile(event)">
+
       <div class="btn-group">
         <button onclick="document.getElementById('localFileInput').click()"><i class="fa-solid fa-folder-open"></i> Abrir PC</button>
         <button onclick="downloadPC()"><i class="fa-solid fa-download"></i> Baixar PC</button>
         <button onclick="toggleRawCode()"><i class="fa-solid fa-code"></i> HTML Bruto</button>
-        <button onclick="clearEditor()" class="btn-magenta"><i class="fa-solid fa-trash"></i> Limpar Editor</button>
+        <button onclick="clearEditor()" class="btn-magenta" title="Apagar todo o conteúdo e resetar formatação">
+          <i class="fa-solid fa-trash"></i> Limpar Editor
+        </button>
       </div>
+
       <div style="margin-top: 14px; font-size: 0.73rem; color: var(--text-dim); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
-        <strong style="color: var(--neon-cyan);">METADADOS:</strong><br>
+        <strong style="color: var(--neon-cyan);">METADADOS DO LIVRO:</strong><br>
         Nome: <span id="infoName" style="color:#fff;">-</span><br>
         SHA: <span id="infoSHA" style="color:var(--neon-yellow);">Não gravado</span>
       </div>
+
       <div id="debugConsole" class="debug-box"></div>
     </div>
+
   </aside>
 
   <main class="editor-wrapper">
+
+    <div class="search-widget">
+      <label><i class="fa-solid fa-magnifying-glass"></i> BUSCA NEURAL:</label>
+      <input type="text" id="searchInput" placeholder="Digite a palavra para localizar no texto..." autocomplete="off" spellcheck="false">
+      <button onclick="clearSearchWidget()" class="btn-magenta" title="Limpar busca (X)"><i class="fa-solid fa-xmark"></i></button>
+      <span class="search-counter" id="searchCounter">0/0</span>
+      <button class="search-nav-btn" id="btnSearchPrev" title="Anterior (Shift+Enter)" disabled><i class="fa-solid fa-chevron-up"></i></button>
+      <button class="search-nav-btn" id="btnSearchNext" title="Próximo (Enter)" disabled><i class="fa-solid fa-chevron-down"></i></button>
+      <button class="search-highlight-toggle active" id="btnToggleHighlight" title="Alternar realce de todos os resultados"><i class="fa-solid fa-highlighter"></i></button>
+      
+      <span class="search-info" id="searchInfo">Aguardando termo...</span>
+    </div>
+
     <div class="editor-info-bar">
       <span>LIVRO ATIVO: <strong id="currentFileName" style="color: var(--neon-cyan);">nenhum_livro_aberto.html</strong></span>
       <span id="editorStatusText" style="color: var(--neon-yellow);">PRONTO</span>
@@ -596,115 +689,241 @@
 
     <div class="format-toolbar">
       <div class="format-buttons">
-        <button class="fmt-btn" id="fmtBold" title="Negrito"><i class="fa-solid fa-bold"></i></button>
-        <button class="fmt-btn" id="fmtItalic" title="Itálico"><i class="fa-solid fa-italic"></i></button>
-        <button class="fmt-btn" id="fmtUnderline" title="Sublinhado"><i class="fa-solid fa-underline"></i></button>
+        <button class="fmt-btn" id="fmtBold" title="Negrito (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+        <button class="fmt-btn" id="fmtItalic" title="Itálico (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+        <button class="fmt-btn" id="fmtUnderline" title="Sublinhado (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
         <button class="fmt-btn" id="fmtStrike" title="Riscado"><i class="fa-solid fa-strikethrough"></i></button>
       </div>
+
       <div>
         <label>Fonte</label>
         <select id="fontFamily">
           <option value="'Share Tech Mono', monospace">Cyber Mono</option>
+          <option value="'Comfortaa', cursive">Comfortaa</option>
+          <option value="Inter, sans-serif">Inter</option>
           <option value="Arial, sans-serif">Arial</option>
           <option value="Georgia, serif">Georgia</option>
           <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="'Courier New', monospace">Courier New</option>
         </select>
       </div>
+
       <div>
         <label>Tamanho</label>
         <select id="fontSize">
+          <option value="12px">12 px</option>
           <option value="14px">14 px</option>
           <option value="16px" selected>16 px</option>
           <option value="18px">18 px</option>
+          <option value="20px">20 px</option>
           <option value="24px">24 px</option>
         </select>
       </div>
+
       <div>
-        <label>Cor</label>
+        <label>Cor do Texto</label>
         <input type="color" id="textColor" value="#e0e6ed">
       </div>
-      <div class="format-buttons">
-        <button class="btn-apply-fmt" id="btnApplyFormat"><i class="fa-solid fa-wand-magic-sparkles"></i> Aplicar</button>
-        <button class="btn-clear-fmt" id="btnClearFormat"><i class="fa-solid fa-eraser"></i> Limpar</button>
+
+      <div>
+        <label>Fundo do Texto</label>
+        <input type="color" id="bgColor" value="#050508">
       </div>
+
+      <div class="format-buttons">
+        <button class="btn-apply-fmt" id="btnApplyFormat" title="Aplicar formatação ao texto selecionado">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Aplicar Formatação
+        </button>
+        <button class="btn-clear-fmt" id="btnClearFormat" title="Remover formatação do texto selecionado (incluindo hiperlinks do Word)">
+          <i class="fa-solid fa-eraser"></i> Limpar Formatação
+        </button>
+      </div>
+
+      <div class="format-buttons">
+        <button class="btn-nav-top" onclick="scrollToTop()" title="Ir para o início"><i class="fa-solid fa-angles-up"></i></button>
+        <button class="btn-nav-bottom" onclick="scrollToBottom()" title="Ir para o fim"><i class="fa-solid fa-angles-down"></i></button>
+      </div>
+
+      <span class="format-hint" id="formatHint">
+        <i class="fa-solid fa-info-circle"></i> Selecione um trecho no editor e clique em <strong>Aplicar Formatação</strong>
+      </span>
     </div>
+
   </main>
 </div>
 
 <script>
-const state = { sha: '', path: '', fileName: '', isRawView: false };
-const STORAGE_KEYS = { TOKEN: 'graphzo_cyber_token', REPO: 'graphzo_cyber_repo', FOLDER: 'graphzo_cyber_folder' };
+/* ============================================================
+   ESTADO GLOBAL
+   ============================================================ */
+const state = {
+  sha: '',
+  path: '',
+  fileName: '',
+  isRawView: false,
+  searchTerm: '',
+  searchHits: [],
+  searchIndex: -1,
+  highlightAll: true,
+  savedRange: null
+};
 
-window.addEventListener('load', () => {
-  loadPersistedConfig();
-  setupEditorListeners();
-  showToast('Sistemas operacionais ativados.', 'success');
-});
+const STORAGE_KEYS = {
+  TOKEN: 'graphzo_cyber_token',
+  REPO: 'graphzo_cyber_repo',
+  FOLDER: 'graphzo_cyber_folder',
+  LAST_FILE: 'graphzo_cyber_last_file'
+};
 
+/* ============================================================
+   LOG / DEBUG
+   ============================================================ */
 function log(msg, type = 'info') {
   const box = document.getElementById('debugConsole');
   box.style.display = 'block';
+  const time = new Date().toLocaleTimeString();
   const line = document.createElement('div');
-  line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+  line.textContent = `[${time}] ${msg}`;
   line.style.color = type === 'error' ? 'var(--neon-magenta)' : type === 'ok' ? 'var(--neon-green)' : 'var(--neon-cyan)';
   box.appendChild(line);
   box.scrollTop = box.scrollHeight;
+  console.log(`[GraphZo] ${msg}`);
 }
 
 function showToast(msg, type = 'info') {
   const el = document.getElementById('toastGh');
   el.className = `toast-bar toast-${type}`;
-  el.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
+  const icon = type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info';
+  el.innerHTML = `<i class="fa-solid ${icon}"></i> ${msg}`;
   el.style.display = 'flex';
-  setTimeout(() => { el.style.display = 'none'; }, 4000);
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.display = 'none'; }, 5000);
 }
 
+function setStatus(text, color) {
+  const el = document.getElementById('statusText');
+  el.textContent = text;
+  el.style.color = color || 'var(--neon-yellow)';
+}
+
+/* ============================================================
+   PERSISTÊNCIA
+   ============================================================ */
 function persistConfig() {
-  localStorage.setItem(STORAGE_KEYS.TOKEN, document.getElementById('ghToken').value.trim());
-  localStorage.setItem(STORAGE_KEYS.REPO, document.getElementById('ghRepo').value.trim());
-  localStorage.setItem(STORAGE_KEYS.FOLDER, document.getElementById('ghFolder').value.trim());
+  const token = document.getElementById('ghToken').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  const folder = document.getElementById('ghFolder').value.trim();
+  if (token) localStorage.setItem(STORAGE_KEYS.TOKEN, token);
+  if (repo) localStorage.setItem(STORAGE_KEYS.REPO, repo);
+  if (folder) localStorage.setItem(STORAGE_KEYS.FOLDER, folder);
 }
 
 function loadPersistedConfig() {
-  if (localStorage.getItem(STORAGE_KEYS.TOKEN)) document.getElementById('ghToken').value = localStorage.getItem(STORAGE_KEYS.TOKEN);
-  if (localStorage.getItem(STORAGE_KEYS.REPO)) document.getElementById('ghRepo').value = localStorage.getItem(STORAGE_KEYS.REPO);
-  if (localStorage.getItem(STORAGE_KEYS.FOLDER)) document.getElementById('ghFolder').value = localStorage.getItem(STORAGE_KEYS.FOLDER);
+  const t = localStorage.getItem(STORAGE_KEYS.TOKEN);
+  const r = localStorage.getItem(STORAGE_KEYS.REPO);
+  const f = localStorage.getItem(STORAGE_KEYS.FOLDER);
+  if (t) document.getElementById('ghToken').value = t;
+  if (r) document.getElementById('ghRepo').value = r;
+  if (f) document.getElementById('ghFolder').value = f;
 }
 
-function setupEditorListeners() {
-  document.getElementById('btnApplyFormat').onclick = () => {
-    const font = document.getElementById('fontFamily').value;
-    const size = document.getElementById('fontSize').value;
-    const color = document.getElementById('textColor').value;
-    const selection = window.getSelection();
-    if (!selection.rangeCount || selection.isCollapsed) return showToast('Selecione um texto primeiro!', 'error');
-    const span = document.createElement('span');
-    span.style.fontFamily = font;
-    span.style.fontSize = size;
-    span.style.color = color;
-    span.appendChild(selection.getRangeAt(0).extractContents());
-    selection.getRangeAt(0).insertNode(span);
-    showToast('Formatação aplicada com sucesso!', 'success');
-  };
-
-  document.getElementById('btnClearFormat').onclick = () => {
-    const selection = window.getSelection();
-    if (!selection.rangeCount || selection.isCollapsed) return showToast('Selecione um texto primeiro!', 'error');
-    document.execCommand('removeFormat', false, null);
-    showToast('Formatação limpa.', 'info');
-  };
+/* ============================================================
+   BASE64 → UTF-8
+   ============================================================ */
+function safeBase64Decode(b64) {
+  const clean = String(b64).replace(/\s/g, '');
+  const binary = atob(clean);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  let text = new TextDecoder('utf-8').decode(bytes);
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  return text;
 }
 
-function clearEditor() {
-  if (confirm('Tem certeza que deseja limpar todo o conteúdo do editor?')) {
-    document.getElementById('editor').innerHTML = '';
-    state.sha = '';
-    state.path = '';
-    state.fileName = '';
-    document.getElementById('infoSHA').textContent = 'Não gravado';
-    updateFileLabels();
-    showToast('Editor limpo.', 'info');
+/* ============================================================
+   NORMALIZAÇÃO DE CORES ESCURAS
+   ============================================================ */
+function normalizeDarkColors(container) {
+  if (!container) return;
+  const DARK_THRESHOLD = 180;
+  const LIGHT_REPLACEMENT = '#e0e6ed';
+  const BG_REPLACEMENT = 'transparent';
+
+  function parseRgb(str) {
+    if (!str) return null;
+    const m = str.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+)\s*)?\)/i);
+    if (!m) return null;
+    return { r: +m[1], g: +m[2], b: +m[3], a: m[4] !== undefined ? +m[4] : 1 };
   }
+  function parseHex(str) {
+    if (!str) return null;
+    const m = str.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+    if (!m) return null;
+    let hex = m[1];
+    if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+    return {
+      r: parseInt(hex.substring(0, 2), 16),
+      g: parseInt(hex.substring(2, 4), 16),
+      b: parseInt(hex.substring(4, 6), 16)
+    };
+  }
+  function luminance(str) {
+    const rgb = parseRgb(str) || parseHex(str);
+    if (!rgb) return null;
+    return 0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b;
+  }
+  function fixElement(el) {
+    try {
+      if (!el || el.nodeType !== 1) return;
+      if (el === container) return;
+      if (el.tagName === 'STYLE' || el.tagName === 'SCRIPT') return;
+      const computed = window.getComputedStyle(el);
+      const colorLum = luminance(computed.color);
+      const bgLum = luminance(computed.backgroundColor);
+      if (colorLum !== null && colorLum < DARK_THRESHOLD) el.style.color = LIGHT_REPLACEMENT;
+      if (bgLum !== null && bgLum < DARK_THRESHOLD) {
+        const bg = parseRgb(computed.backgroundColor);
+        if (bg && bg.a > 0.05) el.style.backgroundColor = BG_REPLACEMENT;
+      }
+      if (el.tagName === 'FONT' && el.hasAttribute('color')) {
+        const fLum = luminance(el.getAttribute('color'));
+        if (fLum !== null && fLum < DARK_THRESHOLD) {
+          el.removeAttribute('color');
+          el.style.color = LIGHT_REPLACEMENT;
+        }
+      }
+    } catch (e) {}
+  }
+  const all = Array.from(container.querySelectorAll('*'));
+  const BATCH = 250;
+  for (let i = 0; i < all.length; i += BATCH) {
+    all.slice(i, i + BATCH).forEach(fixElement);
+  }
+  fixElement(container);
+}
+
+/* ============================================================
+   EXTRATOR DE <body>
+   ============================================================ */
+function extractReadableHtml(raw) {
+  if (!raw) return '';
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(raw, 'application/xhtml+xml');
+    if (!doc.querySelector('parsererror')) {
+      const body = doc.querySelector('body');
+      if (body && body.innerHTML.trim()) return body.innerHTML;
+      const html = doc.querySelector('html');
+      if (html && html.innerHTML.trim()) return html.innerHTML;
+    }
+  } catch (e) {}
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(raw, 'text/html');
+    const body = doc.querySelector('body');
+    if (body && body.innerHTML.trim()) return body.innerHTML;
+  } catch (e) {}
+  return raw;
 }
 
 function updateFileLabels() {
@@ -712,166 +931,1009 @@ function updateFileLabels() {
   document.getElementById('infoName').textContent = state.fileName || '-';
 }
 
-function toggleRawCode() {
-  const ed = document.getElementById('editor');
-  const raw = document.getElementById('rawHtmlViewer');
-  state.isRawView = !state.isRawView;
-  if (state.isRawView) {
-    raw.value = ed.innerHTML;
-    ed.style.display = 'none';
-    raw.style.display = 'block';
-  } else {
-    ed.innerHTML = raw.value;
-    raw.style.display = 'none';
-    ed.style.display = 'block';
+/* ============================================================
+   FORMATAÇÃO — APLICAR NA SELEÇÃO
+   ============================================================ */
+function saveSelection() {
+  const sel = window.getSelection();
+  if (sel && sel.rangeCount > 0) {
+    const range = sel.getRangeAt(0);
+    const editor = document.getElementById('editor');
+    if (editor.contains(range.commonAncestorContainer)) {
+      state.savedRange = range.cloneRange();
+      return true;
+    }
+  }
+  return false;
+}
+
+function restoreSelection() {
+  if (!state.savedRange) return false;
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(state.savedRange);
+  return true;
+}
+
+function hasSelectionInEditor() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return false;
+  if (sel.isCollapsed) return false;
+  const editor = document.getElementById('editor');
+  return editor.contains(sel.getRangeAt(0).commonAncestorContainer);
+}
+
+function applyInlineCommand(cmd) {
+  const editor = document.getElementById('editor');
+  editor.focus();
+  if (state.savedRange) restoreSelection();
+  try {
+    document.execCommand(cmd, false, null);
+    updateFormatButtons();
+    log(`Formatação aplicada: ${cmd}`, 'ok');
+  } catch (e) {
+    showToast(`Erro ao aplicar ${cmd}: ${e.message}`, 'error');
   }
 }
 
+function updateFormatButtons() {
+  const cmds = { fmtBold: 'bold', fmtItalic: 'italic', fmtUnderline: 'underline', fmtStrike: 'strikeThrough' };
+  for (const [id, cmd] of Object.entries(cmds)) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    try {
+      if (document.queryCommandState(cmd)) btn.classList.add('active');
+      else btn.classList.remove('active');
+    } catch (e) { btn.classList.remove('active'); }
+  }
+}
+
+function applyFormatToSelection() {
+  const editor = document.getElementById('editor');
+
+  if (!hasSelectionInEditor()) {
+    if (state.savedRange) restoreSelection();
+    if (!hasSelectionInEditor()) {
+      showToast('Selecione um trecho de texto no editor primeiro!', 'error');
+      document.getElementById('formatHint').innerHTML =
+        '<i class="fa-solid fa-triangle-exclamation"></i> <strong style="color: var(--neon-magenta);">Nenhum texto selecionado!</strong>';
+      setTimeout(() => {
+        document.getElementById('formatHint').innerHTML =
+          '<i class="fa-solid fa-info-circle"></i> Selecione um trecho no editor e clique em <strong>Aplicar Formatação</strong>';
+      }, 3000);
+      return;
+    }
+  }
+
+  const font = document.getElementById('fontFamily').value;
+  const size = document.getElementById('fontSize').value;
+  const color = document.getElementById('textColor').value;
+  const bg = document.getElementById('bgColor').value;
+
+  editor.focus();
+
+  try { document.execCommand('fontName', false, font); } catch (e) { log(`fontName falhou: ${e.message}`, 'error'); }
+  try { document.execCommand('fontSize', false, '7'); } catch (e) { log(`fontSize falhou: ${e.message}`, 'error'); }
+  try { document.execCommand('foreColor', false, color); } catch (e) { log(`foreColor falhou: ${e.message}`, 'error'); }
+  try { document.execCommand('hiliteColor', false, bg); } catch (e) { log(`hiliteColor falhou: ${e.message}`, 'error'); }
+
+  fixFontSizeInSelection(size);
+
+  updateFormatButtons();
+  showToast(`Formatação aplicada: ${font.split(',')[0]} / ${size}`, 'success');
+  log(`Formatação aplicada — fonte=${font} size=${size} cor=${color} fundo=${bg}`, 'ok');
+
+  state.savedRange = null;
+}
+
+function fixFontSizeInSelection(sizePx) {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  const range = sel.getRangeAt(0);
+  const editor = document.getElementById('editor');
+
+  const container = range.commonAncestorContainer;
+  const root = container.nodeType === 1 ? container : container.parentNode;
+  if (!root || !editor.contains(root)) return;
+
+  const fontTags = [];
+  if (root.tagName === 'FONT' && root.getAttribute('size') === '7') fontTags.push(root);
+  root.querySelectorAll('font[size="7"]').forEach(f => fontTags.push(f));
+
+  fontTags.forEach(fontEl => {
+    const span = document.createElement('span');
+    span.style.fontSize = sizePx;
+    span.style.fontFamily = document.getElementById('fontFamily').value;
+    while (fontEl.firstChild) span.appendChild(fontEl.firstChild);
+    fontEl.parentNode.replaceChild(span, fontEl);
+  });
+
+  const allFonts = editor.querySelectorAll('font');
+  allFonts.forEach(f => {
+    if (range.intersectsNode(f)) {
+      f.style.fontFamily = document.getElementById('fontFamily').value;
+      f.style.fontSize = sizePx;
+    }
+  });
+}
+
+/* ============================================================
+   LIMPAR FORMATAÇÃO DA SELEÇÃO (ANTI-WORD HYPERLINK)
+   ============================================================ */
+function clearFormatToSelection() {
+  const editor = document.getElementById('editor');
+
+  if (!hasSelectionInEditor()) {
+    if (state.savedRange) restoreSelection();
+    if (!hasSelectionInEditor()) {
+      showToast('Selecione um trecho de texto no editor primeiro!', 'error');
+      document.getElementById('formatHint').innerHTML =
+        '<i class="fa-solid fa-triangle-exclamation"></i> <strong style="color: var(--neon-magenta);">Nenhum texto selecionado!</strong>';
+      setTimeout(() => {
+        document.getElementById('formatHint').innerHTML =
+          '<i class="fa-solid fa-info-circle"></i> Selecione um trecho no editor e clique em <strong>Aplicar Formatação</strong>';
+      }, 3000);
+      return;
+    }
+  }
+
+  editor.focus();
+
+  try { document.execCommand('removeFormat', false, null); } catch (e) { log(`removeFormat falhou: ${e.message}`, 'error'); }
+
+  try {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      
+      const links = editor.querySelectorAll('a');
+      links.forEach(a => {
+        if (range.intersectsNode(a)) {
+          const parent = a.parentNode;
+          while (a.firstChild) {
+            parent.insertBefore(a.firstChild, a);
+          }
+          parent.removeChild(a);
+        }
+      });
+
+      editor.querySelectorAll('font').forEach(f => {
+        if (range.intersectsNode(f)) {
+          f.removeAttribute('color');
+          f.removeAttribute('face');
+          f.removeAttribute('size');
+          f.removeAttribute('style');
+        }
+      });
+
+      editor.querySelectorAll('[style]').forEach(el => {
+        if (range.intersectsNode(el) && el !== editor) {
+          el.style.textDecoration = 'none';
+          el.style.color = '#ffffff';
+          el.style.backgroundColor = 'transparent';
+          if (el.className && el.className.toLowerCase().includes('mso')) {
+            el.removeAttribute('class');
+          }
+        }
+      });
+    }
+  } catch (e) { log(`Limpeza residual falhou: ${e.message}`, 'error'); }
+
+  try { document.execCommand('fontName', false, 'Arial, sans-serif'); } catch (e) {}
+  try { document.execCommand('fontSize', false, '7'); } catch (e) {}
+  try { document.execCommand('foreColor', false, '#ffffff'); } catch (e) {}
+  try { document.execCommand('hiliteColor', false, 'transparent'); } catch (e) {}
+  try { document.execCommand('underline', false, null); } catch (e) {}
+
+  try {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      
+      editor.querySelectorAll('font[size="7"]').forEach(fontEl => {
+        if (range.intersectsNode(fontEl)) {
+          const span = document.createElement('span');
+          span.style.fontFamily = 'Arial, sans-serif';
+          span.style.fontSize = '12px';
+          span.style.color = '#ffffff';
+          span.style.backgroundColor = 'transparent';
+          span.style.textDecoration = 'none';
+          while (fontEl.firstChild) span.appendChild(fontEl.firstChild);
+          fontEl.parentNode.replaceChild(span, fontEl);
+        }
+      });
+
+      editor.querySelectorAll('span, p, div, h1, h2, h3, h4, h5, h6').forEach(el => {
+        if (range.intersectsNode(el)) {
+          el.style.fontFamily = 'Arial, sans-serif';
+          el.style.fontSize = '12px';
+          el.style.color = '#ffffff';
+          el.style.backgroundColor = 'transparent';
+          el.style.textDecoration = 'none';
+        }
+      });
+    }
+  } catch (e) { log(`Aplicação padrão falhou: ${e.message}`, 'error'); }
+
+  document.getElementById('fontFamily').value = 'Arial, sans-serif';
+  document.getElementById('fontSize').value = '12px';
+  document.getElementById('textColor').value = '#ffffff';
+  document.getElementById('bgColor').value = '#050508';
+
+  updateFormatButtons();
+  showToast('Formatação removida (incluindo hiperlinks do Word) — Arial 12px branco aplicado.', 'success');
+  log('Limpeza de formatação aplicada na seleção, hiperlinks removidos.', 'ok');
+
+  state.savedRange = null;
+}
+
+/* ============================================================
+   LISTAR ARQUIVOS (CORRIGIDO: SEM HEADERS QUE CAUSAM CORS)
+   ============================================================ */
 async function listFiles() {
+  persistConfig();
   const token = document.getElementById('ghToken').value.trim();
   const repo = document.getElementById('ghRepo').value.trim();
   const folder = document.getElementById('ghFolder').value.trim();
-  if (!token || !repo) return showToast('Preencha o Token e o Repositório!', 'error');
+  const select = document.getElementById('ghFileSelect');
+
+  if (!token || !repo) {
+    showToast('Informe pelo menos o Token e o Repositório!', 'error');
+    return;
+  }
+
+  select.innerHTML = '<option value="">⏳ Consultando API...</option>';
   
-  showToast('Buscando lista de arquivos...', 'info');
+  // O timestamp na URL já é suficiente para quebrar o cache do navegador/GitHub
+  // Removemos os headers 'Cache-Control' e 'Pragma' pois eles forçam um preflight OPTIONS 
+  // que a API do GitHub às vezes rejeita por CORS, causando "Failed to fetch".
+  const url = `https://api.github.com/repos/${repo}/contents/${folder}?t=${Date.now()}`;
+  log(`GET ${url}`);
+
   try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${folder}`, {
-      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
-    });
-    if (!res.ok) throw new Error(`Erro HTTP ${res.status}`);
-    const data = await res.json();
-    const select = document.getElementById('ghFileSelect');
-    select.innerHTML = '<option value="">-- Selecione um livro --</option>';
-    data.forEach(file => {
-      if (file.type === 'file') {
-        const opt = document.createElement('option');
-        opt.value = file.path;
-        opt.textContent = file.name;
-        select.appendChild(opt);
+    const response = await fetch(url, {
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+        'Accept': 'application/vnd.github.v3+json'
       }
     });
-    showToast('Arquivos listados com sucesso!', 'success');
-  } catch (e) {
-    log(`Erro ao listar: ${e.message}`, 'error');
-    showToast(`Erro ao listar: ${e.message}`, 'error');
+    
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(`HTTP ${response.status} — ${body.substring(0, 150)}`);
+    }
+
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error('Resposta inesperada da API.');
+
+    select.innerHTML = '<option value="">-- Selecione um livro --</option>';
+    const files = data.filter(item => item.type === 'file');
+    files.sort((a, b) => a.name.localeCompare(b.name)).forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f.path;
+      opt.textContent = f.name;
+      select.appendChild(opt);
+    });
+
+    showToast(`${files.length} arquivo(s) encontrado(s).`, 'success');
+    log(`Listados ${files.length} arquivos.`, 'ok');
+
+    const lastFile = localStorage.getItem(STORAGE_KEYS.LAST_FILE);
+    if (lastFile && Array.from(select.options).some(o => o.value === lastFile)) {
+      select.value = lastFile;
+      log(`Auto-carregando último arquivo: ${lastFile}`);
+      loadFile(lastFile);
+    } else if (lastFile && !Array.from(select.options).some(o => o.value === lastFile)) {
+      // Se o último arquivo salvo não existe mais na lista, limpamos o localStorage
+      log(`Último arquivo (${lastFile}) não encontrado na lista. Limpando referência.`);
+      localStorage.removeItem(STORAGE_KEYS.LAST_FILE);
+    }
+  } catch (err) {
+    select.innerHTML = '<option value="">❌ Falha ao listar</option>';
+    showToast(`Erro ao listar: ${err.message}`, 'error');
+    log(`Erro list: ${err.message}`, 'error');
   }
 }
 
 function onSelectFileChange() {
-  const sel = document.getElementById('ghFileSelect');
-  if (sel.value) {
-    const parts = sel.value.split('/');
-    state.fileName = parts[parts.length - 1];
-    state.path = sel.value;
+  const select = document.getElementById('ghFileSelect');
+  if (select.value) loadFile(select.value);
+}
+
+/* ============================================================
+   CARREGAR ARQUIVO
+   ============================================================ */
+async function loadFile(customPath = null) {
+  persistConfig();
+  const token = document.getElementById('ghToken').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  const folder = document.getElementById('ghFolder').value.trim() || 'historias';
+
+  let path = customPath || document.getElementById('ghFileSelect').value;
+
+  if (!token || !repo || !path) {
+    showToast('Preencha Token, Repositório e o Arquivo!', 'error');
+    return;
+  }
+
+  if (!path.includes('/')) {
+    const originalPath = path;
+    path = `${folder}/${path}`;
+    log(`Path sem pasta detectado — ajustado: "${originalPath}" → "${path}"`, 'info');
+  }
+
+  showToast(`Carregando ${path}...`, 'info');
+  setStatus('BAIXANDO DADOS...', 'var(--neon-cyan)');
+  document.getElementById('editorStatusText').textContent = 'CARREGANDO...';
+  log(`Carregando: ${path}`);
+
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Accept': 'application/vnd.github.v3+json'
+  };
+
+  try {
+    let metaRes = await fetch(
+      `https://api.github.com/repos/${repo}/contents/${path}`,
+      { headers }
+    );
+
+    if (metaRes.status === 404 && path.includes('/')) {
+      const fileNameOnly = path.split('/').pop();
+      log(`404 com "${path}" — tentando raiz: "${fileNameOnly}"`, 'info');
+      const fallbackRes = await fetch(
+        `https://api.github.com/repos/${repo}/contents/${fileNameOnly}`,
+        { headers }
+      );
+      if (fallbackRes.ok) {
+        log(`✅ Encontrado na raiz: ${fileNameOnly}`, 'ok');
+        path = fileNameOnly;
+        metaRes = fallbackRes;
+      }
+    }
+
+    if (!metaRes.ok) {
+      const body = await metaRes.text();
+      throw new Error(`Metadados HTTP ${metaRes.status} — ${body.substring(0, 150)}`);
+    }
+
+    const meta = await metaRes.json();
+
+    state.sha = meta.sha || '';
+    state.path = path;
+    state.fileName = path.split('/').pop();
+
+    log(`Meta OK — sha=${meta.sha ? meta.sha.substring(0,7) : '?'} size=${meta.size} encoding=${meta.encoding || 'none'}`);
+
+    let decoded = '';
+    if (meta.content && meta.encoding === 'base64') {
+      try {
+        decoded = safeBase64Decode(meta.content);
+        log(`Content direto: ${decoded.length} chars.`);
+      } catch (e) {
+        log(`Falha content direto (${e.message}) — indo para blob.`, 'error');
+        decoded = '';
+      }
+    }
+
+    if (!decoded) {
+      log('Buscando via git/blobs...');
+      const blobUrl = `https://api.github.com/repos/${repo}/git/blobs/${meta.sha}`;
+      const blobRes = await fetch(blobUrl, { headers });
+      if (!blobRes.ok) {
+        const body = await blobRes.text();
+        throw new Error(`Blob HTTP ${blobRes.status} — ${body.substring(0, 150)}`);
+      }
+      const blob = await blobRes.json();
+      if (!blob.content) throw new Error('Blob sem conteúdo.');
+      decoded = safeBase64Decode(blob.content);
+      log(`Blob decodificado: ${decoded.length} chars.`);
+    }
+
+    if (!decoded || decoded.trim().length === 0) {
+      throw new Error('Conteúdo vazio. Verifique o arquivo no repositório.');
+    }
+
+    const readable = extractReadableHtml(decoded);
+    log(`Corpo extraído: ${readable.length} chars.`);
+
+    const editor = document.getElementById('editor');
+    editor.innerHTML = readable;
+
+    try { normalizeDarkColors(editor); } catch (e) { log(`Normalização falhou: ${e.message}`, 'error'); }
+
+    const visibleChars = (editor.innerText || '').trim().length;
+    log(`Editor tem ${visibleChars} caracteres visíveis.`);
+    if (visibleChars === 0) {
+      log('⚠️ Editor vazio — restaurando HTML bruto.', 'error');
+      editor.innerHTML = decoded;
+    }
+
+    document.getElementById('rawHtmlViewer').value = decoded;
     updateFileLabels();
+    document.getElementById('infoSHA').textContent = state.sha ? state.sha.substring(0, 8) : '---';
+
+    localStorage.setItem(STORAGE_KEYS.LAST_FILE, state.path);
+
+    clearHighlights();
+    document.getElementById('searchInput').value = '';
+
+    const select = document.getElementById('ghFileSelect');
+    if (select) {
+      const opt = Array.from(select.options).find(o => o.value === state.path);
+      if (opt) select.value = state.path;
+    }
+
+    showToast(`"${state.fileName}" carregado! (${decoded.length} chars)`, 'success');
+    setStatus('NEURAL LINK ACTIVE', 'var(--neon-yellow)');
+    document.getElementById('editorStatusText').textContent = 'PRONTO';
+    log(`✅ Sucesso. Editor pronto.`, 'ok');
+
+  } catch (err) {
+    log(`❌ Erro load: ${err.message}`, 'error');
+    showToast(`Erro ao carregar: ${err.message}`, 'error');
+    setStatus('ERRO DE SINC', 'var(--neon-magenta)');
+    document.getElementById('editorStatusText').textContent = 'ERRO';
   }
 }
 
-async function loadFile() {
-  const token = document.getElementById('ghToken').value.trim();
-  const repo = document.getElementById('ghRepo').value.trim();
-  if (!state.path) return showToast('Selecione um arquivo na lista primeiro!', 'error');
-  
-  showToast('Carregando arquivo do GitHub...', 'info');
-  try {
-    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${state.path}`, {
-      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
-    });
-    if (!res.ok) throw new Error(`Erro HTTP ${res.status}`);
-    const data = await res.json();
-    state.sha = data.sha;
-    document.getElementById('infoSHA').textContent = state.sha.substring(0, 7) + '...';
-    
-    const binary = atob(data.content.replace(/\s/g, ''));
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    const decodedText = new TextDecoder('utf-8').decode(bytes);
-    
-    document.getElementById('editor').innerHTML = decodedText;
-    showToast('Livro carregado com sucesso!', 'success');
-  } catch (e) {
-    log(`Erro ao carregar: ${e.message}`, 'error');
-    showToast(`Erro ao carregar: ${e.message}`, 'error');
-  }
-}
-
+/* ============================================================
+   SALVAR ARQUIVO
+   ============================================================ */
 async function saveFile() {
+  persistConfig();
   const token = document.getElementById('ghToken').value.trim();
   const repo = document.getElementById('ghRepo').value.trim();
-  if (!token || !repo) return showToast('Preencha o Token e o Repositório!', 'error');
-  if (!state.path) {
-    const name = prompt('Digite o nome do arquivo para salvar (ex: meu_livro.html):');
-    if (!name) return;
-    const folder = document.getElementById('ghFolder').value.trim();
-    state.fileName = name;
-    state.path = folder ? `${folder}/${name}` : name;
+
+  let path = state.path;
+  if (!path && state.fileName) {
+    const folder = document.getElementById('ghFolder').value.trim() || 'historias';
+    path = `${folder}/${state.fileName}`;
+    state.path = path;
+    log(`Caminho reconstruído a partir do nome: ${path}`);
   }
 
-  showToast('Salvando no GitHub...', 'info');
+  if (!token || !repo) { showToast('Preencha Token e Repositório!', 'error'); return; }
+  if (!path) { showToast('Nenhum arquivo aberto para salvar!', 'error'); return; }
+  if (!state.fileName) { showToast('Nome do arquivo não definido!', 'error'); return; }
+
+  showToast(`Sincronizando "${state.fileName}" no GitHub...`, 'info');
+  setStatus('GRAVANDO NO GITHUB...', 'var(--neon-cyan)');
+  document.getElementById('editorStatusText').textContent = 'SALVANDO...';
+
   try {
-    const contentHtml = state.isRawView ? document.getElementById('rawHtmlViewer').value : document.getElementById('editor').innerHTML;
-    const base64Content = btoa(unescape(encodeURIComponent(contentHtml)));
+    const html = state.isRawView
+      ? document.getElementById('rawHtmlViewer').value
+      : document.getElementById('editor').innerHTML;
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(html);
+    let binary = '';
+    for (let i = 0; i < data.length; i++) binary += String.fromCharCode(data[i]);
+    const base64Content = btoa(binary);
 
     const bodyData = {
-      message: `Atualização via GraphZo Editor - ${new Date().toLocaleString()}`,
-      content: base64Content,
-      branch: 'main'
+      message: `Atualizado via GraphZo Cyberpunk - ${state.fileName} - ${new Date().toLocaleString('pt-BR')}`,
+      content: base64Content
     };
     if (state.sha) bodyData.sha = state.sha;
 
-    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${state.path}`, {
+    const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+    const res = await fetch(url, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Accept': 'application/vnd.github+json',
+        'Accept': 'application/vnd.github.v3+json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(bodyData)
     });
 
     if (!res.ok) {
-      const errJson = await res.json();
-      throw new Error(errJson.message || `Erro HTTP ${res.status}`);
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.message || `HTTP ${res.status}`);
     }
 
     const resData = await res.json();
     state.sha = resData.content.sha;
-    document.getElementById('infoSHA').textContent = state.sha.substring(0, 7) + '...';
+    state.path = path;
+    state.fileName = path.split('/').pop();
+    document.getElementById('infoSHA').textContent = state.sha.substring(0, 8);
+
+    localStorage.setItem(STORAGE_KEYS.LAST_FILE, state.path);
     updateFileLabels();
-    showToast('Salvo no GitHub com sucesso!', 'success');
-  } catch (e) {
-    log(`Erro ao salvar: ${e.message}`, 'error');
-    showToast(`Erro ao salvar: ${e.message}`, 'error');
+
+    showToast(`"${state.fileName}" salvo com sucesso!`, 'success');
+    setStatus('NEURAL LINK ACTIVE', 'var(--neon-yellow)');
+    document.getElementById('editorStatusText').textContent = 'PRONTO';
+    log(`✅ Salvo: ${path}`, 'ok');
+  } catch (err) {
+    showToast(`Erro ao salvar: ${err.message}`, 'error');
+    setStatus('ERRO DE GRAVAÇÃO', 'var(--neon-magenta)');
+    document.getElementById('editorStatusText').textContent = 'ERRO';
+    log(`❌ Erro save: ${err.message}`, 'error');
   }
 }
 
-function downloadPC() {
-  const content = state.isRawView ? document.getElementById('rawHtmlViewer').value : document.getElementById('editor').innerHTML;
-  const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = state.fileName || 'livro_graphzo.html';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Arquivo baixado para o PC.', 'success');
+/* ============================================================
+   DELETAR ARQUIVO DO GITHUB
+   ============================================================ */
+async function deleteFile() {
+  persistConfig();
+  const token = document.getElementById('ghToken').value.trim();
+  const repo = document.getElementById('ghRepo').value.trim();
+  const folder = document.getElementById('ghFolder').value.trim() || 'historias';
+
+  const select = document.getElementById('ghFileSelect');
+  let path = (select && select.value) ? select.value : state.path;
+
+  if (!path && state.fileName) {
+    path = `${folder}/${state.fileName}`;
+  }
+
+  if (!token || !repo) {
+    showToast('Informe o Token e o Repositório!', 'error');
+    return;
+  }
+  if (!path) {
+    showToast('Selecione um arquivo na lista para deletar!', 'error');
+    return;
+  }
+
+  const fileName = path.split('/').pop();
+  if (!confirm(`⚠️ ATENÇÃO: Tem certeza que deseja DELETAR permanentemente "${fileName}" do GitHub?\n\nEsta ação não pode ser desfeita!`)) {
+    return;
+  }
+
+  showToast(`Verificando metadados de "${fileName}"...`, 'info');
+  setStatus('VERIFICANDO...', 'var(--neon-magenta)');
+
+  try {
+    let metaUrl = `https://api.github.com/repos/${repo}/contents/${path}`;
+    let metaRes = await fetch(metaUrl, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+
+    let actualPath = path;
+
+    if (!metaRes.ok) {
+      if (metaRes.status === 404 && path.includes('/')) {
+        const fileNameOnly = path.split('/').pop();
+        const fallbackUrl = `https://api.github.com/repos/${repo}/contents/${fileNameOnly}`;
+        const fallbackRes = await fetch(fallbackUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        if (fallbackRes.ok) {
+          actualPath = fileNameOnly;
+          metaRes = fallbackRes;
+        } else {
+          throw new Error(`Arquivo não encontrado (HTTP ${metaRes.status})`);
+        }
+      } else {
+        const errText = await metaRes.text();
+        throw new Error(`Erro ao buscar metadados: HTTP ${metaRes.status}`);
+      }
+    }
+
+    const meta = await metaRes.json();
+    const fileSha = meta.sha;
+
+    if (!fileSha) {
+      throw new Error('Não foi possível obter o SHA do arquivo.');
+    }
+
+    showToast(`Deletando "${fileName}"...`, 'info');
+
+    const deleteUrl = `https://api.github.com/repos/${repo}/contents/${actualPath}`;
+    const deleteRes = await fetch(deleteUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Deletado via GraphZo Cyberpunk - ${fileName} - ${new Date().toLocaleString('pt-BR')}`,
+        sha: fileSha
+      })
+    });
+
+    if (!deleteRes.ok) {
+      const errData = await deleteRes.json().catch(() => ({}));
+      throw new Error(errData.message || `HTTP ${deleteRes.status}`);
+    }
+
+    showToast(`"${fileName}" foi DELETADO com sucesso do GitHub!`, 'success');
+    log(`✅ Arquivo deletado: ${actualPath}`, 'ok');
+    
+    // Limpar LAST_FILE se for o arquivo deletado (evita auto-load com erro 404)
+    const lastFile = localStorage.getItem(STORAGE_KEYS.LAST_FILE);
+    if (lastFile === actualPath || lastFile === path) {
+      localStorage.removeItem(STORAGE_KEYS.LAST_FILE);
+      log('LAST_FILE removido do localStorage (arquivo deletado).', 'ok');
+    }
+
+    if (state.path === actualPath || state.fileName === fileName) {
+      state.sha = '';
+      state.path = '';
+      state.fileName = '';
+      document.getElementById('infoSHA').textContent = 'Não gravado';
+      updateFileLabels();
+      document.getElementById('editor').innerHTML = '';
+      document.getElementById('rawHtmlViewer').value = '';
+      showToast('Editor limpo pois o arquivo ativo foi deletado.', 'info');
+    }
+
+    // Forçar atualização da lista (o timestamp na URL já garante que o cache será ignorado)
+    await listFiles();
+
+  } catch (err) {
+    showToast(`Erro ao deletar: ${err.message}`, 'error');
+    setStatus('ERRO NA EXCLUSÃO', 'var(--neon-magenta)');
+    log(`❌ Erro delete: ${err.message}`, 'error');
+  }
 }
 
-function handleLocalFile(event) {
-  const file = event.target.files[0];
+/* ============================================================
+   AÇÕES LOCAIS
+   ============================================================ */
+function handleLocalFile(e) {
+  const file = e.target.files[0];
   if (!file) return;
-  state.fileName = file.name;
-  state.path = '';
-  state.sha = '';
-  updateFileLabels();
-  
   const reader = new FileReader();
-  reader.onload = (e) => {
-    document.getElementById('editor').innerHTML = e.target.result;
-    showToast('Arquivo local carregado.', 'success');
+  reader.onload = function(evt) {
+    const content = evt.target.result;
+    const readable = extractReadableHtml(content);
+    const editor = document.getElementById('editor');
+    editor.innerHTML = readable;
+    try { normalizeDarkColors(editor); } catch (e) {}
+    document.getElementById('rawHtmlViewer').value = content;
+
+    state.fileName = file.name;
+    state.sha = '';
+    const folder = document.getElementById('ghFolder').value.trim() || 'historias';
+    state.path = `${folder}/${file.name}`;
+
+    updateFileLabels();
+    document.getElementById('infoSHA').textContent = 'Local (não salvo)';
+
+    showToast(`Arquivo local "${file.name}" carregado.`, 'success');
+    log(`Local carregado: ${file.name} → path: ${state.path}`, 'ok');
   };
-  reader.readAsText(file);
+  reader.readAsText(file, 'UTF-8');
 }
+
+function downloadPC() {
+  const content = state.isRawView
+    ? document.getElementById('rawHtmlViewer').value
+    : document.getElementById('editor').innerHTML;
+  const fileName = state.fileName || 'documento.html';
+  const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function toggleRawCode() {
+  const editor = document.getElementById('editor');
+  const rawViewer = document.getElementById('rawHtmlViewer');
+  state.isRawView = !state.isRawView;
+  if (state.isRawView) {
+    rawViewer.value = editor.innerHTML;
+    editor.style.display = 'none';
+    rawViewer.style.display = 'block';
+    showToast('Modo HTML Bruto ativado', 'info');
+  } else {
+    editor.innerHTML = rawViewer.value;
+    try { normalizeDarkColors(editor); } catch (e) {}
+    rawViewer.style.display = 'none';
+    editor.style.display = 'block';
+    showToast('Modo Visual ativado', 'info');
+  }
+}
+
+function clearEditor() {
+  if (!confirm('Deseja realmente limpar todo o conteúdo e remover toda a formatação?')) return;
+
+  const editor = document.getElementById('editor');
+  const rawViewer = document.getElementById('rawHtmlViewer');
+
+  editor.innerHTML = '';
+  rawViewer.value = '';
+  editor.removeAttribute('style');
+
+  editor.style.fontFamily = "'Share Tech Mono', monospace";
+  editor.style.fontSize = "16px";
+  editor.style.color = "var(--text-main)";
+  editor.style.backgroundColor = "rgba(5, 5, 8, 0.85)";
+  editor.style.lineHeight = "1.7";
+
+  const fontFamilySel = document.getElementById('fontFamily');
+  const fontSizeSel = document.getElementById('fontSize');
+  const textColorInput = document.getElementById('textColor');
+  const bgColorInput = document.getElementById('bgColor');
+
+  if (fontFamilySel) fontFamilySel.value = "'Share Tech Mono', monospace";
+  if (fontSizeSel) fontSizeSel.value = "16px";
+  if (textColorInput) textColorInput.value = "#e0e6ed";
+  if (bgColorInput) bgColorInput.value = "#050508";
+
+  state.savedRange = null;
+  clearHighlights();
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+
+  state.sha = '';
+  state.path = '';
+  state.fileName = '';
+  state.isRawView = false;
+
+  editor.style.display = 'block';
+  rawViewer.style.display = 'none';
+
+  updateFileLabels();
+  document.getElementById('infoSHA').textContent = 'Não gravado';
+
+  localStorage.removeItem(STORAGE_KEYS.LAST_FILE);
+
+  updateFormatButtons();
+  editor.focus();
+
+  showToast('Editor limpo e formatação restaurada ao padrão.', 'info');
+  log('Editor limpo: conteúdo, estilos e metadados resetados.', 'ok');
+}
+
+/* ============================================================
+   NAVEGAÇÃO RÁPIDA
+   ============================================================ */
+function scrollToTop() {
+  const editor = document.getElementById('editor');
+  if (editor) editor.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function scrollToBottom() {
+  const editor = document.getElementById('editor');
+  if (editor) editor.scrollTo({ top: editor.scrollHeight, behavior: 'smooth' });
+}
+
+/* ============================================================
+   BUSCA NEURAL
+   ============================================================ */
+function clearHighlights() {
+  const editor = document.getElementById('editor');
+  editor.querySelectorAll('.search-highlight').forEach(el => {
+    const parent = el.parentNode;
+    parent.replaceChild(document.createTextNode(el.textContent), el);
+    parent.normalize();
+  });
+  state.searchHits = [];
+  state.searchIndex = -1;
+  state.searchTerm = '';
+  updateSearchCounter();
+  const info = document.getElementById('searchInfo');
+  info.textContent = 'Aguardando termo...';
+  info.style.color = 'var(--text-dim)';
+}
+
+function clearSearchWidget() {
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  clearHighlights();
+  showToast('Busca limpa.', 'info');
+  log('Busca neural limpa via botão X.', 'ok');
+}
+
+function updateSearchCounter() {
+  const counter = document.getElementById('searchCounter');
+  const prev = document.getElementById('btnSearchPrev');
+  const next = document.getElementById('btnSearchNext');
+  const total = state.searchHits.length;
+  const cur = state.searchIndex >= 0 ? state.searchIndex + 1 : 0;
+  counter.textContent = `${cur}/${total}`;
+  prev.disabled = total === 0;
+  next.disabled = total === 0;
+}
+
+function applyHighlightAllMode() {
+  const btn = document.getElementById('btnToggleHighlight');
+  const marks = document.getElementById('editor').querySelectorAll('.search-highlight');
+  if (state.highlightAll) {
+    btn.classList.add('active');
+    marks.forEach(m => m.style.visibility = 'visible');
+  } else {
+    btn.classList.remove('active');
+    marks.forEach(m => m.style.visibility = 'hidden');
+    if (state.searchIndex >= 0 && state.searchHits[state.searchIndex]) {
+      state.searchHits[state.searchIndex].style.visibility = 'visible';
+    }
+  }
+}
+
+function highlightCurrentHit() {
+  state.searchHits.forEach(m => m.classList.remove('active-match'));
+  if (!state.highlightAll) state.searchHits.forEach(m => m.style.visibility = 'hidden');
+  const current = state.searchHits[state.searchIndex];
+  if (current) {
+    current.classList.add('active-match');
+    current.style.visibility = 'visible';
+    const editor = document.getElementById('editor');
+    const editorRect = editor.getBoundingClientRect();
+    const markRect = current.getBoundingClientRect();
+    const offset = markRect.top - editorRect.top + editor.scrollTop - 60;
+    editor.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
+  }
+  updateSearchCounter();
+}
+
+function performSearch() {
+  const term = document.getElementById('searchInput').value;
+  clearHighlights();
+  if (!term || !term.trim()) return;
+
+  state.searchTerm = term;
+  const editor = document.getElementById('editor');
+  const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, null, false);
+  const nodesToReplace = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.nodeValue.toLowerCase().includes(term.toLowerCase())) {
+      nodesToReplace.push(node);
+    }
+  }
+
+  if (nodesToReplace.length === 0) {
+    document.getElementById('searchInfo').textContent = 'Nenhum resultado';
+    document.getElementById('searchInfo').style.color = 'var(--neon-magenta)';
+    updateSearchCounter();
+    return;
+  }
+
+  const escaped = term.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+  const regex = new RegExp(`(${escaped})`, 'gi');
+  let count = 0;
+
+  nodesToReplace.forEach(node => {
+    const parent = node.parentNode;
+    const temp = document.createElement('span');
+    temp.innerHTML = node.nodeValue.replace(regex, '<mark class="search-highlight">$1</mark>');
+    while (temp.firstChild) {
+      const child = temp.firstChild;
+      if (child.nodeType === 1 && child.classList && child.classList.contains('search-highlight')) count++;
+      parent.insertBefore(child, node);
+    }
+    parent.removeChild(node);
+  });
+
+  state.searchHits = Array.from(editor.querySelectorAll('.search-highlight'));
+  state.searchIndex = 0;
+  applyHighlightAllMode();
+  highlightCurrentHit();
+  document.getElementById('searchInfo').textContent = `${count} ocorrência(s)`;
+  document.getElementById('searchInfo').style.color = 'var(--neon-green)';
+  log(`Busca "${term}": ${count} resultado(s).`);
+}
+
+function searchNext() {
+  if (state.searchHits.length === 0) return;
+  state.searchIndex = (state.searchIndex + 1) % state.searchHits.length;
+  highlightCurrentHit();
+}
+function searchPrev() {
+  if (state.searchHits.length === 0) return;
+  state.searchIndex = (state.searchIndex - 1 + state.searchHits.length) % state.searchHits.length;
+  highlightCurrentHit();
+}
+
+/* ============================================================
+   INICIALIZAÇÃO
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  loadPersistedConfig();
+
+  const editor = document.getElementById('editor');
+  const searchInput = document.getElementById('searchInput');
+
+  ['mouseup', 'keyup', 'input'].forEach(evt => {
+    editor.addEventListener(evt, () => {
+      saveSelection();
+      updateFormatButtons();
+    });
+  });
+
+  document.addEventListener('selectionchange', () => {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && editor.contains(sel.getRangeAt(0).commonAncestorContainer)) {
+      saveSelection();
+      updateFormatButtons();
+    }
+  });
+
+  document.getElementById('fmtBold').addEventListener('click', () => applyInlineCommand('bold'));
+  document.getElementById('fmtItalic').addEventListener('click', () => applyInlineCommand('italic'));
+  document.getElementById('fmtUnderline').addEventListener('click', () => applyInlineCommand('underline'));
+  document.getElementById('fmtStrike').addEventListener('click', () => applyInlineCommand('strikeThrough'));
+
+  document.getElementById('btnApplyFormat').addEventListener('click', applyFormatToSelection);
+  document.getElementById('btnClearFormat').addEventListener('click', clearFormatToSelection);
+
+  editor.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+      e.preventDefault(); applyInlineCommand('bold');
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'i') {
+      e.preventDefault(); applyInlineCommand('italic');
+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+      e.preventDefault(); applyInlineCommand('underline');
+    }
+  });
+
+  let searchDebounce = null;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(performSearch, 250);
+  });
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (state.searchHits.length === 0) performSearch();
+      else if (e.shiftKey) searchPrev();
+      else searchNext();
+    } else if (e.key === 'Escape') {
+      clearSearchWidget();
+      searchInput.blur();
+    }
+  });
+  document.getElementById('btnSearchNext').addEventListener('click', () => {
+    if (state.searchHits.length === 0) performSearch(); else searchNext();
+  });
+  document.getElementById('btnSearchPrev').addEventListener('click', () => {
+    if (state.searchHits.length === 0) performSearch(); else searchPrev();
+  });
+  document.getElementById('btnToggleHighlight').addEventListener('click', () => {
+    state.highlightAll = !state.highlightAll;
+    applyHighlightAllMode();
+    highlightCurrentHit();
+  });
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+
+  editor.addEventListener('input', () => {
+    if (state.isRawView) {
+      document.getElementById('rawHtmlViewer').value = editor.innerHTML;
+    }
+  });
+  document.getElementById('rawHtmlViewer').addEventListener('input', (e) => {
+    editor.innerHTML = e.target.value;
+  });
+
+  log('GraphZo Editor v3.3 pronto.', 'ok');
+
+  const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+  const repo = localStorage.getItem(STORAGE_KEYS.REPO);
+  const folder = localStorage.getItem(STORAGE_KEYS.FOLDER) || 'historias';
+  let lastFile = localStorage.getItem(STORAGE_KEYS.LAST_FILE);
+
+  if (token && repo && lastFile) {
+    if (!lastFile.includes('/')) {
+      lastFile = `${folder}/${lastFile}`;
+      localStorage.setItem(STORAGE_KEYS.LAST_FILE, lastFile);
+      log(`Migrando LAST_FILE antigo para caminho completo: ${lastFile}`, 'info');
+    }
+    log(`Auto-carregando último arquivo: ${lastFile}`, 'info');
+    setTimeout(() => loadFile(lastFile), 300);
+  }
+});
 </script>
 </body>
 </html>
