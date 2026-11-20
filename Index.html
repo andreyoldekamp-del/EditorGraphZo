@@ -1462,7 +1462,7 @@ async function saveFile() {
 
     showToast(`"${state.fileName}" salvo com sucesso!`, 'success');
     setStatus('LINK ACTIVE', 'var(--neon-yellow)');
-    document.getElementById('editorStatusText').textContent = 'PRONTO';
+    document.getElementById('editorStatusText').textContent = '';
     log(`✅ Salvo: ${path}`, 'ok');
   } catch (err) {
     showToast(`Erro ao salvar: ${err.message}`, 'error');
