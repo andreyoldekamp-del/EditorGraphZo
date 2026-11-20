@@ -1461,7 +1461,7 @@ async function saveFile() {
     updateFileLabels();
 
     showToast(`"${state.fileName}" salvo com sucesso!`, 'success');
-    setStatus('NEURAL LINK ACTIVE', 'var(--neon-yellow)');
+    setStatus('LINK ACTIVE', 'var(--neon-yellow)');
     document.getElementById('editorStatusText').textContent = 'PRONTO';
     log(`✅ Salvo: ${path}`, 'ok');
   } catch (err) {
