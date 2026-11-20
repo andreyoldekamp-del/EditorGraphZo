@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GraphZo Editor v1.3 // CYBERPUNK</title>
+<title>GraphZo v1.3 // CYBERPUNK-GIT</title>
 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&family=Inter:wght@400;600&family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -608,7 +608,7 @@
 <body>
 
 <header>
-  <h1><i class="fa-solid fa-terminal"></i>GRAPHZO <span style="color: var(--neon-magenta);">v1.3</span></h1>
+  <h1><i class="fa-solid fa-terminal"></i> GRAPHZO <span style="color: var(--neon-magenta);">v3.3</span></h1>
   <div class="status-indicator">
     <div class="pulse" id="statusPulse"></div>
     <span id="statusText">LINK ACTIVE</span>
@@ -619,9 +619,13 @@
   <main class="editor-wrapper">
 
     <div class="editor-info-bar">
-      <span>LIVRO: <strong id="currentFileName" style="color: var(--neon-cyan);">nenhum_livro_aberto.html</strong></span>
-      <div style="display: flex; gap: 12px; align-items: center;">
-        <span id="editorStatusText" style="color: var(--neon-yellow);"></span>
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-start;">
+        <span>LIVRO: <strong id="currentFileName" style="color: var(--neon-cyan);">nenhum_livro_aberto.html</strong></span>
+        <button id="btnSaveEditor" onclick="saveFile()" class="btn-green" style="display: none; width: fit-content; padding: 4px 12px; font-size: 0.75rem; height: 28px;" title="Salvar alterações">
+          <i class="fa-solid fa-floppy-disk"></i> Salvar
+        </button>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
         <button class="btn-config-toggle" onclick="toggleConfigPanel()" title="Abrir/Fechar Configurações">
           <i class="fa-solid fa-sliders"></i> Configurações
         </button>
@@ -789,6 +793,15 @@ const state = {
   highlightAll: true,
   savedRange: null
 };
+
+let hasUnsavedChanges = false;
+
+function updateSaveButtonVisibility() {
+  const btn = document.getElementById('btnSaveEditor');
+  if (btn) {
+    btn.style.display = hasUnsavedChanges ? 'inline-flex' : 'none';
+  }
+}
 
 const STORAGE_KEYS = {
   TOKEN: 'graphzo_cyber_token',
@@ -1281,7 +1294,6 @@ async function loadFile(customPath = null) {
 
   showToast(`Carregando ${path}...`, 'info');
   setStatus('BAIXANDO DADOS...', 'var(--neon-cyan)');
-  document.getElementById('editorStatusText').textContent = 'CARREGANDO...';
   log(`Carregando: ${path}`);
 
   const headers = {
@@ -1381,16 +1393,17 @@ async function loadFile(customPath = null) {
       if (opt) select.value = state.path;
     }
 
+    hasUnsavedChanges = false;
+    updateSaveButtonVisibility();
+
     showToast(`"${state.fileName}" carregado! (${decoded.length} chars)`, 'success');
     setStatus('LINK ACTIVE', 'var(--neon-yellow)');
-    document.getElementById('editorStatusText').textContent = 'PRONTO';
     log(`✅ Sucesso. Editor pronto.`, 'ok');
 
   } catch (err) {
     log(`❌ Erro load: ${err.message}`, 'error');
     showToast(`Erro ao carregar: ${err.message}`, 'error');
     setStatus('ERRO DE SINC', 'var(--neon-magenta)');
-    document.getElementById('editorStatusText').textContent = 'ERRO';
   }
 }
 
@@ -1416,7 +1429,6 @@ async function saveFile() {
 
   showToast(`Sincronizando "${state.fileName}" no GitHub...`, 'info');
   setStatus('GRAVANDO NO GITHUB...', 'var(--neon-cyan)');
-  document.getElementById('editorStatusText').textContent = 'SALVANDO...';
 
   try {
     const html = state.isRawView
@@ -1460,14 +1472,15 @@ async function saveFile() {
     localStorage.setItem(STORAGE_KEYS.LAST_FILE, state.path);
     updateFileLabels();
 
+    hasUnsavedChanges = false;
+    updateSaveButtonVisibility();
+
     showToast(`"${state.fileName}" salvo com sucesso!`, 'success');
     setStatus('LINK ACTIVE', 'var(--neon-yellow)');
-    document.getElementById('editorStatusText').textContent = '';
     log(`✅ Salvo: ${path}`, 'ok');
   } catch (err) {
     showToast(`Erro ao salvar: ${err.message}`, 'error');
     setStatus('ERRO DE GRAVAÇÃO', 'var(--neon-magenta)');
-    document.getElementById('editorStatusText').textContent = 'ERRO';
     log(`❌ Erro save: ${err.message}`, 'error');
   }
 }
@@ -1583,6 +1596,10 @@ async function deleteFile() {
       updateFileLabels();
       document.getElementById('editor').innerHTML = '';
       document.getElementById('rawHtmlViewer').value = '';
+      
+      hasUnsavedChanges = false;
+      updateSaveButtonVisibility();
+      
       showToast('Editor limpo pois o arquivo ativo foi deletado.', 'info');
     }
 
@@ -1617,6 +1634,9 @@ function handleLocalFile(e) {
 
     updateFileLabels();
     document.getElementById('infoSHA').textContent = 'Local (não salvo)';
+
+    hasUnsavedChanges = false;
+    updateSaveButtonVisibility();
 
     showToast(`Arquivo local "${file.name}" carregado.`, 'success');
     log(`Local carregado: ${file.name} → path: ${state.path}`, 'ok');
@@ -1698,6 +1718,9 @@ function clearEditor() {
   document.getElementById('infoSHA').textContent = 'Não gravado';
 
   localStorage.removeItem(STORAGE_KEYS.LAST_FILE);
+
+  hasUnsavedChanges = false;
+  updateSaveButtonVisibility();
 
   updateFormatButtons();
   editor.focus();
@@ -1924,15 +1947,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   editor.addEventListener('input', () => {
+    hasUnsavedChanges = true;
+    updateSaveButtonVisibility();
     if (state.isRawView) {
       document.getElementById('rawHtmlViewer').value = editor.innerHTML;
     }
   });
   document.getElementById('rawHtmlViewer').addEventListener('input', (e) => {
+    hasUnsavedChanges = true;
+    updateSaveButtonVisibility();
     editor.innerHTML = e.target.value;
   });
 
-  log('GraphZo Editor v1.3 pronto.', 'ok');
+  log('GraphZo v1.3 pronto.', 'ok');
 
   const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
   const repo = localStorage.getItem(STORAGE_KEYS.REPO);
