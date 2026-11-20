@@ -205,6 +205,67 @@
     min-width: 0;
   }
 
+  /* --- NOVO: PAINEL DE CONFIGURAÇÕES COLAPSÁVEL --- */
+  .config-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--neon-cyan);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: none; /* Fechado por padrão para liberar espaço no celular */
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  }
+  .config-panel.open {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .config-header {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--neon-cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    transition: background 0.2s;
+  }
+  .config-header:hover {
+    background: rgba(0, 243, 255, 0.2);
+  }
+  .config-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-config-toggle {
+    background: transparent;
+    border: 1px solid var(--neon-yellow);
+    color: var(--neon-yellow);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+  }
+  .btn-config-toggle:hover {
+    background: var(--neon-yellow);
+    color: var(--bg-dark);
+    box-shadow: 0 0 8px rgba(252, 238, 10, 0.4);
+  }
+
   .search-widget {
     background: linear-gradient(90deg, rgba(252, 238, 10, 0.12) 0%, rgba(13, 14, 23, 0.8) 100%);
     border: 1px solid var(--neon-yellow);
@@ -371,7 +432,7 @@
   }
 
   /* ============================================================
-     BARRA DE FORMATAÇÃO
+     BARRA DE FORMATAÇÃO (Agora dentro do config-panel)
      ============================================================ */
   .format-toolbar {
     display: flex;
@@ -582,6 +643,18 @@
     header { padding: 10px 14px; }
     header h1 { font-size: 1rem; letter-spacing: 1px; }
     .status-indicator { font-size: 0.68rem; padding: 4px 10px; }
+    
+    .editor-info-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .editor-info-bar > div {
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .search-widget { padding: 8px 10px; gap: 6px; }
     .search-widget label { font-size: 0.7rem; }
     .search-widget input { font-size: 0.85rem; min-width: 100%; order: 2; }
@@ -665,21 +738,100 @@
 
   <main class="editor-wrapper">
 
-    <div class="search-widget">
-      <label><i class="fa-solid fa-magnifying-glass"></i> BUSCA NEURAL:</label>
-      <input type="text" id="searchInput" placeholder="Digite a palavra para localizar no texto..." autocomplete="off" spellcheck="false">
-      <button onclick="clearSearchWidget()" class="btn-magenta" title="Limpar busca (X)"><i class="fa-solid fa-xmark"></i></button>
-      <span class="search-counter" id="searchCounter">0/0</span>
-      <button class="search-nav-btn" id="btnSearchPrev" title="Anterior (Shift+Enter)" disabled><i class="fa-solid fa-chevron-up"></i></button>
-      <button class="search-nav-btn" id="btnSearchNext" title="Próximo (Enter)" disabled><i class="fa-solid fa-chevron-down"></i></button>
-      <button class="search-highlight-toggle active" id="btnToggleHighlight" title="Alternar realce de todos os resultados"><i class="fa-solid fa-highlighter"></i></button>
-      
-      <span class="search-info" id="searchInfo">Aguardando termo...</span>
-    </div>
-
     <div class="editor-info-bar">
       <span>LIVRO ATIVO: <strong id="currentFileName" style="color: var(--neon-cyan);">nenhum_livro_aberto.html</strong></span>
-      <span id="editorStatusText" style="color: var(--neon-yellow);">PRONTO</span>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <span id="editorStatusText" style="color: var(--neon-yellow);">PRONTO</span>
+        <button class="btn-config-toggle" onclick="toggleConfigPanel()" title="Abrir/Fechar Configurações de Busca e Formatação">
+          <i class="fa-solid fa-sliders"></i> Configurações
+        </button>
+      </div>
+    </div>
+
+    <!-- NOVO: PAINEL DE CONFIGURAÇÕES COLAPSÁVEL -->
+    <div class="config-panel" id="configPanel">
+      <div class="config-header" onclick="toggleConfigPanel()">
+        <span><i class="fa-solid fa-gear"></i> Busca e Formatação</span>
+        <i class="fa-solid fa-chevron-down" id="configArrow"></i>
+      </div>
+      <div class="config-body">
+        
+        <!-- BARRA DE BUSCA MOVIDA PARA CÁ -->
+        <div class="search-widget">
+          <label><i class="fa-solid fa-magnifying-glass"></i> BUSCA NEURAL:</label>
+          <input type="text" id="searchInput" placeholder="Digite a palavra para localizar no texto..." autocomplete="off" spellcheck="false">
+          <button onclick="clearSearchWidget()" class="btn-magenta" title="Limpar busca (X)"><i class="fa-solid fa-xmark"></i></button>
+          <span class="search-counter" id="searchCounter">0/0</span>
+          <button class="search-nav-btn" id="btnSearchPrev" title="Anterior (Shift+Enter)" disabled><i class="fa-solid fa-chevron-up"></i></button>
+          <button class="search-nav-btn" id="btnSearchNext" title="Próximo (Enter)" disabled><i class="fa-solid fa-chevron-down"></i></button>
+          <button class="search-highlight-toggle active" id="btnToggleHighlight" title="Alternar realce de todos os resultados"><i class="fa-solid fa-highlighter"></i></button>
+          <span class="search-info" id="searchInfo">Aguardando termo...</span>
+        </div>
+
+        <!-- BARRA DE FORMATAÇÃO MOVIDA PARA CÁ -->
+        <div class="format-toolbar">
+          <div class="format-buttons">
+            <button class="fmt-btn" id="fmtBold" title="Negrito (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+            <button class="fmt-btn" id="fmtItalic" title="Itálico (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+            <button class="fmt-btn" id="fmtUnderline" title="Sublinhado (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
+            <button class="fmt-btn" id="fmtStrike" title="Riscado"><i class="fa-solid fa-strikethrough"></i></button>
+          </div>
+
+          <div>
+            <label>Fonte</label>
+            <select id="fontFamily">
+              <option value="'Share Tech Mono', monospace">Cyber Mono</option>
+              <option value="'Comfortaa', cursive">Comfortaa</option>
+              <option value="Inter, sans-serif">Inter</option>
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="Georgia, serif">Georgia</option>
+              <option value="'Times New Roman', serif">Times New Roman</option>
+              <option value="'Courier New', monospace">Courier New</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Tamanho</label>
+            <select id="fontSize">
+              <option value="12px">12 px</option>
+              <option value="14px">14 px</option>
+              <option value="16px" selected>16 px</option>
+              <option value="18px">18 px</option>
+              <option value="20px">20 px</option>
+              <option value="24px">24 px</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Cor do Texto</label>
+            <input type="color" id="textColor" value="#e0e6ed">
+          </div>
+
+          <div>
+            <label>Fundo do Texto</label>
+            <input type="color" id="bgColor" value="#050508">
+          </div>
+
+          <div class="format-buttons">
+            <button class="btn-apply-fmt" id="btnApplyFormat" title="Aplicar formatação ao texto selecionado">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Aplicar
+            </button>
+            <button class="btn-clear-fmt" id="btnClearFormat" title="Remover formatação do texto selecionado (incluindo hiperlinks do Word)">
+              <i class="fa-solid fa-eraser"></i> Limpar
+            </button>
+          </div>
+
+          <div class="format-buttons">
+            <button class="btn-nav-top" onclick="scrollToTop()" title="Ir para o início"><i class="fa-solid fa-angles-up"></i></button>
+            <button class="btn-nav-bottom" onclick="scrollToBottom()" title="Ir para o fim"><i class="fa-solid fa-angles-down"></i></button>
+          </div>
+
+          <span class="format-hint" id="formatHint">
+            <i class="fa-solid fa-info-circle"></i> Selecione um trecho e clique em <strong>Aplicar</strong>
+          </span>
+        </div>
+
+      </div>
     </div>
 
     <div class="editor-container">
@@ -687,72 +839,27 @@
       <textarea id="rawHtmlViewer" placeholder="Código HTML/XHTML bruto..."></textarea>
     </div>
 
-    <div class="format-toolbar">
-      <div class="format-buttons">
-        <button class="fmt-btn" id="fmtBold" title="Negrito (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
-        <button class="fmt-btn" id="fmtItalic" title="Itálico (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
-        <button class="fmt-btn" id="fmtUnderline" title="Sublinhado (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
-        <button class="fmt-btn" id="fmtStrike" title="Riscado"><i class="fa-solid fa-strikethrough"></i></button>
-      </div>
-
-      <div>
-        <label>Fonte</label>
-        <select id="fontFamily">
-          <option value="'Share Tech Mono', monospace">Cyber Mono</option>
-          <option value="'Comfortaa', cursive">Comfortaa</option>
-          <option value="Inter, sans-serif">Inter</option>
-          <option value="Arial, sans-serif">Arial</option>
-          <option value="Georgia, serif">Georgia</option>
-          <option value="'Times New Roman', serif">Times New Roman</option>
-          <option value="'Courier New', monospace">Courier New</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Tamanho</label>
-        <select id="fontSize">
-          <option value="12px">12 px</option>
-          <option value="14px">14 px</option>
-          <option value="16px" selected>16 px</option>
-          <option value="18px">18 px</option>
-          <option value="20px">20 px</option>
-          <option value="24px">24 px</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Cor do Texto</label>
-        <input type="color" id="textColor" value="#e0e6ed">
-      </div>
-
-      <div>
-        <label>Fundo do Texto</label>
-        <input type="color" id="bgColor" value="#050508">
-      </div>
-
-      <div class="format-buttons">
-        <button class="btn-apply-fmt" id="btnApplyFormat" title="Aplicar formatação ao texto selecionado">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Aplicar Formatação
-        </button>
-        <button class="btn-clear-fmt" id="btnClearFormat" title="Remover formatação do texto selecionado (incluindo hiperlinks do Word)">
-          <i class="fa-solid fa-eraser"></i> Limpar Formatação
-        </button>
-      </div>
-
-      <div class="format-buttons">
-        <button class="btn-nav-top" onclick="scrollToTop()" title="Ir para o início"><i class="fa-solid fa-angles-up"></i></button>
-        <button class="btn-nav-bottom" onclick="scrollToBottom()" title="Ir para o fim"><i class="fa-solid fa-angles-down"></i></button>
-      </div>
-
-      <span class="format-hint" id="formatHint">
-        <i class="fa-solid fa-info-circle"></i> Selecione um trecho no editor e clique em <strong>Aplicar Formatação</strong>
-      </span>
-    </div>
-
   </main>
 </div>
 
 <script>
+/* ============================================================
+   NOVA FUNÇÃO: ALTERNAR PAINEL DE CONFIGURAÇÕES
+   ============================================================ */
+function toggleConfigPanel() {
+  const panel = document.getElementById('configPanel');
+  const arrow = document.getElementById('configArrow');
+  if (panel.classList.contains('open')) {
+    panel.classList.remove('open');
+    panel.style.display = 'none';
+    arrow.className = 'fa-solid fa-chevron-down';
+  } else {
+    panel.classList.add('open');
+    panel.style.display = 'block';
+    arrow.className = 'fa-solid fa-chevron-up';
+  }
+}
+
 /* ============================================================
    ESTADO GLOBAL
    ============================================================ */
@@ -1184,9 +1291,6 @@ async function listFiles() {
 
   select.innerHTML = '<option value="">⏳ Consultando API...</option>';
   
-  // O timestamp na URL já é suficiente para quebrar o cache do navegador/GitHub
-  // Removemos os headers 'Cache-Control' e 'Pragma' pois eles forçam um preflight OPTIONS 
-  // que a API do GitHub às vezes rejeita por CORS, causando "Failed to fetch".
   const url = `https://api.github.com/repos/${repo}/contents/${folder}?t=${Date.now()}`;
   log(`GET ${url}`);
 
@@ -1224,8 +1328,6 @@ async function listFiles() {
       log(`Auto-carregando último arquivo: ${lastFile}`);
       loadFile(lastFile);
     } else if (lastFile && !Array.from(select.options).some(o => o.value === lastFile)) {
-      // Se o último arquivo salvo não existe mais na lista, limpamos o localStorage
-      log(`Último arquivo (${lastFile}) não encontrado na lista. Limpando referência.`);
       localStorage.removeItem(STORAGE_KEYS.LAST_FILE);
     }
   } catch (err) {
@@ -1552,7 +1654,6 @@ async function deleteFile() {
     showToast(`"${fileName}" foi DELETADO com sucesso do GitHub!`, 'success');
     log(`✅ Arquivo deletado: ${actualPath}`, 'ok');
     
-    // Limpar LAST_FILE se for o arquivo deletado (evita auto-load com erro 404)
     const lastFile = localStorage.getItem(STORAGE_KEYS.LAST_FILE);
     if (lastFile === actualPath || lastFile === path) {
       localStorage.removeItem(STORAGE_KEYS.LAST_FILE);
@@ -1570,7 +1671,6 @@ async function deleteFile() {
       showToast('Editor limpo pois o arquivo ativo foi deletado.', 'info');
     }
 
-    // Forçar atualização da lista (o timestamp na URL já garante que o cache será ignorado)
     await listFiles();
 
   } catch (err) {
