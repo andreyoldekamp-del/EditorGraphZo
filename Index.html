@@ -91,21 +91,71 @@
     100% { opacity: 1; transform: scale(1); }
   }
 
-  .main-container { display: flex; flex: 1; overflow: hidden; }
-
-  .sidebar {
-    width: 330px;
-    background: var(--bg-panel);
-    border-right: 1px solid rgba(0, 243, 255, 0.2);
-    padding: 16px;
-    overflow-y: auto;
-    display: flex;
+  .main-container { 
+    display: flex; 
     flex-direction: column;
-    gap: 16px;
-    flex-shrink: 0;
+    flex: 1; 
+    overflow: hidden; 
   }
 
-  .panel {
+  .editor-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    overflow: hidden;
+    gap: 10px;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  /* --- PAINEL DE CONFIGURAÇÕES COLAPSÁVEL (AGORA CENTRAL) --- */
+  .config-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--neon-cyan);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: none; /* Fechado por padrão para liberar 100% do espaço */
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    max-height: 60vh; /* Limita altura para não empurrar o editor */
+    display: flex;
+    flex-direction: column;
+  }
+  .config-panel.open {
+    display: flex;
+    animation: slideDown 0.3s ease-out;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .config-header {
+    background: rgba(0, 243, 255, 0.1);
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--neon-cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .config-header:hover {
+    background: rgba(0, 243, 255, 0.2);
+  }
+  .config-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto; /* Rolagem interna para não quebrar o layout */
+  }
+
+  .config-section {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(0, 243, 255, 0.3);
     padding: 14px;
@@ -113,7 +163,7 @@
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
   }
 
-  .panel-title {
+  .section-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 0.85rem;
     color: var(--neon-magenta);
@@ -125,6 +175,27 @@
     display: flex;
     align-items: center;
     gap: 8px;
+  }
+
+  .btn-config-toggle {
+    background: transparent;
+    border: 1px solid var(--neon-yellow);
+    color: var(--neon-yellow);
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    font-family: 'Share Tech Mono', monospace;
+    text-transform: uppercase;
+  }
+  .btn-config-toggle:hover {
+    background: var(--neon-yellow);
+    color: var(--bg-dark);
+    box-shadow: 0 0 8px rgba(252, 238, 10, 0.4);
   }
 
   label {
@@ -195,75 +266,80 @@
   button:disabled { opacity: 0.35; cursor: not-allowed; }
   button:disabled:hover { background: transparent; color: inherit; box-shadow: none; }
 
-  .editor-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 14px;
-    overflow: hidden;
-    gap: 10px;
-    min-width: 0;
-  }
-
-  /* --- NOVO: PAINEL DE CONFIGURAÇÕES COLAPSÁVEL --- */
-  .config-panel {
-    background: var(--bg-panel);
-    border: 1px solid var(--neon-cyan);
-    border-radius: var(--radius);
-    overflow: hidden;
-    display: none; /* Fechado por padrão para liberar espaço no celular */
-    flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-  }
-  .config-panel.open {
-    display: block;
-    animation: slideDown 0.3s ease-out;
-  }
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .config-header {
-    background: rgba(0, 243, 255, 0.1);
-    padding: 10px 14px;
-    cursor: pointer;
+  .editor-info-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: var(--neon-cyan);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.85rem;
-    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
-    transition: background 0.2s;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border-left: 3px solid var(--neon-cyan);
+    border-right: 1px solid rgba(0, 243, 255, 0.2);
+    flex-shrink: 0;
   }
-  .config-header:hover {
-    background: rgba(0, 243, 255, 0.2);
-  }
-  .config-body {
-    padding: 12px;
+
+  .editor-container {
+    position: relative;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    overflow: hidden;
+    min-height: 0;
   }
-  .btn-config-toggle {
-    background: transparent;
-    border: 1px solid var(--neon-yellow);
-    color: var(--neon-yellow);
-    padding: 4px 10px;
-    font-size: 0.75rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s;
+
+  #editor {
+    flex: 1;
+    background: rgba(5, 5, 8, 0.85);
+    border: 1px solid rgba(0, 243, 255, 0.3);
+    padding: 24px;
+    color: var(--text-main);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-y: auto;
+    outline: none;
+    position: relative;
+    scroll-behavior: smooth;
+    word-wrap: break-word;
+  }
+
+  #editor:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.08);
+  }
+
+  #editor * { max-width: 100%; }
+
+  #rawHtmlViewer {
+    display: none;
+    flex: 1;
+    background: #020204;
+    border: 1px solid var(--neon-magenta);
+    padding: 20px;
+    color: var(--neon-cyan);
     font-family: 'Share Tech Mono', monospace;
-    text-transform: uppercase;
+    font-size: 0.88rem;
+    outline: none;
+    resize: none;
+    white-space: pre-wrap;
+    overflow-y: auto;
   }
-  .btn-config-toggle:hover {
-    background: var(--neon-yellow);
-    color: var(--bg-dark);
-    box-shadow: 0 0 8px rgba(252, 238, 10, 0.4);
+
+  #editor .search-highlight {
+    background: rgba(252, 238, 10, 0.25) !important;
+    color: var(--neon-yellow) !important;
+    border-bottom: 2px solid var(--neon-yellow);
+    padding: 0 2px;
+    border-radius: 2px;
+    text-shadow: 0 0 5px var(--neon-yellow);
+  }
+
+  #editor .search-highlight.active-match {
+    background: var(--neon-magenta) !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #ffffff;
+    text-shadow: 0 0 10px #ffffff;
+    box-shadow: 0 0 15px var(--neon-magenta);
   }
 
   .search-widget {
@@ -276,7 +352,6 @@
     box-shadow: 0 0 15px rgba(252, 238, 10, 0.15);
     border-radius: var(--radius);
     flex-wrap: wrap;
-    flex-shrink: 0;
   }
 
   .search-widget label {
@@ -355,85 +430,6 @@
     text-align: right;
   }
 
-  .editor-info-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.78rem;
-    color: var(--text-dim);
-    padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.6);
-    border-left: 3px solid var(--neon-cyan);
-    border-right: 1px solid rgba(0, 243, 255, 0.2);
-    flex-shrink: 0;
-  }
-
-  .editor-container {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-  }
-
-  #editor {
-    flex: 1;
-    background: rgba(5, 5, 8, 0.85);
-    border: 1px solid rgba(0, 243, 255, 0.3);
-    padding: 24px;
-    color: var(--text-main);
-    font-size: 16px;
-    line-height: 1.7;
-    overflow-y: auto;
-    outline: none;
-    position: relative;
-    scroll-behavior: smooth;
-    word-wrap: break-word;
-  }
-
-  #editor:focus {
-    border-color: var(--neon-cyan);
-    box-shadow: inset 0 0 25px rgba(0, 243, 255, 0.08);
-  }
-
-  #editor * { max-width: 100%; }
-
-  #rawHtmlViewer {
-    display: none;
-    flex: 1;
-    background: #020204;
-    border: 1px solid var(--neon-magenta);
-    padding: 20px;
-    color: var(--neon-cyan);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.88rem;
-    outline: none;
-    resize: none;
-    white-space: pre-wrap;
-    overflow-y: auto;
-  }
-
-  #editor .search-highlight {
-    background: rgba(252, 238, 10, 0.25) !important;
-    color: var(--neon-yellow) !important;
-    border-bottom: 2px solid var(--neon-yellow);
-    padding: 0 2px;
-    border-radius: 2px;
-    text-shadow: 0 0 5px var(--neon-yellow);
-  }
-
-  #editor .search-highlight.active-match {
-    background: var(--neon-magenta) !important;
-    color: #ffffff !important;
-    border-bottom: 2px solid #ffffff;
-    text-shadow: 0 0 10px #ffffff;
-    box-shadow: 0 0 15px var(--neon-magenta);
-  }
-
-  /* ============================================================
-     BARRA DE FORMATAÇÃO (Agora dentro do config-panel)
-     ============================================================ */
   .format-toolbar {
     display: flex;
     gap: 8px;
@@ -443,7 +439,6 @@
     flex-wrap: wrap;
     align-items: flex-end;
     border-radius: var(--radius);
-    flex-shrink: 0;
     box-shadow: 0 0 12px rgba(0, 243, 255, 0.12);
   }
 
@@ -529,33 +524,16 @@
     50% { box-shadow: 0 0 16px rgba(255, 0, 85, 0.8); }
   }
 
-  .btn-nav-top,
-  .btn-nav-bottom {
+  .btn-nav-top, .btn-nav-bottom {
     padding: 8px 12px;
     min-width: 44px;
     font-size: 0.9rem;
     height: 36px;
   }
-
-  .btn-nav-top {
-    border-color: var(--neon-cyan) !important;
-    color: var(--neon-cyan) !important;
-  }
-  .btn-nav-top:hover {
-    background: var(--neon-cyan) !important;
-    color: var(--bg-dark) !important;
-    box-shadow: var(--border-glow);
-  }
-
-  .btn-nav-bottom {
-    border-color: var(--neon-green) !important;
-    color: var(--neon-green) !important;
-  }
-  .btn-nav-bottom:hover {
-    background: var(--neon-green) !important;
-    color: var(--bg-dark) !important;
-    box-shadow: 0 0 10px var(--neon-green);
-  }
+  .btn-nav-top { border-color: var(--neon-cyan) !important; color: var(--neon-cyan) !important; }
+  .btn-nav-top:hover { background: var(--neon-cyan) !important; color: var(--bg-dark) !important; box-shadow: var(--border-glow); }
+  .btn-nav-bottom { border-color: var(--neon-green) !important; color: var(--neon-green) !important; }
+  .btn-nav-bottom:hover { background: var(--neon-green) !important; color: var(--bg-dark) !important; box-shadow: 0 0 10px var(--neon-green); }
 
   .format-hint {
     font-size: 0.7rem;
@@ -604,69 +582,25 @@
   ::-webkit-scrollbar-thumb:hover { background: var(--neon-magenta); }
 
   @media (max-width: 850px) {
-    html, body {
-      height: auto;
-      min-height: 100vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-    .main-container {
-      flex-direction: column;
-      overflow: visible;
-      flex: none;
-    }
-    .sidebar {
-      width: 100%;
-      max-height: none;
-      overflow: visible;
-      border-right: none;
-      border-bottom: 1px solid rgba(0, 243, 255, 0.2);
-      padding: 12px;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    .editor-wrapper {
-      padding: 12px;
-      overflow: visible;
-      flex: none;
-    }
-    .editor-container {
-      height: 70vh;
-      min-height: 420px;
-      flex: none;
-    }
-    #editor {
-      height: 100%;
-      padding: 16px;
-      font-size: 15px;
-    }
+    html, body { height: 100vh; overflow: hidden; }
+    .main-container { flex-direction: column; }
+    .editor-wrapper { padding: 8px; gap: 8px; }
+    .editor-container { min-height: 0; }
+    #editor { padding: 12px; font-size: 15px; }
     header { padding: 10px 14px; }
     header h1 { font-size: 1rem; letter-spacing: 1px; }
     .status-indicator { font-size: 0.68rem; padding: 4px 10px; }
-    
-    .editor-info-bar {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-    .editor-info-bar > div {
-      width: 100%;
-      justify-content: space-between;
-      align-items: center;
-    }
-
+    .editor-info-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .editor-info-bar > div { width: 100%; justify-content: space-between; align-items: center; display: flex; }
     .search-widget { padding: 8px 10px; gap: 6px; }
     .search-widget label { font-size: 0.7rem; }
     .search-widget input { font-size: 0.85rem; min-width: 100%; order: 2; }
     .search-counter { order: 3; }
-    .search-nav-btn,
-    .search-highlight-toggle,
-    .search-widget .btn-magenta { order: 4; }
+    .search-nav-btn, .search-highlight-toggle, .search-widget .btn-magenta { order: 4; }
     .search-info { order: 5; text-align: left; min-width: 0; width: 100%; }
     .format-toolbar { gap: 6px; padding: 8px; }
     .format-toolbar > div { flex: 1 1 calc(50% - 6px); min-width: 100px; }
-    .format-toolbar select,
-    .format-toolbar input[type="color"] { width: 100%; min-width: 0; }
+    .format-toolbar select, .format-toolbar input[type="color"] { width: 100%; min-width: 0; }
     .format-hint { display: none; }
   }
 </style>
@@ -682,153 +616,134 @@
 </header>
 
 <div class="main-container">
-
-  <aside class="sidebar">
-
-    <div class="panel">
-      <div class="panel-title"><i class="fa-brands fa-github"></i> // CONEXÃO GITHUB</div>
-
-      <label><i class="fa-solid fa-key"></i> Token Number</label>
-      <input type="password" id="ghToken" placeholder="Cole o token do GitHub..." onchange="persistConfig()">
-
-      <label><i class="fa-solid fa-box-archive"></i> Repositório</label>
-      <input type="text" id="ghRepo" placeholder="usuario/repositorio" value="andreyoldekamp-del/GraphZoBackup" onchange="persistConfig()">
-
-      <label><i class="fa-solid fa-folder"></i> Pasta</label>
-      <input type="text" id="ghFolder" placeholder="historias" value="historias" onchange="persistConfig()">
-
-      <label><i class="fa-solid fa-list-check"></i> Selecionar da Pasta</label>
-      <select id="ghFileSelect" onchange="onSelectFileChange()">
-        <option value="">-- Clique em Listar --</option>
-      </select>
-
-      <div class="btn-group">
-        <button onclick="listFiles()"><i class="fa-solid fa-rotate"></i> Listar</button>
-        <button onclick="loadFile()" class="btn-magenta"><i class="fa-solid fa-cloud-arrow-down"></i> Carregar</button>
-        <button onclick="saveFile()" class="btn-yellow" id="btnSaveGh"><i class="fa-solid fa-cloud-arrow-up"></i> Salvar no GitHub</button>
-        <button onclick="deleteFile()" class="btn-magenta" title="Deletar arquivo do GitHub permanentemente"><i class="fa-solid fa-trash-can"></i> Deletar</button>
-      </div>
-
-      <div id="toastGh" class="toast-bar"></div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title"><i class="fa-solid fa-microchip"></i> // CONTROLES LOCAIS</div>
-      <input type="file" id="localFileInput" style="display:none;" accept=".html,.xhtml,.txt,.md" onchange="handleLocalFile(event)">
-
-      <div class="btn-group">
-        <button onclick="document.getElementById('localFileInput').click()"><i class="fa-solid fa-folder-open"></i> Abrir PC</button>
-        <button onclick="downloadPC()"><i class="fa-solid fa-download"></i> Baixar PC</button>
-        <button onclick="toggleRawCode()"><i class="fa-solid fa-code"></i> HTML Bruto</button>
-        <button onclick="clearEditor()" class="btn-magenta" title="Apagar todo o conteúdo e resetar formatação">
-          <i class="fa-solid fa-trash"></i> Limpar Editor
-        </button>
-      </div>
-
-      <div style="margin-top: 14px; font-size: 0.73rem; color: var(--text-dim); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
-        <strong style="color: var(--neon-cyan);">METADADOS DO LIVRO:</strong><br>
-        Nome: <span id="infoName" style="color:#fff;">-</span><br>
-        SHA: <span id="infoSHA" style="color:var(--neon-yellow);">Não gravado</span>
-      </div>
-
-      <div id="debugConsole" class="debug-box"></div>
-    </div>
-
-  </aside>
-
   <main class="editor-wrapper">
 
     <div class="editor-info-bar">
       <span>LIVRO ATIVO: <strong id="currentFileName" style="color: var(--neon-cyan);">nenhum_livro_aberto.html</strong></span>
       <div style="display: flex; gap: 10px; align-items: center;">
         <span id="editorStatusText" style="color: var(--neon-yellow);">PRONTO</span>
-        <button class="btn-config-toggle" onclick="toggleConfigPanel()" title="Abrir/Fechar Configurações de Busca e Formatação">
+        <button class="btn-config-toggle" onclick="toggleConfigPanel()" title="Abrir/Fechar Configurações">
           <i class="fa-solid fa-sliders"></i> Configurações
         </button>
       </div>
     </div>
 
-    <!-- NOVO: PAINEL DE CONFIGURAÇÕES COLAPSÁVEL -->
+    <!-- PAINEL DE CONFIGURAÇÕES CENTRAL (Contém TUDO) -->
     <div class="config-panel" id="configPanel">
       <div class="config-header" onclick="toggleConfigPanel()">
-        <span><i class="fa-solid fa-gear"></i> Busca e Formatação</span>
+        <span><i class="fa-solid fa-gear"></i> Painel de Controle Completo</span>
         <i class="fa-solid fa-chevron-down" id="configArrow"></i>
       </div>
       <div class="config-body">
         
-        <!-- BARRA DE BUSCA MOVIDA PARA CÁ -->
-        <div class="search-widget">
-          <label><i class="fa-solid fa-magnifying-glass"></i> BUSCA NEURAL:</label>
-          <input type="text" id="searchInput" placeholder="Digite a palavra para localizar no texto..." autocomplete="off" spellcheck="false">
-          <button onclick="clearSearchWidget()" class="btn-magenta" title="Limpar busca (X)"><i class="fa-solid fa-xmark"></i></button>
-          <span class="search-counter" id="searchCounter">0/0</span>
-          <button class="search-nav-btn" id="btnSearchPrev" title="Anterior (Shift+Enter)" disabled><i class="fa-solid fa-chevron-up"></i></button>
-          <button class="search-nav-btn" id="btnSearchNext" title="Próximo (Enter)" disabled><i class="fa-solid fa-chevron-down"></i></button>
-          <button class="search-highlight-toggle active" id="btnToggleHighlight" title="Alternar realce de todos os resultados"><i class="fa-solid fa-highlighter"></i></button>
-          <span class="search-info" id="searchInfo">Aguardando termo...</span>
+        <!-- SEÇÃO 1: GITHUB -->
+        <div class="config-section">
+          <div class="section-title"><i class="fa-brands fa-github"></i> // CONEXÃO GITHUB</div>
+          <label><i class="fa-solid fa-key"></i> Token Number</label>
+          <input type="password" id="ghToken" placeholder="Cole o token do GitHub..." onchange="persistConfig()">
+          <label><i class="fa-solid fa-box-archive"></i> Repositório</label>
+          <input type="text" id="ghRepo" placeholder="usuario/repositorio" value="andreyoldekamp-del/GraphZoBackup" onchange="persistConfig()">
+          <label><i class="fa-solid fa-folder"></i> Pasta</label>
+          <input type="text" id="ghFolder" placeholder="historias" value="historias" onchange="persistConfig()">
+          <label><i class="fa-solid fa-list-check"></i> Selecionar da Pasta</label>
+          <select id="ghFileSelect" onchange="onSelectFileChange()">
+            <option value="">-- Clique em Listar --</option>
+          </select>
+          <div class="btn-group">
+            <button onclick="listFiles()"><i class="fa-solid fa-rotate"></i> Listar</button>
+            <button onclick="loadFile()" class="btn-magenta"><i class="fa-solid fa-cloud-arrow-down"></i> Carregar</button>
+            <button onclick="saveFile()" class="btn-yellow" id="btnSaveGh"><i class="fa-solid fa-cloud-arrow-up"></i> Salvar</button>
+            <button onclick="deleteFile()" class="btn-magenta" title="Deletar arquivo do GitHub"><i class="fa-solid fa-trash-can"></i> Deletar</button>
+          </div>
+          <div id="toastGh" class="toast-bar"></div>
         </div>
 
-        <!-- BARRA DE FORMATAÇÃO MOVIDA PARA CÁ -->
-        <div class="format-toolbar">
-          <div class="format-buttons">
-            <button class="fmt-btn" id="fmtBold" title="Negrito (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
-            <button class="fmt-btn" id="fmtItalic" title="Itálico (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
-            <button class="fmt-btn" id="fmtUnderline" title="Sublinhado (Ctrl+U)"><i class="fa-solid fa-underline"></i></button>
-            <button class="fmt-btn" id="fmtStrike" title="Riscado"><i class="fa-solid fa-strikethrough"></i></button>
+        <!-- SEÇÃO 2: CONTROLES LOCAIS -->
+        <div class="config-section">
+          <div class="section-title"><i class="fa-solid fa-microchip"></i> // CONTROLES LOCAIS</div>
+          <input type="file" id="localFileInput" style="display:none;" accept=".html,.xhtml,.txt,.md" onchange="handleLocalFile(event)">
+          <div class="btn-group">
+            <button onclick="document.getElementById('localFileInput').click()"><i class="fa-solid fa-folder-open"></i> Abrir PC</button>
+            <button onclick="downloadPC()"><i class="fa-solid fa-download"></i> Baixar PC</button>
+            <button onclick="toggleRawCode()"><i class="fa-solid fa-code"></i> HTML Bruto</button>
+            <button onclick="clearEditor()" class="btn-magenta" title="Apagar todo o conteúdo"><i class="fa-solid fa-trash"></i> Limpar</button>
           </div>
-
-          <div>
-            <label>Fonte</label>
-            <select id="fontFamily">
-              <option value="'Share Tech Mono', monospace">Cyber Mono</option>
-              <option value="'Comfortaa', cursive">Comfortaa</option>
-              <option value="Inter, sans-serif">Inter</option>
-              <option value="Arial, sans-serif">Arial</option>
-              <option value="Georgia, serif">Georgia</option>
-              <option value="'Times New Roman', serif">Times New Roman</option>
-              <option value="'Courier New', monospace">Courier New</option>
-            </select>
+          <div style="margin-top: 14px; font-size: 0.73rem; color: var(--text-dim); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
+            <strong style="color: var(--neon-cyan);">METADADOS:</strong><br>
+            Nome: <span id="infoName" style="color:#fff;">-</span><br>
+            SHA: <span id="infoSHA" style="color:var(--neon-yellow);">Não gravado</span>
           </div>
+          <div id="debugConsole" class="debug-box"></div>
+        </div>
 
-          <div>
-            <label>Tamanho</label>
-            <select id="fontSize">
-              <option value="12px">12 px</option>
-              <option value="14px">14 px</option>
-              <option value="16px" selected>16 px</option>
-              <option value="18px">18 px</option>
-              <option value="20px">20 px</option>
-              <option value="24px">24 px</option>
-            </select>
+        <!-- SEÇÃO 3: BUSCA NEURAL -->
+        <div class="config-section">
+          <div class="section-title"><i class="fa-solid fa-magnifying-glass"></i> // BUSCA NEURAL</div>
+          <div class="search-widget">
+            <label><i class="fa-solid fa-magnifying-glass"></i> BUSCA:</label>
+            <input type="text" id="searchInput" placeholder="Digite a palavra..." autocomplete="off" spellcheck="false">
+            <button onclick="clearSearchWidget()" class="btn-magenta" title="Limpar"><i class="fa-solid fa-xmark"></i></button>
+            <span class="search-counter" id="searchCounter">0/0</span>
+            <button class="search-nav-btn" id="btnSearchPrev" title="Anterior" disabled><i class="fa-solid fa-chevron-up"></i></button>
+            <button class="search-nav-btn" id="btnSearchNext" title="Próximo" disabled><i class="fa-solid fa-chevron-down"></i></button>
+            <button class="search-highlight-toggle active" id="btnToggleHighlight" title="Realce"><i class="fa-solid fa-highlighter"></i></button>
+            <span class="search-info" id="searchInfo">Aguardando...</span>
           </div>
+        </div>
 
-          <div>
-            <label>Cor do Texto</label>
-            <input type="color" id="textColor" value="#e0e6ed">
+        <!-- SEÇÃO 4: FORMATAÇÃO -->
+        <div class="config-section">
+          <div class="section-title"><i class="fa-solid fa-wand-magic-sparkles"></i> // FORMATAÇÃO</div>
+          <div class="format-toolbar">
+            <div class="format-buttons">
+              <button class="fmt-btn" id="fmtBold" title="Negrito"><i class="fa-solid fa-bold"></i></button>
+              <button class="fmt-btn" id="fmtItalic" title="Itálico"><i class="fa-solid fa-italic"></i></button>
+              <button class="fmt-btn" id="fmtUnderline" title="Sublinhado"><i class="fa-solid fa-underline"></i></button>
+              <button class="fmt-btn" id="fmtStrike" title="Riscado"><i class="fa-solid fa-strikethrough"></i></button>
+            </div>
+            <div>
+              <label>Fonte</label>
+              <select id="fontFamily">
+                <option value="'Share Tech Mono', monospace">Cyber Mono</option>
+                <option value="'Comfortaa', cursive">Comfortaa</option>
+                <option value="Inter, sans-serif">Inter</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="'Times New Roman', serif">Times New Roman</option>
+                <option value="'Courier New', monospace">Courier New</option>
+              </select>
+            </div>
+            <div>
+              <label>Tamanho</label>
+              <select id="fontSize">
+                <option value="12px">12 px</option>
+                <option value="14px">14 px</option>
+                <option value="16px" selected>16 px</option>
+                <option value="18px">18 px</option>
+                <option value="20px">20 px</option>
+                <option value="24px">24 px</option>
+              </select>
+            </div>
+            <div>
+              <label>Cor Texto</label>
+              <input type="color" id="textColor" value="#e0e6ed">
+            </div>
+            <div>
+              <label>Fundo</label>
+              <input type="color" id="bgColor" value="#050508">
+            </div>
+            <div class="format-buttons">
+              <button class="btn-apply-fmt" id="btnApplyFormat"><i class="fa-solid fa-wand-magic-sparkles"></i> Aplicar</button>
+              <button class="btn-clear-fmt" id="btnClearFormat"><i class="fa-solid fa-eraser"></i> Limpar</button>
+            </div>
+            <div class="format-buttons">
+              <button class="btn-nav-top" onclick="scrollToTop()" title="Início"><i class="fa-solid fa-angles-up"></i></button>
+              <button class="btn-nav-bottom" onclick="scrollToBottom()" title="Fim"><i class="fa-solid fa-angles-down"></i></button>
+            </div>
+            <span class="format-hint" id="formatHint">
+              <i class="fa-solid fa-info-circle"></i> Selecione e clique em <strong>Aplicar</strong>
+            </span>
           </div>
-
-          <div>
-            <label>Fundo do Texto</label>
-            <input type="color" id="bgColor" value="#050508">
-          </div>
-
-          <div class="format-buttons">
-            <button class="btn-apply-fmt" id="btnApplyFormat" title="Aplicar formatação ao texto selecionado">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Aplicar
-            </button>
-            <button class="btn-clear-fmt" id="btnClearFormat" title="Remover formatação do texto selecionado (incluindo hiperlinks do Word)">
-              <i class="fa-solid fa-eraser"></i> Limpar
-            </button>
-          </div>
-
-          <div class="format-buttons">
-            <button class="btn-nav-top" onclick="scrollToTop()" title="Ir para o início"><i class="fa-solid fa-angles-up"></i></button>
-            <button class="btn-nav-bottom" onclick="scrollToBottom()" title="Ir para o fim"><i class="fa-solid fa-angles-down"></i></button>
-          </div>
-
-          <span class="format-hint" id="formatHint">
-            <i class="fa-solid fa-info-circle"></i> Selecione um trecho e clique em <strong>Aplicar</strong>
-          </span>
         </div>
 
       </div>
@@ -855,7 +770,7 @@ function toggleConfigPanel() {
     arrow.className = 'fa-solid fa-chevron-down';
   } else {
     panel.classList.add('open');
-    panel.style.display = 'block';
+    panel.style.display = 'flex';
     arrow.className = 'fa-solid fa-chevron-up';
   }
 }
@@ -1275,7 +1190,7 @@ function clearFormatToSelection() {
 }
 
 /* ============================================================
-   LISTAR ARQUIVOS (CORRIGIDO: SEM HEADERS QUE CAUSAM CORS)
+   LISTAR ARQUIVOS
    ============================================================ */
 async function listFiles() {
   persistConfig();
